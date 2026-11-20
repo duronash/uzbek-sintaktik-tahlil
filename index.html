@@ -3,1260 +3,1533 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sintaktik tahlilchi — 1 va 2-darajali gap bo‘laklari</title>
+  <title>O‘zbek Tili Sintaktik Tahlilchi va Nazariy Qo‘llanma</title>
   <style>
     :root {
       --bg: #f4f7fb;
       --surface: #ffffff;
-      --border: #d8e1ec;
-      --text: #162235;
-      --muted: #52637a;
-      --primary: #1d4ed8;
-      --primary-dark: #1e40af;
+      --primary: #1e3a8a;
       --primary-light: #eff6ff;
-
-      --kesim-bg: #fee2e2;
-      --kesim-border: #ef4444;
-      --kesim-text: #991b1b;
-
-      --ega-bg: #dbeafe;
-      --ega-border: #3b82f6;
-      --ega-text: #1e40af;
-
-      --told-bg: #dcfce7;
-      --told-border: #22c55e;
-      --told-text: #166534;
-
-      --aniq-bg: #fef3c7;
-      --aniq-border: #f59e0b;
-      --aniq-text: #92400e;
-
-      --hol-bg: #f3e8ff;
-      --hol-border: #a855f7;
-      --hol-text: #6b21a8;
-
-      --unk-bg: #f1f5f9;
-      --unk-border: #94a3b8;
-      --unk-text: #334155;
+      --secondary: #0284c7;
+      --accent: #d97706;
+      --success: #15803d;
+      --success-bg: #dcfce7;
+      --danger: #b91c1c;
+      --danger-bg: #fee2e2;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --radius: 12px;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
+    /* Yuqori navigatsiya paneli */
     header {
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-      color: #ffffff;
-      padding: 24px 20px;
-      border-bottom: 4px solid #3b82f6;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #0369a1 100%);
+      color: #fff;
+      padding: 18px 28px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .container { max-width: 1220px; margin: 0 auto; padding: 0 16px; }
-
-    .header-top {
+    .header-inner {
+      max-width: 1240px;
+      margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
 
-    header h1 { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.01em; }
-    header p { color: #cbd5e1; font-size: 0.92rem; margin-top: 4px; }
+    .brand h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .brand p {
+      font-size: 0.84rem;
+      color: #cbd5e1;
+    }
 
     .nav-tabs {
       display: flex;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.12);
-      padding: 5px;
-      border-radius: 10px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .nav-btn {
-      background: transparent;
-      border: none;
-      color: #e2e8f0;
-      padding: 9px 16px;
-      border-radius: 7px;
-      font-size: 0.92rem;
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 8px 16px;
+      border-radius: 24px;
       font-weight: 600;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .nav-btn.active {
-      background: #ffffff;
-      color: #0f172a;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    .tab-btn:hover { background: rgba(255, 255, 255, 0.25); }
+    .tab-btn.active {
+      background: #fff;
+      color: var(--primary);
+      border-color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-    main { padding: 24px 0 48px; }
+    .baza-pill {
+      font-size: 0.8rem;
+      background: rgba(15, 23, 42, 0.55);
+      padding: 5px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #e2e8f0;
+    }
+
+    /* Asosiy konteyner */
+    main {
+      max-width: 1240px;
+      margin: 26px auto;
+      padding: 0 18px 60px;
+    }
+
+    .section-view { display: none; animation: fadeIn 0.28s ease; }
+    .section-view.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
     }
 
     .card-title {
-      font-size: 1.12rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 12px;
+      color: var(--primary);
+      margin-bottom: 14px;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 110px;
-      padding: 14px;
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      font-size: 1.05rem;
-      font-family: inherit;
-      color: var(--text);
-      resize: vertical;
-      transition: border-color 0.2s;
-    }
-
-    textarea:focus { outline: none; border-color: var(--primary); }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .btn-group { display: flex; flex-wrap: wrap; gap: 10px; }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #ffffff;
-      border: none;
-      padding: 11px 22px;
-      border-radius: 8px;
-      font-size: 0.98rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn-primary:hover { background: var(--primary-dark); }
-
-    .btn-secondary {
-      background: #f1f5f9;
-      color: #334155;
-      border: 1px solid #cbd5e1;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .btn-secondary:hover { background: #e2e8f0; }
-
-    .sample-chips {
-      display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 12px;
-      align-items: center;
+      gap: 10px;
     }
 
-    .sample-label { font-size: 0.84rem; color: var(--muted); font-weight: 600; }
-
-    .chip {
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      border: 1px solid #bfdbfe;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 0.82rem;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .chip:hover { background: #dbeafe; }
-
+    /* ================= 1. SINTAKTIK TAHLILCHI ================= */
     .legend {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      padding: 12px 14px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .legend-item {
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      border-left: 4px solid;
+      background: #f8fafc;
+    }
+
+    .st-kesim { border-color: #dc2626; background: #fef2f2; }
+    .st-ega { border-color: #2563eb; background: #eff6ff; }
+    .st-toldiruvchi { border-color: #16a34a; background: #f0fdf4; }
+    .st-aniqlovchi { border-color: #d97706; background: #fffbeb; }
+    .st-hol { border-color: #7c3aed; background: #f5f3ff; }
+    .st-yordamchi { border-color: #64748b; background: #f1f5f9; }
+
+    textarea {
+      width: 100%;
+      min-height: 92px;
+      padding: 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+      margin-bottom: 12px;
+    }
+
+    textarea:focus { outline: none; border-color: var(--secondary); }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: all 0.2s;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.84rem;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
-      border-left: 4px solid;
     }
 
-    .st-kesim { background: var(--kesim-bg); border-color: var(--kesim-border); color: var(--kesim-text); }
-    .st-ega { background: var(--ega-bg); border-color: var(--ega-border); color: var(--ega-text); }
-    .st-toldiruvchi { background: var(--told-bg); border-color: var(--told-border); color: var(--told-text); }
-    .st-aniqlovchi { background: var(--aniq-bg); border-color: var(--aniq-border); color: var(--aniq-text); }
-    .st-hol { background: var(--hol-bg); border-color: var(--hol-border); color: var(--hol-text); }
-    .st-noma’lum { background: var(--unk-bg); border-color: var(--unk-border); color: var(--unk-text); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: #1e40af; }
+    .btn-secondary { background: #e2e8f0; color: var(--text); }
+    .btn-secondary:hover { background: #cbd5e1; }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: #b45309; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-success:hover { background: #166534; }
 
-    .annotated-sentence {
+    .tokens-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      padding: 16px;
-      background: #f8fafc;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-top: 16px;
     }
 
     .token-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 7px 12px;
-      border-radius: 8px;
+      padding: 12px 16px;
+      border-radius: 10px;
       border: 1.5px solid;
-      min-width: 72px;
+      min-width: 135px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     }
 
-    .token-word { font-size: 1.05rem; font-weight: 700; }
-    .token-role { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
-    .token-q { font-size: 0.73rem; opacity: 0.88; font-style: italic; }
+    .token-word { font-size: 1.08rem; font-weight: 800; margin-bottom: 4px; }
+    .token-role { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .token-q { font-size: 0.76rem; color: var(--muted); font-style: italic; margin-top: 3px; }
 
     .levels-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 18px;
+      gap: 18px;
+      margin-top: 20px;
     }
 
     @media (max-width: 768px) { .levels-grid { grid-template-columns: 1fr; } }
 
     .level-box {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      background: #fcfdff;
-    }
-
-    .level-box h4 {
-      font-size: 0.96rem;
-      margin-bottom: 10px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .badge-list { display: flex; flex-wrap: wrap; gap: 8px; }
-    .member-pill { padding: 6px 10px; border-radius: 6px; font-size: 0.86rem; border: 1px solid; }
-
-    .tree-container {
       background: #f8fafc;
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 16px;
-      margin-bottom: 18px;
     }
 
-    .tree-root {
-      display: inline-block;
-      padding: 8px 14px;
+    .level-box h4 { color: var(--primary); margin-bottom: 10px; font-size: 1rem; }
+
+    .chip-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 6px 12px;
       border-radius: 8px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      border: 2px solid var(--kesim-border);
-      background: var(--kesim-bg);
-      color: var(--kesim-text);
+      font-size: 0.86rem;
+      border: 1px solid var(--border);
+      background: #fff;
     }
 
-    .tree-branches {
-      margin-left: 20px;
-      border-left: 2px dashed #94a3b8;
-      padding-left: 16px;
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.9rem;
+    }
+
+    table.data-table th {
+      background: var(--primary);
+      color: #fff;
+      padding: 11px 12px;
+      text-align: left;
+    }
+
+    table.data-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* ================= 2. MAVZULAR JADVALI VA DARS OYNASI ================= */
+    .topic-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .lesson-content {
+      background: #f8fafc;
+      border-left: 4px solid var(--secondary);
+      padding: 18px 22px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .lesson-content h3 { color: var(--primary); margin: 14px 0 8px; font-size: 1.08rem; }
+    .lesson-content ul { padding-left: 20px; margin-bottom: 10px; }
+    .lesson-content li { margin-bottom: 6px; font-size: 0.95rem; }
+    .rule-highlight {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      padding: 12px 15px;
+      border-radius: 8px;
+      margin: 12px 0;
+      font-size: 0.92rem;
+    }
+
+    /* ================= 3. INTERAKTIV TEST VA XATO TAHLILI ================= */
+    .quiz-panel {
+      border-top: 2px dashed var(--border);
+      padding-top: 20px;
+      margin-top: 16px;
+    }
+
+    .question-card {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+
+    .question-card.answered-correct {
+      border-color: var(--success);
+      background: #f0fdf4;
+    }
+
+    .question-card.answered-wrong {
+      border-color: var(--danger);
+      background: #fef2f2;
+      cursor: pointer;
+    }
+
+    .question-card.answered-wrong:hover {
+      box-shadow: 0 4px 14px rgba(185, 28, 28, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .q-header {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      color: var(--text);
+      white-space: pre-line;
+    }
+
+    .options-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
 
-    .tree-node {
-      position: relative;
-      padding: 8px 12px;
-      border-radius: 7px;
-      border: 1px solid;
-      font-size: 0.9rem;
-    }
-
-    .tree-node::before {
-      content: "──▶";
-      position: absolute;
-      left: -24px;
-      color: #64748b;
-      font-size: 0.78rem;
-    }
-
-    .sub-branches {
-      margin-top: 6px;
-      margin-left: 18px;
-      border-left: 2px dotted #94a3b8;
-      padding-left: 12px;
+    .option-label {
       display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .table-wrap { overflow-x: auto; margin-bottom: 18px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-
-    th, td {
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th { background: #1e293b; color: #ffffff; font-weight: 600; white-space: nowrap; }
-    tr:nth-child(even) { background: #f8fafc; }
-
-    .summary-box {
-      background: #eff6ff;
-      border-left: 4px solid var(--primary);
-      padding: 14px 16px;
-      border-radius: 8px;
-      font-size: 0.93rem;
-    }
-
-    .summary-box ul { margin-left: 18px; margin-top: 6px; }
-
-    .warning-note {
-      background: #fffbeb;
-      border: 1px solid #fcd34d;
-      color: #92400e;
+      align-items: flex-start;
+      gap: 10px;
       padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 0.88rem;
-      margin-top: 10px;
-    }
-
-    .rules-section { display: none; }
-    .rules-section.active { display: block; }
-    .analyzer-section.hidden { display: none; }
-
-    .rule-block {
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 14px;
-      background: #ffffff;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.93rem;
+      transition: background 0.15s;
     }
 
-    .rule-block h3 { color: var(--primary-dark); margin-bottom: 8px; font-size: 1.05rem; }
-    .rule-block p, .rule-block li { font-size: 0.92rem; color: #334155; }
-    .rule-block ul { margin-left: 20px; margin-top: 6px; }
+    .option-label:hover { background: var(--primary-light); }
+    .option-label input { margin-top: 4px; }
 
-    .kfsq-badge {
-      display: inline-block;
-      background: #eef2ff;
-      color: #3730a3;
-      border: 1px solid #c7d2fe;
-      padding: 2px 7px;
-      border-radius: 5px;
-      font-size: 0.78rem;
+    .opt-correct-mark {
+      background: var(--success-bg) !important;
+      border-color: var(--success) !important;
+      color: #14532d;
+      font-weight: 700;
+    }
+
+    .opt-wrong-mark {
+      background: var(--danger-bg) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
       font-weight: 600;
-      margin-top: 4px;
+    }
+
+    .wrong-hint-banner {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #fee2e2;
+      color: #991b1b;
+      border-radius: 6px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .explanation-drawer {
+      display: none;
+      margin-top: 12px;
+      padding: 14px 16px;
+      background: #fff;
+      border-left: 4px solid var(--danger);
+      border-radius: 6px;
+      font-size: 0.92rem;
+      color: #1e293b;
+      box-shadow: inset 0 0 0 1px #fecaca;
+    }
+
+    .explanation-drawer.open { display: block; animation: fadeIn 0.25s ease; }
+
+    .score-summary {
+      padding: 16px 20px;
+      border-radius: 10px;
+      background: var(--primary-light);
+      border: 1.5px solid var(--secondary);
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="container">
-    <div class="header-top">
-      <div>
-        <h1>Sintaktik tahlilchi — 1 va 2-darajali gap bo‘laklari</h1>
-        <p>Nazariy qoidalar, KFSQ qonuniyatlari va <code>baza.js</code> lug‘at bazasi asosida ishlovchi tahlil tizimi</p>
-      </div>
-      <div class="nav-tabs">
-        <button class="nav-btn active" id="tab-analyzer" onclick="switchTab('analyzer')">Sintaktik tahlil</button>
-        <button class="nav-btn" id="tab-rules" onclick="switchTab('rules')">Nazariy qoidalar bazasi</button>
-      </div>
+  <div class="header-inner">
+    <div class="brand">
+      <h1>O‘zbek Tili Sintaktik Tahlilchi va Nazariy Qo‘llanma</h1>
+      <p>Fonetika • Morfemika • Morfologiya • Sintaksis (Qo‘shma gaplargacha)</p>
     </div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('analyzer')">🔍 Sintaktik tahlilchi</button>
+      <button class="tab-btn" onclick="switchTab('topics')">📚 Mavzular jadvali</button>
+      <button class="tab-btn" onclick="switchTab('all-tests')">📝 Umumiy testlar</button>
+    </div>
+    <div class="baza-pill" id="bazaStatus">baza.js tekshirilmoqda...</div>
   </div>
 </header>
 
-<main class="container">
-  <section id="analyzer-view" class="analyzer-section">
+<main>
+
+  <!-- ==================== 1-BO'LIM: SINTAKTIK TAHLILCHI ==================== -->
+  <section id="view-analyzer" class="section-view active">
     <div class="card">
       <div class="card-title">
-        <span>Tahlil uchun gap yoki matn kiriting</span>
-        <span id="bazaStatus" style="font-size: 0.82rem; font-weight: 600; color: var(--primary-dark);">Baza tekshirilmoqda...</span>
-      </div>
-      <textarea id="sentenceInput" placeholder="Masalan: Kecha universitetimizning tajribali oʻqituvchisi yangi mavzuni talabalarga batafsil tushuntirib berdi va ular mavzuni yaxshiroq oʻzlashtirib olishlari uchun qoʻshimcha misollar keltirib oʻtdi."></textarea>
-
-      <div class="sample-chips">
-        <span class="sample-label">Sinov gaplari:</span>
-        <button class="chip" onclick="setSample('Kecha universitetimizning tajribali oʻqituvchisi yangi mavzuni talabalarga batafsil tushuntirib berdi va ular mavzuni yaxshiroq oʻzlashtirib olishlari uchun qoʻshimcha misollar keltirib oʻtdi.')">Qo‘shma gap + KFSQ + maqsad holi</button>
-        <button class="chip" onclick="setSample('Kecha universitet kutubxonasida ilmiy izlanish olib borayotgan tirishqoq talaba oʻzining yangi tadqiqoti uchun qadimiy manbalarni katta qiziqish bilan oʻrgandi.')">Sifatdosh KFSQ (olib borayotgan)</button>
-        <button class="chip" onclick="setSample('Gaplaringni aytmay qoʻymayman.')">KFSQ — kuchli tasdiq (-may...-ma)</button>
-        <button class="chip" onclick="setSample('Hamid Olimjon ham juda koʻp sheʼr yozgan.')">Belgisiz tushum kelishigi</button>
-        <button class="chip" onclick="setSample('Kenja oʻgʻlim – shifokor.')">Ega va ot kesim (tire)</button>
-      </div>
-
-      <div class="controls">
-        <div class="btn-group">
-          <button class="btn-primary" onclick="runAnalysis()">Sintaktik tahlil qilish</button>
-          <button class="btn-secondary" onclick="clearAll()">Tozalash</button>
+        <span>1- va 2-darajali gap bo‘laklari tahlili</span>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="loadSample(0)">Namuna 1 (Jurnalist...)</button>
+          <button class="btn btn-secondary" onclick="loadSample(1)">Namuna 2 (Universitet...)</button>
+          <button class="btn btn-secondary" onclick="loadSample(2)">Namuna 3 (Tabiat...)</button>
         </div>
       </div>
-    </div>
 
-    <div id="resultsContainer"></div>
+      <div class="legend">
+        <div class="legend-item st-kesim">Kesim (1-darajali)</div>
+        <div class="legend-item st-ega">Ega (1-darajali)</div>
+        <div class="legend-item st-toldiruvchi">To‘ldiruvchi (2-darajali)</div>
+        <div class="legend-item st-aniqlovchi">Aniqlovchi (2-darajali)</div>
+        <div class="legend-item st-hol">Hol (2-darajali)</div>
+        <div class="legend-item st-yordamchi">Yordamchi / Undalma / Kirish</div>
+      </div>
+
+      <textarea id="sentenceInput" placeholder="Tahlil qilish uchun o‘zbekcha gap kiriting..."></textarea>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="runAnalysis()">⚡ Sintaktik tahlil qilish</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('sentenceInput').value=''; document.getElementById('analysisOutput').innerHTML='';">Tozalash</button>
+      </div>
+
+      <div id="analysisOutput"></div>
+    </div>
   </section>
 
-  <section id="rules-view" class="rules-section">
+  <!-- ==================== 2-BO'LIM: MAVZULAR JADVALI ==================== -->
+  <section id="view-topics" class="section-view">
+    <!-- Mavzular jadvali ro'yxati -->
+    <div id="topics-table-container" class="card">
+      <div class="card-title">
+        <span>O‘zbek tili nazariy mavzular jadvali (Qo‘shma gaplargacha)</span>
+        <span class="topic-badge">Jami 11 ta asosiy mavzu</span>
+      </div>
+      <p style="color: var(--muted); font-size: 0.92rem; margin-bottom: 14px;">
+        Har bir mavzuning qoidalarini o‘qish va mavzu oxiridagi testlarni ishlash uchun <strong>«Mavzuni ochish va Test»</strong> tugmasini bosing.
+      </p>
+      <div style="overflow-x: auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 55px;">№</th>
+              <th>Bo‘lim</th>
+              <th>Mavzu nomi</th>
+              <th>Asosiy qamrab olingan qoidalar</th>
+              <th style="width: 110px;">Testlar</th>
+              <th style="width: 200px;">Amal</th>
+            </tr>
+          </thead>
+          <tbody id="topicsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tanlangan mavzu matni va pastki test oynasi -->
+    <div id="topic-detail-container" class="card" style="display: none;">
+      <div class="card-title">
+        <button class="btn btn-secondary" onclick="backToTopicsTable()">⬅ Orqaga (Mavzular jadvaliga)</button>
+        <span id="detailTopicBadge" class="topic-badge"></span>
+      </div>
+
+      <h2 id="detailTopicTitle" style="color: var(--primary); margin-bottom: 14px;"></h2>
+
+      <!-- Nazariy qoidalar -->
+      <div id="detailLessonBody" class="lesson-content"></div>
+
+      <!-- Mavzu tugagandan keyin pastda testni ishlash bo'limi -->
+      <div class="btn-row" style="justify-content: space-between; margin-top: 18px;">
+        <button class="btn btn-secondary" onclick="backToTopicsTable()">⬅ Orqaga qaytish</button>
+        <button class="btn btn-accent" onclick="scrollToTopicTest()">📝 Mavzu yuzasidan testni ishlash ⬇</button>
+      </div>
+
+      <div id="topicQuizSection" class="quiz-panel">
+        <div class="card-title">
+          <span>Mavzu oxiri test sinovi</span>
+          <span style="font-size: 0.85rem; color: var(--muted);">Testni yakunlagach, xato qilingan savol ustiga bossangiz izohi ochiladi</span>
+        </div>
+        <div id="topicQuizContainer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3-BO'LIM: UMUMIY TESTLAR ==================== -->
+  <section id="view-all-tests" class="section-view">
     <div class="card">
-      <div class="card-title">Dastur asoslangan nazariy ma’lumotlar va qoidalar</div>
-      <div class="rule-block">
-        <h3>1. Kesim (1-darajali bosh bo‘lak)</h3>
-        <p>Gapning grammatik asosiga kesim deyiladi. U shaxs-son, zamon, mayl, tasdiq yoki inkor ma’nolarida bo‘ladi. Kesim hech qaysi bo‘lakka tobelanmay aniqlanadi (fe’l kesim va ot kesim; sodda va murakkab; mustaqil va nomustaqil).</p>
+      <div class="card-title">
+        <span>Barcha mavzular bo‘yicha jamlangan testlar</span>
+        <button class="btn btn-secondary" onclick="switchTab('topics')">⬅ Mavzular jadvaliga qaytish</button>
       </div>
-      <div class="rule-block">
-        <h3>2. Ko‘makchi fe’lli so‘z qo‘shilmasi (KFSQ)</h3>
-        <p>Yetakchi fe’l (ravishdoshning <em>-b, -ib, -a, -y</em> shakllari) va o‘z ma’nosini saqlamagan ko‘makchi fe’l birikmasi. Tarzni va bosqichni bildiruvchi turlari, <em>-ma</em> bo‘lishsizlik o‘rni hamda nisbat qo‘shimchalari qoidalari inobatga olinadi.</p>
-      </div>
-      <div class="rule-block">
-        <h3>3. Ega, To‘ldiruvchi, Aniqlovchi va Hol</h3>
-        <p>Ega (1-darajali) belgisiz tushum va belgisiz qaratqich kelishiklaridan farqlanadi. 2-darajali bo‘laklar (To‘ldiruvchi — vositasiz/vositali; Aniqlovchi — qaratqich/sifatlovchi/izohlovchi; Hol — o‘rin, payt, ravish/tarz, daraja-miqdor, sabab, maqsad) kesimga bevosita (mustaqil) yoki boshqa bo‘lakka bilvosita (nomustaqil) bog‘lanadi.</p>
-      </div>
+      <p style="color: var(--muted); font-size: 0.92rem; margin-bottom: 16px;">
+        Fonetika, Morfemika, So‘z yasalishi, Morfologiya va Sintaksis (qo‘shma gaplargacha) mavzularidan tuzilgan testlar. Testni tekshirgandan so‘ng <strong>xato qilingan savol ustiga bosing</strong> — batafsil tushuntirish ochiladi.
+      </p>
+      <div id="allQuizContainer"></div>
     </div>
   </section>
+
 </main>
 
-<!-- Tashqi leksik baza (baza.js) ulanishi -->
+<!-- Agar baza.js shu papkada bo'lsa ulanadi -->
 <script src="baza.js"></script>
+
 <script>
-  function switchTab(tab) {
-    const analyzerView = document.getElementById("analyzer-view");
-    const rulesView = document.getElementById("rules-view");
-    const btnA = document.getElementById("tab-analyzer");
-    const btnR = document.getElementById("tab-rules");
-
-    if (tab === "analyzer") {
-      analyzerView.classList.remove("hidden");
-      rulesView.classList.remove("active");
-      btnA.classList.add("active");
-      btnR.classList.remove("active");
-    } else {
-      analyzerView.classList.add("hidden");
-      rulesView.classList.add("active");
-      btnA.classList.remove("active");
-      btnR.classList.add("active");
-    }
-  }
-
-  function setSample(text) {
-    document.getElementById("sentenceInput").value = text;
-    runAnalysis();
-  }
-
-  function clearAll() {
-    document.getElementById("sentenceInput").value = "";
-    document.getElementById("resultsContainer").innerHTML = "";
-  }
-
-  function normalizeUzbek(str) {
-    return str
-      .replace(/[ʻʼ’‘`´]/g, "'")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  const LEXICON = {
-    postpositionsToLdiruvchi: ["bilan", "haqida", "to'g'risida"],
-    postpositionsSabab: ["tufayli", "sababli"],
-    postpositionsOrin: ["tomon", "sari", "qarab"],
-    postpositionsPayt: ["keyin", "oldin", "avval", "so'ng", "beri"],
-    toligsizFellar: ["edi", "ekan", "emish", "emas", "erur"],
-    modalKesimVositalari: ["kerak", "lozim", "shart", "zarur", "mumkin"],
-    boglamaFellar: ["bo'lmoq", "bo'ldi", "bo'ladi", "hisoblanmoq", "hisoblanadi", "hisoblanasiz", "sanalmoq", "sanaladi"],
-    modalSozlar: ["bor", "bordir", "yo'q", "yo'qdir"],
-
-    kfsqTarzRoots: ["ol", "tashla", "yubor", "qo'y", "ber"],
-    kfsqBosqichRoots: ["boshla", "yur", "tur", "o'tir", "yot", "chiq", "bo'l", "bor", "kel", "qol", "ko'r", "yoz", "o't"],
-
-    pronounsEga: ["men", "sen", "u", "biz", "siz", "ular", "kim", "nima", "birov", "barchamiz", "o'zim", "o'zi", "har birimiz", "bari"],
-    korsatishOlmoshlari: ["bu", "shu", "o'sha", "mana shu", "ana shu", "ushbu"],
-    sifatlovchiOlmoshlar: ["bu", "shu", "o'sha", "ushbu", "qanday", "qanaqa", "qaysi", "hech qaysi", "barcha", "hamma", "har bir", "har qanday"],
-    tarzOlmoshlari: ["shunday", "bunday", "shunaqa", "qanday"],
-
-    paytRavishlari: ["bugun", "kecha", "ertaga", "endi", "hali", "hamon", "doim", "doimo", "darrov", "birdan", "avval", "so'ng", "har doim", "ertalabdan", "kechgacha", "qishin-yozin", "tun", "tunda"],
-    orinRavishlari: ["bunda", "unda", "yerda", "ichkarida", "tashqarida", "oldinda", "oldindadir", "uzoqdan", "uzoqda"],
-    tarzRavishlari: ["asta", "sekin", "tez", "to'xtovsiz", "mardlarcha", "birin-ketin", "ustma-ust", "shosha-pisha", "yashirincha", "ochiqchasiga", "nogohon", "alohida", "yaxshi", "yaxshiroq", "birma-bir", "qarsillatib", "batafsil"],
-    darajaRavishlari: ["juda", "ancha", "biroz", "sal", "qittay", "behad", "nihoyatda", "ko'p", "oz", "kam", "qancha", "shuncha"],
-    sababRavishlari: ["nega", "noiloj", "ilojsizlikdan"],
-    maqsadRavishlari: ["atay", "ataylab", "atayin"],
-
-    izohlovchiNouns: ["kapitan", "direktor", "professor", "doktor", "usta", "xola", "bobo", "buvi", "aka", "uka", "opa", "singil", "amakilar", "otam", "onam", "shoir", "muallif", "vrach"],
-    placeRoots: ["maktab", "kutubxona", "universitet", "uy", "shahar", "qishloq", "bog'", "dal", "dala", "hovli", "ko'cha", "vokzal", "zavod", "korxona", "oliygoh", "xonadon", "xona", "el", "vatan", "dunyo", "osmon", "mozor", "ostona", "poliz", "sahna", "daryo", "tog'"],
-    commonAdjectives: [
-      "yangi", "eski", "katta", "kichik", "iqtidorli", "yaxshi", "yomon", "musaffo", "baland", "hashamatli",
-      "iliq", "ko'm-ko'k", "o'n yettinchi", "beshala", "do'stona", "toza", "dahshatli", "siyrak", "qiyin", "og'ir",
-      "ma'lum", "mashhur", "rostgo'y", "odobsiz", "halol", "kattakon", "orqa", "old", "kenja", "oliy",
-      "talantli", "insofli", "begona", "xorijlik", "mas'ul", "jonkuyar", "noto'g'ri", "ilmiy", "tirishqoq",
-      "qadimiy", "tajribali", "qo'shimcha", "muhim", "asosiy", "murakkab", "oddiy"
+/* ============================================================================
+   1. MA'LUMOTLAR BAZASI: MAVZULAR (QO'SHMA GAPLARGACHA) VA TESTLAR
+   ============================================================================ */
+const TOPICS_DATA = [
+  {
+    id: "fonetika",
+    branch: "Fonetika",
+    title: "1. Tovushlar tizimi: Unli va Undoshlar tasnifi",
+    summary: "29 harf va 30 tovush, J tovushi, hosil bo‘lish o‘rni, usuli, ovoz va shovqin ishtiroki, unlilar tasnifi.",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li>O‘zbek tilida <strong>29 ta harf</strong> va <strong>30 ta tovush</strong> mavjud. Farq bitta <strong>«J»</strong> harfining ikki xil tovushni ifodalashi hisobiga yuzaga keladi: <em>jurnal, jirafa</em> so‘zlarida <strong>sirg‘aluvchi J</strong>; <em>jo‘ja, jumhuriyat</em> so‘zlarida <strong>portlovchi J</strong>.</li>
+        <li><strong>6 ta unli</strong> (A, E, I, O, O‘, U) talaffuzida shovqin ishtirok etmaydi, bo‘g‘in va urg‘u oladi. <strong>24 ta undosh</strong> tovushning barchasida (hatto <em>M, N, L, R, NG</em> sonorlarda ham) shovqin ishtirok etadi.</li>
+        <li><strong>Hosil bo‘lish o‘rniga ko‘ra undoshlar:</strong>
+          <br>• <em>Lab undoshlari (5 ta):</em> lab-lab (B, P, M) va lab-tish (V, F).
+          <br>• <em>Til undoshlari (18 ta):</em> til oldi (D, T, Z, S, J, CH, J(sirg‘.), SH, L, R, N), til o‘rta (Y), til orqa (G, K, NG), chuqur til orqa (Q, G‘, X).
+          <br>• <em>Bo‘g‘iz undoshi (1 ta):</em> H.</li>
+        <li><strong>Hosil bo‘lish usuliga ko‘ra:</strong> Portlovchilar (B, P, M, D, T, J(port.), CH, N, G, K, NG, Q) va Sirg‘aluvchilar (V, F, Z, S, J(sirg‘.), SH, L, R, Y, G‘, X, H).</li>
+        <li><strong>Ovoz va shovqin ishtirokiga ko‘ra:</strong> Jarangli (14 ta: B, M, V, D, Z, J, J, L, R, N, Y, G, NG, G‘) va Jarangsiz (10 ta: P, F, T, S, CH, SH, K, X, Q, H). Shovqinlilar (19 ta) va Sonorlar (5 ta: M, N, L, R, NG).</li>
+        <li><strong>Unlilar tasnifi:</strong> Yuqori tor (I, U), O‘rta keng (E, O‘), Quyi keng (A, O); Lablangan (O, U, O‘) va Lablanmagan (A, E, I); Old qator (I, E, A) va Orqa qator (U, O‘, O).</li>
+      </ul>
+      <div class="rule-highlight">
+        <strong>Muhim eslatma:</strong> Jarangli jufti yo‘q jarangsiz undoshlar 2 ta (<strong>Q, H</strong>) bo‘lib, ular turli o‘rinda (chuqur til orqa va bo‘g‘iz) hosil bo‘ladi. Jarangsiz jufti yo‘q jarangli undoshlar 6 ta (<strong>M, N, L, R, Y, NG</strong>), ulardan faqat <strong>Y</strong> shovqinli, qolgan 5 tasi sonor!
+      </div>
+    `,
+    questions: [
+      {
+        id: "f1",
+        q: "Quyida berilgan hukmlarning nechtasi to‘g‘ri?\n1. Jarangli jufti mavjud bo‘lmagan jarangsiz undoshlar hosil bo‘lish o‘rniga ko‘ra bir guruhga mansub undoshlar hisoblanadi.\n2. Ovozdor undoshlarda shovqin ishtirok etmaydi.\n3. Jarangsiz jufti yo‘q jarangli undoshlar faqat sonor undoshlar guruhiga mansub.\n4. Jarangli va jarangsiz juftlik hosil qiluvchi undoshlar shovqinli undoshlar guruhiga mansub.",
+        options: [
+          "A) Ikkita hukm to‘g‘ri",
+          "B) Uchta hukm to‘g‘ri",
+          "C) Bitta hukm to‘g‘ri",
+          "D) To‘rtta hukm to‘g‘ri"
+        ],
+        correct: 2,
+        explanation: "To‘g‘ri javob C (faqat 4-hukm to‘g‘ri). 1-hukm xato: jarangli jufti yo‘q jarangsiz undoshlar 'Q' (chuqur til orqa) va 'H' (bo‘g‘iz) turli guruhlarga mansub. 2-hukm xato: barcha 24 ta undoshda (shu jumladan M, N, L, R, NG sonorlarda ham) shovqin ishtirok etadi. 3-hukm xato: jarangsiz jufti yo‘q 6 ta jaranglidan 'Y' undoshi sonor emas, shovqinli undoshdir. 4-hukm to‘g‘ri: barcha 8 ta jarangli-jarangsiz juftlik (B-P, V-F, D-T, Z-S, J-CH, J-SH, G-K, G‘-X) shovqinlilar guruhiga kiradi."
+      },
+      {
+        id: "f2",
+        q: "Berilgan so‘zlardan nechtasining tarkibidagi barcha undoshlar hosil bo‘lish usuli va hosil bo‘lish o‘rniga ko‘ra bir umumiy guruhga mansub undoshlar sanaladi?\n1) mangu  2) jurnal  3) sahifa  4) guliston  5) zarba  6) vafo  7) ulug‘",
+        options: [
+          "A) Uchtasi",
+          "B) Ikkitasi",
+          "C) Beshtasi",
+          "D) To‘rttasi"
+        ],
+        correct: 1,
+        explanation: "To‘g‘ri javob B (ikkitasi: 'vafo' va 'ulug‘'). 'Vafo' so‘zidagi V va F — ikkalasi ham sirg‘aluvchi va lab undoshlari. 'Ulug‘' so‘zidagi L va G‘ — ikkalasi ham sirg‘aluvchi va til undoshlari. 'Mangu'da M (lab) va NG (til) o‘rniga ko‘ra har xil; 'jurnal' va 'guliston'da usuliga ko‘ra portlovchi va sirg‘aluvchi aralashgan; 'sahifa'da S (til), H (bo‘g‘iz), F (lab) o‘rniga ko‘ra har xil."
+      }
     ]
-  };
+  },
+  {
+    id: "fonetik-hodisalar",
+    branch: "Fonetika",
+    title: "2. Qo‘sh undosh, Bo‘g‘in va Fonetik hodisalar",
+    summary: "NG tovushi va bo‘g‘in ko‘chirish, tovush tushishi, ortishi va almashishi (yetakchi va ko‘makchi morfemada).",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li><strong>NG undoshi:</strong> O‘zbekcha so‘zlarda (<em>ko‘ngil, singil, kenglik</em>) yaxlit til orqa sonor; chetdan o‘zlashgan so‘zlarda (<em>ingliz, kongress</em>) va o‘zak+qo‘shimcha chegarasida (<em>tun+gi = tungi, sin+gan = singan</em>) ikkita alohida N va G tovushidir.</li>
+        <li><strong>Bo‘g‘in ajratish va ko‘chirish:</strong> Yolg‘iz unli bo‘g‘in hosil qiladi (<em>o-na, o‘-zim</em>), lekin satrdan satrga ko‘chirishda yolg‘iz unli qoldirilmaydi.</li>
+        <li><strong>Fonetik hodisalar 3 xil:</strong>
+          <br>1) <em>Tovush tushishi:</em> <code>men+ni=meni</code>, <code>burun+ingiz=burningiz</code>, <code>ikki+ala=ikkala</code>, <code>o‘g‘il+im=o‘g‘lim</code>, <code>qay+yerda=qayerda</code>.
+          <br>2) <em>Tovush ortishi:</em> <code>shu+i+si=shunisi</code>, <code>bu+ga=bunga</code>, <code>parvo+im=parvoyim</code>, <code>isi+q=issiq</code>, <code>de+il+gan=deyilgan</code>.
+          <br>3) <em>Tovush almashishi:</em> <code>bilak+im=bilagim</code>, <code>qishloq+ga=qishloqqa</code>, <code>o‘qi+v=o‘quv</code>, <code>yosh+a=yashamoq</code>, <code>bir+ta=bitta</code>.</li>
+      </ul>
+      <div class="rule-highlight">
+        <strong>Diqqat!</strong> <em>«shuni», «buni», «uning»</em> so‘zlarida tovush ortishi yo‘q (<code>shu+ni</code>, <code>u+ning</code>). Lekin <em>«shunisi», «bunisi»</em> so‘zlarida <code>shu+i+si</code> tarkibi bo‘lib, egalik qo‘shimchasi ta’sirida <strong>«n»</strong> tovushi ortgan!
+      </div>
+    `,
+    questions: [
+      {
+        id: "fh1",
+        q: "Quyida berilgan hukmlarning nechtasi noto‘g‘ri?\n1) Ayrim so‘zlarga egalik qo‘shimchalari qo‘shilganida so‘zda til o‘rta jarangli undoshning ortishi kuzatiladi.\n2) Asosi unli bilan tugagan sonlarga qo‘shilgan jamlovchi son qo‘shimchasi tarkibidagi unli tovush tushib qolishi mumkin.\n3) '-q' sifat yasovchi qo‘shimchasi qo‘shilganida so‘zdagi bir tor unli boshqa tor unliga almashishi mumkin.\n4) Ayrim fe’llarga fe’l nisbati qo‘shimchalari qo‘shilganida tovush tushishi hodisasi kuzatilishi mumkin.\n5) Ayrim olmoshlarga egalik qo‘shimchalari qo‘shilganida asos va qo‘shimcha o‘rtasida til oldi jarangli undosh ortishi mumkin.",
+        options: [
+          "A) 2 tasi",
+          "B) 3 tasi",
+          "C) 1 tasi",
+          "D) 4 tasi"
+        ],
+        correct: 2,
+        explanation: "To‘g‘ri javob C (faqat 1 tasi — 2-hukm noto‘g‘ri). Chunki 'ikki+ala=ikkala', 'olti+ovlon=oltovlon' so‘zlarida qo‘shimcha tarkibidagi emas, balki yetakchi morfema (asos) tarkibidagi oxirgi unli tushib qoladi. Qolgan 4 ta hukm to‘g‘ri: 1) parvo+im=parvoyim ('y' ortishi); 3) sovi+q=sovuq (tor 'i' tor 'u'ga almashgan); 4) qayir+il=qayrilmoq ('i' tushishi); 5) bu+im=bunim, shu+i+si=shunisi ('n' ortishi)."
+      }
+    ]
+  },
+  {
+    id: "morfemika",
+    branch: "Morfemika",
+    title: "3. Morfemika, Omonim qo‘shimchalar va Tarkib buzilishi",
+    summary: "Asos va qo‘shimcha, sintaktik/lug‘aviy shakl yasovchilar, omonim qo‘shimchalar, odatdagi tartib buzilishi.",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li><strong>Morfema</strong> — so‘zning eng kichik ma’noli qismi: <em>Asos (yetakchi morfema)</em> va <em>Qo‘shimcha (ko‘makchi morfema)</em>.</li>
+        <li><strong>Qo‘shimchalar 3 guruhga bo‘linadi:</strong>
+          <br>1) <em>So‘z yasovchilar</em> (ot, sifat, ravish, fe’l yasovchilar);
+          <br>2) <em>Lug‘aviy shakl yasovchilar</em> (ko‘plik, kichraytirish, daraja, son turlari, nisbat, harakat nomi, sifatdosh, ravishdosh);
+          <br>3) <em>Sintaktik shakl yasovchilar (munosabat shakllari)</em>: ismning (egalik, kelishik, bog‘lama) va fe’lning (zamon, shaxs-son, mayl).</li>
+        <li><strong>Omonim qo‘shimchalar qoidasi:</strong> So‘z yasovchi qo‘shimchalar faqat <em>turli so‘z turkumlarini</em> yasagandagina omonim bo‘ladi (masalan: <code>kuldon</code> [ot] va <code>bilimdon</code> [sifat]). Bir turkum ichida omonim bo‘lmaydi!</li>
+        <li><strong>So‘z tarkibining buzilishi:</strong> Odatdagi tartib — <code>Asos + so‘z yasovchi + lug‘aviy + sintaktik</code>. Agar asosdan oldin prefiks kelsa (<em>beandisha, serhosil</em>) yoki so‘z yasovchidan oldin shakl yasovchi kelsa (<em>ko‘r+sat+kich, o‘ch+ir+g‘ich, top+il+ma</em>), tarkib tartibi buzilgan hisoblanadi.</li>
+      </ul>
+    `,
+    questions: [
+      {
+        id: "m1",
+        q: "Tobe qismidagi barcha morfemalar omonimlik xususiyatiga ega bo‘lgan so‘z birikmalarini belgilang:\n1) shartlarni bajarmoq  2) kechki uchrashuv  3) yoza boshlamoq  4) tuzsiz ovqat  5) qo‘ymijoz kishi",
+        options: [
+          "A) 1, 2, 3, 4",
+          "B) 2, 3, 4",
+          "C) 1, 2, 5",
+          "D) 2, 4, 5"
+        ],
+        correct: 3,
+        explanation: "To‘g‘ri javob D (2, 4, 5). 3-misol ('yoza boshlamoq') so‘z birikmasi emas, ko‘makchi fe’lli so‘z qo‘shilmasi (KFSQ). 2-misolda 'kech' (fe’l va ravish) hamda '-ki' (ot yasovchi, sifat yasovchi, yuklama) omonim; 4-misolda 'tuz' (ot va fe’l) hamda '-siz' (bog‘lama, shaxs-son, sifat yasovchi, ravish yasovchi) omonim; 5-misolda 'qo‘y' (ot va fe’l) hamda 'mijoz' (xaridor va tana harorati) omonim."
+      },
+      {
+        id: "m2",
+        q: "«To‘kilmoqda tomchilab umr / Malaklarning gul kosasidan.» — Berilgan she’riy parchadagi to‘rtta morfemadan iborat so‘zning sintaktik vazifasini aniqlang.",
+        options: [
+          "A) Hol",
+          "B) Kesim, hol",
+          "C) Kesim",
+          "D) Aniqlovchi, kesim"
+        ],
+        correct: 0,
+        explanation: "To‘g‘ri javob A (Hol). 'To‘kilmoqda' so‘zida '-moqda' yaxlit hozirgi zamon qo‘shimchasi ('to‘kilyapti' bilan almashadi), shuning uchun unda 3 ta morfema bor: to‘k + il + moqda. 'Tomchilab' so‘zida esa 4 ta morfema mavjud: tom + chi + la + b va u gapda tarz holi vazifasini bajargan."
+      }
+    ]
+  },
+  {
+    id: "soz-yasalishi",
+    branch: "So‘z yasalishi",
+    title: "4. So‘z yasalishi: Affiksatsiya, Kompozitsiya, KFSQ va Qo‘shma fe’llar",
+    summary: "Yasashga asos va yasovchi vosita, qo‘shma fe’l va KFSQ farqi, juft va takroriy so‘zlarning yasalishi.",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li><strong>2 asosiy usul:</strong> <em>Affiksatsiya</em> (so‘z yasovchi qo‘shimcha bilan) va <em>Kompozitsiya</em> (ikki asosni qo‘shish — qo‘shma so‘zlar).</li>
+        <li><strong>Qo‘shma fe’l va KFSQ (Ko‘makchi fe’lli so‘z qo‘shilmasi) farqi:</strong>
+          <br>• Agar <code>fe’l + fe’l</code> qolipidagi birikmada har ikkala qism o‘z ma’nosini saqlasa va bitta yetakchi fe’l bilan almashtirib bo‘lmasa — bu <strong>Qo‘shma fe’l (yasama so‘z)</strong>: <em>sotib olmoq, kirib chiqmoq</em>.
+          <br>• Agar ikkinchi fe’l o‘z lug‘aviy ma’nosini yo‘qotib, qo‘shimcha ma’no bersa va birinchi fe’l bilan almashtirish mumkin bo‘lsa — bu <strong>KFSQ</strong>: <em>isitib oldi (isitdi), qizarib ketdi (qizardi)</em>.</li>
+        <li><strong>KFSQ ning tub yoki yasamaligi:</strong> Yetakchi fe’lda yasalish bo‘lmasa — <em>tub</em> (<code>ayta olmoq, sindirib qo‘ymoq</code>); yetakchi fe’lda yasalish bo‘lsa — <em>yasama</em> (<code>o‘zgarib ketmoq, taklif qilib qo‘ymoq</code>).</li>
+        <li><strong>Juft va takroriy so‘zlar:</strong> <em>ota-ona, idish-tovoq, katta-katta, tez-tez</em> — tub; <em>qator-qator, uyma-uy, qadam-baqadam, to‘g‘ridan to‘g‘ri, orzu-istak, issiq-issiq</em> — yasama so‘zlar!</li>
+      </ul>
+    `,
+    questions: [
+      {
+        id: "sy1",
+        q: "Qaysi gapda uchta yasama so‘z qatnashgan?",
+        options: [
+          "A) Inshodagi xatoliklar nisbati o‘zgarishi umumiy ko‘rsatkichga ta’sir qilmaydi.",
+          "B) Bu muammoni boshqachasiga hal qilishni o‘ylab ko‘rish kerak.",
+          "C) Hoshimjon tashlandiq bir uydan sehrli qalpoqcha topib oldi.",
+          "D) Osmonning tiniq, zangori gumbazida to‘lin oy o‘z o‘tovini tikkan."
+        ],
+        correct: 1,
+        explanation: "To‘g‘ri javob B. Unda 3 ta yasama so‘z bor: 1) 'boshqachasiga' (yasama ravish), 2) 'hal qilmoq' (kompozitsiya usulidagi qo‘shma fe’l), 3) 'o‘ylab ko‘rish' (KFSQ bo‘lib, yetakchi fe’li 'o‘y+la' affiksatsiya usulida yasalgani uchun yasama so‘z hisoblanadi). C variantda esa 'topib oldi' — tub KFSQ ('topdi')."
+      }
+    ]
+  },
+  {
+    id: "ot-sifat-son",
+    branch: "Morfologiya",
+    title: "5. Mustaqil so‘z turkumlari: Ot, Sifat va Son",
+    summary: "Atoqli va turdosh otlar, belgisiz kelishiklar, sifat darajalari va otlashishi, son turlari va hisob so‘zlar.",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li><strong>Ot:</strong> Atoqli (shaxs, joy, suv havzalari, tashkilot, sana, asar, sayyora nomlari) va Turdosh (shaxs, o‘rin-joy, faoliyat-jarayon, narsa-buyum). Belgisiz qaratqich (<em>jamiyat hayoti</em>) va belgisiz tushum (<em>kitob o‘qimoq</em>) o‘z sintaktik vazifasini saqlaydi.</li>
+        <li><strong>Sifat:</strong> 6 ma’noviy guruh (maza-ta’m, rang-tus, hid, hajm-o‘lchov, belgi-xususiyat, makon-zamon). Asliy sifatlar daraja ko‘rsatadi (oddiy, qiyosiy <code>-roq</code>, orttirma <code>eng, juda, qip-qizil</code>, ozaytirma <code>sal, sarg‘ish</code>), nisbiy sifatlar daraja ko‘rsatmaydi (<em>devoriy, qishki</em>).</li>
+        <li><strong>Sifatning sintaktik vazifasi:</strong> Otga bog‘lansa — <em>sifatlovchi aniqlovchi</em>; fe’lga bog‘lansa — <em>tarz holi</em> (<code>erkin yashash, keng ommalashdi</code>, lekin turkumi sifatligicha qoladi!). Otlashsa — ot bajargan barcha vazifalarni bajaradi.</li>
+        <li><strong>Son:</strong> Tartib son (<code>-nchi, -inchi</code>) va Miqdor son (6 tur: sanoq, dona, chama, taqsim, kasr, jamlovchi). <code>-ala</code> qo‘shimchali son otga bog‘lansa otlashmagan (<em>ikkala farzand</em>), egalik olsa otlashgan (<em>ikkalasi</em>).</li>
+      </ul>
+    `,
+    questions: [
+      {
+        id: "oss1",
+        q: "«Bizning xalqimiz erkin yashashni istaydi» gapidagi «erkin» so‘zining so‘z turkumi va sintaktik vazifasi qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "A) Ravish — ravish (tarz) holi",
+          "B) Sifat — sifatlovchi aniqlovchi",
+          "C) Sifat — ravish (tarz) holi",
+          "D) Ravish — sifatlovchi aniqlovchi"
+        ],
+        correct: 2,
+        explanation: "To‘g‘ri javob C. 'Erkin' so‘zi 'erk + in' affiksatsiya usuli bilan yasalgan sifatdir. Gapda harakat nomi ('yashashni')ga bog‘lanib, 'qay tarzda?' so‘rog‘iga javob bo‘lgani uchun sintaktik jihatdan ravish (tarz) holi vazifasini bajargan, biroq so‘z turkumi sifatligicha qoladi."
+      }
+    ]
+  },
+  {
+    id: "olmosh-ravish",
+    branch: "Morfologiya",
+    title: "6. Olmosh va Ravish so‘z turkumlari",
+    summary: "Olmoshning 7 ma’no turi, 'o‘zga' va 'hech' so‘zlari, ravishning 6 ma’no turi, ko‘makchi va ravish farqi.",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li><strong>Olmoshning 7 turi:</strong> Kishilik (<em>men, sen, u, biz, siz, ular</em>), O‘zlik (<em>o‘z</em> — har doim egalik bilan turlanadi), So‘roq (<em>kim, nima, qayer, qachon, nega...</em>), Ko‘rsatish (<em>u, bu, shu, o‘sha, bunday, bunisi...</em>), Belgilash (<em>hamma, barcha, bari, har kim...</em>), Bo‘lishsizlik (<em>hech kim, hech narsa...</em>), Gumon (<em>kimdir, allakim, birov...</em>).</li>
+        <li><strong>Eslatma:</strong> <em>«o‘zga»</em> so‘zi olmosh emas — sifat; <em>«hech»</em> yakka holda yuklama; <em>«birov»</em> — tub gumon olmoshi.</li>
+        <li><strong>Ravishning 6 turi:</strong> Holat (<em>sekin, piyoda, mardlarcha</em>), Payt (<em>hozir, hamon, bultur, kecha</em>), O‘rin (<em>nari, olg‘a, beri, tashqari</em>), Daraja-miqdor (<em>biroz, sal, ancha, ko‘p</em>), Sabab (<em>noiloj, ilojsizlikdan</em>), Maqsad (<em>atay, ataylab, qasddan, jo‘rttaga</em>).</li>
+        <li><strong>Ravish va Ko‘makchi farqi:</strong> <em>«keyin, oldin, so‘ng, avval»</em> so‘zlari chiqish kelishigi (<code>-dan</code>) dan keyin kelsa <strong>ko‘makchi</strong> (<em>darsdan keyin</em>), mustaqil holda esa <strong>payt ravishi</strong> (<em>keyin gaplashamiz</em>) bo‘ladi.</li>
+      </ul>
+    `,
+    questions: [
+      {
+        id: "or1",
+        q: "Quyidagi gaplarning qaysi birida ajratib ko‘rsatilgan so‘z ravish emas, balki ko‘makchi vazifasida kelgan?",
+        options: [
+          "A) Avval o‘yla, keyin so‘yla.",
+          "B) Keyin dadam har birimizga sovg‘a berdi.",
+          "C) Xonaga kattalardan keyin kiraman.",
+          "D) Hoshimjon bir mahal do‘sti bilan kirib keldi."
+        ],
+        correct: 2,
+        explanation: "To‘g‘ri javob C ('kattalardan keyin'). Qoidaga ko‘ra, 'keyin, avval, so‘ng, oldin' so‘zlari chiqish kelishigi (-dan) qo‘shimchasidan keyin qo‘llanilsa, ravish hisoblanmaydi — vazifadosh ko‘makchiga aylanadi. A va B gaplarda esa ular payt ravishidir."
+      }
+    ]
+  },
+  {
+    id: "fel-ismlar",
+    branch: "Morfologiya",
+    title: "7. Fe’l, Ismlar guruhi va Bog‘lamalar",
+    summary: "5 ta fe’l nisbati, o‘timli/o‘timsizlik, 3 mayl, xoslangan shakllar, ismlar va bog‘lamalar.",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li><strong>Fe’l nisbatlari (5 ta):</strong> Aniq (qo‘shimchasi yo‘q), O‘zlik (<code>-n, -in, -l, -il</code> — bajaruvchi harakatni o‘z ustida bajaradi), Majhul (<code>-n, -in, -l, -il</code> — bajaruvchisi noma’lum yoki <em>«tomonidan»</em> bilan kelgan), Birgalik (<code>-sh, -ish</code>), Orttirma (<code>-t, -tir, -dir, -ir, -ar, -sat...</code>).</li>
+        <li><strong>Fe’lning xoslangan shakllari:</strong>
+          <br>1) <em>Harakat nomi:</em> <code>-moq, -sh, -ish, -v, -uv, -maslik</code>.
+          <br>2) <em>Sifatdosh:</em> <code>-gan, -yotgan, -ayotgan, -ydigan, -adigan, -r, -ar, -mas</code>.
+          <br>3) <em>Ravishdosh:</em> <code>-b, -ib, -a, -y, -gach, -gani, -gancha, -guncha, -may, -masdan</code>.
+          <br>4) <em>Sof fe’l:</em> zamon, shaxs-son, mayl shakllarini olib fe’l kesim bo‘ladi.</li>
+        <li><strong>Ismlar guruhi:</strong> Ot, sifat, son, olmosh, taqlid so‘zlar hamda fe’lning <strong>harakat nomi</strong> va <strong>sifatdosh</strong> shakllari (ravish va sof fe’l/ravishdosh ismlarga kirmaydi!).</li>
+        <li><strong>Bog‘lamalar:</strong> <code>-man, -miz, -san, -siz, -dir</code>; <code>bo‘lmoq, hisoblanmoq, sanalmoq</code>; <code>edi, ekan, emish, emas</code> (ot kesimda); harakat nomidan keyingi <code>kerak, lozim, zarur, shart</code>.</li>
+      </ul>
+    `,
+    questions: [
+      {
+        id: "fi1",
+        q: "Quyidagi gaplarning qaysilarida majhul nisbatdagi fe’l qatnashgan?\n1. Hozirda o‘qituvchilar tomonidan 'klaster' usuli ko‘p foydalanilmoqda.\n2. Jinoyatning sabablari tergovchi tomonidan aniqlandi.\n3. Atrof chinnidek tozalangan edi.\n4. Archalar juda erta bezaldi (o‘zi bezandi ma’nosida emas, kimdir bezagan).",
+        options: [
+          "A) Faqat 3, 4",
+          "B) 1, 2, 3, 4",
+          "C) Faqat 1, 2",
+          "D) Faqat 2, 3"
+        ],
+        correct: 1,
+        explanation: "To‘g‘ri javob B (1, 2, 3, 4 — barchasida). Qoidaga ko‘ra, majhul nisbatdagi fe’lning bajaruvchisi gapga 'kim tomonidan?' so‘rog‘iga javob bo‘lgan holda kiritilgan bo‘lsa ham (1- va 2-gaplardagidek), fe’l majhul nisbatda ekanligini saqlab qoladi."
+      }
+    ]
+  },
+  {
+    id: "yordamchi-alohida",
+    branch: "Morfologiya",
+    title: "8. Yordamchi va Alohida olingan so‘z turkumlari",
+    summary: "Bog‘lovchi, ko‘makchi, yuklama, vazifadosh yordamchilar (bilan, ham, -u/-yu/-da, balki), undov, modal va taqlid.",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li><strong>Bog‘lovchilar:</strong> Teng (biriktiruv: <em>va, hamda, ham, -u, -yu, -da, bilan</em>; zidlov: <em>ammo, lekin, biroq, balki</em>; ayiruv: <em>yoki, yo...yo, goh...goh, dam...dam</em>; inkor: <em>na...na</em>) va Ergashtiruvchi (<em>chunki, negaki, agar, garchi, toki, go‘yo, ya’ni</em>).</li>
+        <li><strong>Vazifadosh yordamchilar:</strong>
+          <br>• <em>«bilan»</em> — <code>va, hamda</code> bilan almashsa bog‘lovchi, aks holda sof ko‘makchi.
+          <br>• <em>«balki»</em> — gumon bildirib ikki tomondan vergul olsa modal so‘z; faqat oldidan vergul olib zidlik bildirsa zidlov bog‘lovchisi.
+          <br>• <em>«na...na»</em> — kesim bo‘lishsiz bo‘lsa yuklama, kesim bo‘lishli bo‘lsa inkor bog‘lovchisi.</li>
+        <li><strong>Alohida olingan so‘zlar:</strong> Undov so‘zlar (his-hayajon va buyruq-xitob), Modal so‘zlar (<em>albatta, ehtimol, xullas, afsuski, bor, yo‘q, kerak...</em>), Taqlid so‘zlar (tovushga va holatga taqlid).</li>
+      </ul>
+    `,
+    questions: [
+      {
+        id: "ya1",
+        q: "«Uzun yog‘och topdi-da, olmani o‘ziga tomon hayday boshladi, ammo olma quvlik qilib yigitni aldar, yog‘och uchi tegishi bilanoq suvga bir shong‘ib qochib qolar edi.»\nMatndagi yordamchi so‘z turkumlari haqida bildirilgan to‘g‘ri fikrlarni toping:\n1) Matnda bitta sof, bitta vazifadosh bog‘lovchi qatnashgan.\n2) Gapda ikkita kuchaytiruv-ta’kid yuklamasi qatnashgan.\n3) Ushbu matnda bitta sof, bitta vazifadosh ko‘makchi qatnashgan.\n4) Matnda barcha yordamchi so‘z turkumiga oid birliklar qatnashgan.",
+        options: [
+          "A) 1, 3, 4",
+          "B) 1, 2, 4",
+          "C) 1, 2, 3",
+          "D) 1, 2, 3, 4"
+        ],
+        correct: 0,
+        explanation: "To‘g‘ri javob A (1, 3, 4). Izoh: 1) 'ammo' — sof bog‘lovchi, '-da' ('topdi-da') — vazifadosh biriktiruv bog‘lovchisi (1-hukm to‘g‘ri). 2) Kuchaytiruv-ta’kid yuklamasi faqat bitta: '-oq' ('bilanoq'), chunki '-da' bu yerda bog‘lovchi (2-hukm xato). 3) 'bilan' — sof ko‘makchi, 'tomon' ('o‘ziga tomon') — vazifadosh ko‘makchi (3-hukm to‘g‘ri). 4) Bog‘lovchi, ko‘makchi va yuklamalarning barchasi qatnashgan (4-hukm to‘g‘ri)."
+      }
+    ]
+  },
+  {
+    id: "soz-birikmasi",
+    branch: "Sintaksis",
+    title: "9. Grammatik aloqa va So‘z birikmasi turlari",
+    summary: "Teng va tobe aloqa, hokim/tobe so‘zlar, bitishuv, boshqaruv, moslashuv, otli va fe’lli so‘z birikmalari.",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li><strong>Grammatik aloqa 2 xil:</strong> <em>Teng bog‘lanish</em> (uyushiq bo‘laklar) va <em>Tobe bog‘lanish</em> (ega-kesim = gap; hokim-tobe = so‘z birikmasi).</li>
+        <li><strong>Tobe so‘zning birikish usuliga ko‘ra 3 turi:</strong>
+          <br>1) <em>Bitishuv:</em> hech qanday qo‘shimcha va ko‘makchisiz, faqat tartib va tobe ohang bilan (<em>kechagi namuna, xo‘rsinib gapirmoq, qo‘qqisdan baqirmoq</em>).
+          <br>2) <em>Boshqaruv:</em> tushum (<code>-ni</code>, belgili va belgisiz), jo‘nalish (<code>-ga</code>), o‘rin-payt (<code>-da</code>), chiqish (<code>-dan</code>) kelishiklari yoki ko‘makchilar (<em>ishonch bilan gapirmoq</em>) orqali.
+          <br>3) <em>Moslashuv:</em> qaratqich kelishigi (<code>-ning</code>, belgili/belgisiz) va egalik qo‘shimchasi (<code>-i, -si...</code>) orqali (<em>daraxtning ildizi, mamlakat ravnaqi</em>).</li>
+        <li><strong>Muhim farq:</strong> <em>«Moslashuvli tobe aloqa»</em> so‘ralganda ega+kesim ham sanaladi; <em>«Moslashuvli so‘z birikmasi»</em> so‘ralganda ega+kesim olinmaydi!</li>
+      </ul>
+    `,
+    questions: [
+      {
+        id: "sb1",
+        q: "«Biz Furqat va Mashrabning g‘azallarini yodladik» gapida nechta moslashuvli tobe aloqa va nechta moslashuvli so‘z birikmasi bor?",
+        options: [
+          "A) 2 ta moslashuvli tobe aloqa, 2 ta moslashuvli so‘z birikmasi",
+          "B) 3 ta moslashuvli tobe aloqa, 2 ta moslashuvli so‘z birikmasi",
+          "C) 3 ta moslashuvli tobe aloqa, 3 ta moslashuvli so‘z birikmasi",
+          "D) 1 ta moslashuvli tobe aloqa, 2 ta moslashuvli so‘z birikmasi"
+        ],
+        correct: 1,
+        explanation: "To‘g‘ri javob B. 'Moslashuvli tobe aloqa' 3 ta: 1) Biz yodladik (ega va kesim shaxs-sonda moslashadi), 2) Furqatning g‘azallari, 3) Mashrabning g‘azallari. 'Moslashuvli so‘z birikmasi' esa 2 ta ('Furqatning g‘azallari' va 'Mashrabning g‘azallari'), chunki ega va kesim munosabati so‘z birikmasi emas, gap sanaladi."
+      }
+    ]
+  },
+  {
+    id: "bosh-bolaklar",
+    branch: "Sintaksis",
+    title: "10. Bosh bo‘laklar (Kesim, Ega), Egali/Egasiz gaplar va Tire",
+    summary: "Ot kesim va fe’l kesim, sodda/murakkab kesim, ega ifodalanishi, egasiz gap turlari, atov va so‘z-gaplar, tire qoidalari.",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li><strong>Fe’l kesim:</strong> Sof fe’l va ravishdosh shakllari bilan ifodalanadi. <strong>Ot kesim:</strong> Fe’ldan boshqa barcha turkumlar hamda fe’lning <strong>harakat nomi</strong> va <strong>sifatdosh</strong> shakllari bilan ifodalanadi (<em>Sening vazifang — o‘qish</em>).</li>
+        <li><strong>Sodda va murakkab kesim:</strong> Tarkibida KFSQ yoki <code>edi, ekan, emish, emas, bo‘lmoq, hisoblanmoq, kerak, lozim, zarur, shart</code> kabi vositalar bo‘lsa — <em>murakkab kesim</em>; bo‘lmasa — <em>sodda kesim</em>.</li>
+        <li><strong>Egasiz gaplar 3 xil:</strong>
+          <br>1) <em>Egasi ma’lum gap</em> (egani tiklash mumkin, maqol emas: <code>Topshiriqni to‘g‘ri bajaribsan</code>);
+          <br>2) <em>Egasi umumlashgan gap</em> (ommaga qaratilgan maqol/matal: <code>Odobni odobsizdan o‘rgan</code>);
+          <br>3) <em>Egasi noma’lum gap</em> (egani tiklab bo‘lmaydi: <code>Oyni etak bilan yopib bo‘lmaydi</code>, atov va so‘z-gaplar).</li>
+        <li><strong>Ega va ot kesim orasida tire:</strong> Bog‘lamasiz ot kesimda tire qo‘yiladi (<em>Kenja o‘g‘lim — shifokor</em>). Lekin o‘rtada <code>ham</code> yuklamasi bo‘lsa yoki kesim sifat/ravish/modal bilan ifodalansa tire qo‘yilmaydi. Ega ko‘rsatish olmoshi bo‘lsa, bog‘lama bo‘lsa ham tire qo‘yiladi (<em>Bu — katta sinov edi</em>).</li>
+      </ul>
+    `,
+    questions: [
+      {
+        id: "bb1",
+        q: "Quyidagi gaplarning qaysi birida murakkab ot kesim qatnashgan?",
+        options: [
+          "A) Men bu topshiriqni kecha yozgan edim.",
+          "B) Ruhiy illatning davosi — o‘qish.",
+          "C) Siz ham uzoq vaqt davolanishingiz kerak.",
+          "D) Kosadagi ovqatni shosha-pisha ichib qo‘ydi."
+        ],
+        correct: 2,
+        explanation: "To‘g‘ri javob C ('davolanishingiz kerak'). Harakat nomi ('davolanishingiz') ot kesim vazifasida kelgan va undan keyin 'kerak' bog‘lamasi qo‘llanganligi uchun murakkab ot kesimdir. A va D — murakkab fe’l kesim, B — sodda ot kesim."
+      }
+    ]
+  },
+  {
+    id: "ikkinchi-darajali",
+    branch: "Sintaksis",
+    title: "11. Ikkinchi darajali bo‘laklar (Qo‘shma gaplargacha yakuniy mavzu)",
+    summary: "Vositali/vositasiz to‘ldiruvchi, qaratqich/sifatlovchi/izohlovchi aniqlovchi, holning 6 turi, mustaqil va nomustaqil bo‘laklar.",
+    theoryHtml: `
+      <h3>Asosiy nazariy qoidalar:</h3>
+      <ul>
+        <li><strong>Mustaqil va Nomustaqil bo‘laklar:</strong> Kesimga bevosita tobelangan to‘ldiruvchi va hollar — <strong>mustaqil</strong>; kesimdan boshqa bo‘lakka (masalan, sifatdosh, harakat nomi, aniqlovchi yoki boshqa holga) tobelanganlari — <strong>nomustaqil</strong> (kesimga bilvosita bog‘langan) bo‘laklardir.</li>
+        <li><strong>To‘ldiruvchi:</strong> <em>Vositasiz</em> (tushum kelishigi <code>-ni</code> — belgili va belgisiz) va <em>Vositali</em> (<code>-ga, -da, -dan</code> hamda <code>bilan, uchun, haqida...</code> ko‘makchilari).</li>
+        <li><strong>Aniqlovchi 3 xil:</strong>
+          <br>1) <em>Qaratqich aniqlovchi</em> (<code>-ning</code> — belgili va belgisiz);
+          <br>2) <em>Sifatlovchi aniqlovchi</em> (<code>qanday? qanaqa? qaysi?</code> — ot, sifat, son, olmosh, ravish, sifatdosh, taqlid bilan);
+          <br>3) <em>Izohlovchi aniqlovchi</em> (mansab, unvon, kasb, qarindoshlik: <em>kapitan Mansurov, direktor Xoliqov</em>).</li>
+        <li><strong>Holning 6 turi:</strong> O‘rin, Ravish (tarz), Payt, Daraja-miqdor, Sabab, Maqsad. <em>Eslatma:</em> <code>uchun</code> ko‘makchisi harakat nomidan keyin kelsa <strong>maqsad holi</strong> (<em>davolash uchun keldim</em>), sifatdoshdan keyin kelsa <strong>sabab holi</strong> (<em>davolaganim uchun hurmat topdim</em>) bo‘ladi.</li>
+      </ul>
+    `,
+    questions: [
+      {
+        id: "id1",
+        q: "«Bemorlarni davolash uchun kelganman» va «Bemorlarni davolaganim uchun hurmatga sazovor bo‘ldim» gaplaridagi tagiga chizilgan birliklar qanday sintaktik vazifani bajargan?",
+        options: [
+          "A) Ikkalasida ham sabab holi",
+          "B) Birinchisida maqsad holi, ikkinchisida sabab holi",
+          "C) Birinchisida sabab holi, ikkinchisida maqsad holi",
+          "D) Ikkalasida ham vositali to‘ldiruvchi"
+        ],
+        correct: 1,
+        explanation: "To‘g‘ri javob B. Qoidaga ko‘ra, 'uchun' ko‘makchisi harakat nomi shaklidagi fe’llardan keyin qo‘llanilganda ('davolash uchun' — nima maqsadda?) maqsad holi vazifasini bajaradi; sifatdosh shaklidagi fe’llardan keyin kelganida esa ('davolaganim uchun' — nima sababdan?) sabab holi vazifasini bajaradi."
+      },
+      {
+        id: "id2",
+        q: "«Jurnalist jamiyat hayotida sodir bo‘layotgan voqea-hodisalarni keng jamoatchilikka yetkazuvchi mas'uliyatli kasb egasidir» gapidagi «sodir bo‘layotgan» va «keng» birliklarining sintaktik vazifasi nima?",
+        options: [
+          "A) Ikkalasi ham ravish holi",
+          "B) 'sodir bo‘layotgan' — sifatlovchi aniqlovchi, 'keng' — sifatlovchi aniqlovchi",
+          "C) 'sodir bo‘layotgan' — kesim, 'keng' — to‘ldiruvchi",
+          "D) 'sodir bo‘layotgan' — sifatlovchi aniqlovchi, 'keng' — tarz holi"
+        ],
+        correct: 1,
+        explanation: "To‘g‘ri javob B. 'Sodir bo‘layotgan' qo‘shma sifatdosh birikmasi o‘zidan keyingi 'voqea-hodisalarni' otiga bog‘lanib 'qanday?' so‘rog‘iga javob bo‘ladi (sifatlovchi aniqlovchi). 'Keng' sifati esa 'jamoatchilikka' otiga bog‘lanib 'qanday?' so‘rog‘iga javob bo‘lgani uchun sifatlovchi aniqlovchidir."
+      }
+    ]
+  }
+];
 
-  // baza.js mavjud bo'lsa, undagi so'zlarni LEXICON ga qo'shish
-  if (typeof CORPUS_BAZA !== "undefined") {
-    LEXICON.commonAdjectives = [...new Set([...LEXICON.commonAdjectives, ...(CORPUS_BAZA.sifatlar || [])])];
-    LEXICON.tarzRavishlari = [...new Set([...LEXICON.tarzRavishlari, ...(CORPUS_BAZA.ravishlar || [])])];
-    LEXICON.placeRoots = [...new Set([...LEXICON.placeRoots, ...(CORPUS_BAZA.orin_otlari || [])])];
+/* ============================================================================
+   2. NAVIGATSIYA, MAVZULAR JADVALI VA INTERAKTIV TEST TIZIMI
+   ============================================================================ */
+let currentTopicId = null;
+
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.section-view').forEach(sec => sec.classList.remove('active'));
+
+  if (tabName === 'analyzer') {
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    document.getElementById('view-analyzer').classList.add('active');
+  } else if (tabName === 'topics') {
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    document.getElementById('view-topics').classList.add('active');
+    backToTopicsTable();
+  } else if (tabName === 'all-tests') {
+    document.querySelectorAll('.tab-btn')[2].classList.add('active');
+    document.getElementById('view-all-tests').classList.add('active');
+    renderAllTests();
+  }
+}
+
+function renderTopicsTable() {
+  const tbody = document.getElementById('topicsTableBody');
+  tbody.innerHTML = TOPICS_DATA.map((t, idx) => `
+    <tr>
+      <td><strong>${idx + 1}</strong></td>
+      <td><span class="topic-badge">${t.branch}</span></td>
+      <td><strong>${t.title}</strong></td>
+      <td style="color: var(--muted); font-size: 0.88rem;">${t.summary}</td>
+      <td><strong>${t.questions.length} ta</strong> test</td>
+      <td>
+        <button class="btn btn-primary" style="padding: 7px 13px; font-size: 0.84rem;" onclick="openTopicDetail('${t.id}')">
+          📖 Mavzuni ochish va Test
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openTopicDetail(topicId) {
+  const topic = TOPICS_DATA.find(t => t.id === topicId);
+  if (!topic) return;
+  currentTopicId = topicId;
+
+  document.getElementById('topics-table-container').style.display = 'none';
+  document.getElementById('topic-detail-container').style.display = 'block';
+
+  document.getElementById('detailTopicBadge').textContent = topic.branch;
+  document.getElementById('detailTopicTitle').textContent = topic.title;
+  document.getElementById('detailLessonBody').innerHTML = topic.theoryHtml;
+
+  renderQuiz(topic.questions, 'topicQuizContainer', `topic_${topic.id}`);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function backToTopicsTable() {
+  document.getElementById('topic-detail-container').style.display = 'none';
+  document.getElementById('topics-table-container').style.display = 'block';
+}
+
+function scrollToTopicTest() {
+  document.getElementById('topicQuizSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderAllTests() {
+  const allQuestions = TOPICS_DATA.flatMap(t =>
+    t.questions.map(q => ({ ...q, topicTitle: t.title }))
+  );
+  renderQuiz(allQuestions, 'allQuizContainer', 'all_topics');
+}
+
+function renderQuiz(questions, containerId, quizKey) {
+  const container = document.getElementById(containerId);
+  if (!questions || questions.length === 0) {
+    container.innerHTML = `<p style="color:var(--muted);">Bu mavzu uchun testlar tez orada qo‘shiladi.</p>`;
+    return;
   }
 
-  function detectKFSQ(currLow, nextLow) {
-    const isLeadingRavishdosh = /(ib|b|a|y|may)$/.test(currLow) && currLow.length > 2;
-    if (!isLeadingRavishdosh) return null;
-
-    const nonVerbExceptions = [
-      "kecha", "bola", "ona", "ota", "aka", "uka", "opa", "katta", "yangi", "qora", "toza",
-      "juda", "ancha", "asta", "bunda", "unda", "yerda", "uyda", "qo'lda", "yo'lda", "tilga", "qo'lga",
-      "talaba", "qo'shimcha"
-    ];
-    if (nonVerbExceptions.includes(currLow)) return null;
-
-    let matchedRoot = null;
-    let semanticGroup = "";
-    let semanticMeaning = "";
-
-    for (const r of LEXICON.kfsqTarzRoots) {
-      if (nextLow.startsWith(r) && nextLow.length >= r.length + 1) {
-        matchedRoot = r;
-        semanticGroup = "Tarzni bildiruvchi ko‘makchi fe’l";
-        if (r === "ol") semanticMeaning = "imkoniyat yoki subyekt foydasiga bajarilish ma’nosini ifodalaydi";
-        else if (r === "ber") semanticMeaning = "harakatning boshqa shaxs foydasiga/yo‘nalishida bajarilishini ifodalaydi";
-        else semanticMeaning = "harakatning tez va oson bajarilishini ifodalaydi";
-        break;
-      }
-    }
-
-    if (!matchedRoot) {
-      for (const r of LEXICON.kfsqBosqichRoots) {
-        if (nextLow.startsWith(r) && nextLow.length >= r.length + 1) {
-          matchedRoot = r;
-          semanticGroup = "Bosqichni bildiruvchi ko‘makchi fe’l";
-          if (r === "boshla") semanticMeaning = "harakatga kirishishni ifodalaydi";
-          else if (["yur", "tur", "o'tir", "yot", "bor", "kel"].includes(r)) semanticMeaning = "harakatning davomiyligini ifodalaydi";
-          else if (["chiq", "bo'l"].includes(r)) semanticMeaning = "harakatning to‘la bajarilishini ifodalaydi";
-          else semanticMeaning = "harakat bosqichi/tarzini ifodalaydi";
-          break;
-        }
-      }
-    }
-
-    if (!matchedRoot) return null;
-
-    const leadNeg = /may$/.test(currLow);
-    const auxNeg = new RegExp(`^${matchedRoot}(ish|il|in|tir|dir|t)?ma`).test(nextLow);
-    let negNote = "";
-    if (leadNeg && auxNeg) negNote = "Bo‘lishsizlik qo‘shimchasi har ikkala qismda qo‘llanib, kuchli tasdiq ma’nosini ifodalagan.";
-    else if (leadNeg) negNote = "Bo‘lishsizlik (-may) yetakchi fe’l tarkibida qo‘llanib, davomiy bo‘lishsizlik ma’nosini ifodalagan.";
-    else if (auxNeg) negNote = "Bo‘lishsizlik (-ma) ko‘makchi fe’l tarkibida qo‘llanib, bir marta bajarilmagan harakatni ifodalagan.";
-
-    let voiceNote = "";
-    const afterAuxRoot = nextLow.slice(matchedRoot.length);
-    if (/^(il|in|ul|un|l)/.test(afterAuxRoot)) voiceNote = "Majhul nisbat qo‘shimchasi ko‘makchi fe’l tarkibida qo‘llangan.";
-    else if (/(ish|sh)(di|ib|gan|yotgan|adi|moq|a)/.test(afterAuxRoot) || /(ish|sh)(ib|a|y)$/.test(currLow)) voiceNote = "Birgalik nisbat qo‘shimchasi ishtirok etgan.";
-    else if (/(tir|dir|giz|kiz|qiz|iz|t)(ib|a|y)$/.test(currLow)) voiceNote = "Orttirma nisbat qo‘shimchasi yetakchi fe’l tarkibida qo‘llangan.";
-    else if (/(il|in|l|n)(ib|a|y)$/.test(currLow)) voiceNote = "O‘zlik nisbat qo‘shimchasi yetakchi fe’l tarkibida qo‘llangan.";
-
-    const ravishdoshType = /(a|y|may)$/.test(currLow) ? "-a / -y" : "-b / -ib";
-
-    return {
-      matchedRoot,
-      semanticGroup,
-      semanticMeaning,
-      ravishdoshType,
-      negNote,
-      voiceNote,
-      fullExplanation: `KFSQ: yetakchi fe’l (${ravishdoshType}) + «${matchedRoot}moq» (${semanticGroup} — ${semanticMeaning}). ${negNote} ${voiceNote}`.trim()
-    };
-  }
-
-  function splitIntoSentences(text) {
-    const cleaned = normalizeUzbek(text);
-    if (!cleaned) return [];
-    const raw = cleaned.match(/[^.!?]+[.!?]*/g) || [cleaned];
-    return raw.map(s => s.trim()).filter(s => s.length > 0);
-  }
-
-  function tokenizeSentence(sentence) {
-    const normSent = normalizeUzbek(sentence);
-    const hasTire = /\s[–—-]\s/.test(normSent);
-    const hasHamBetween = /\sham\s/i.test(normSent);
-    const body = normSent.replace(/[.!?]+$/, "").trim();
-
-    const rawParts = body
-      .split(/\s+/)
-      .map(w => w.replace(/^[,;:«"“„()]+|[,;:»"”()]+$/g, ""))
-      .filter(w => w && !/^[–—-]+$/.test(w));
-
-    const allPostpositions = [
-      ...LEXICON.postpositionsToLdiruvchi,
-      ...LEXICON.postpositionsSabab,
-      ...LEXICON.postpositionsOrin,
-      ...LEXICON.postpositionsPayt,
-      "uchun"
-    ];
-
-    const tokens = [];
-    for (let i = 0; i < rawParts.length; i++) {
-      const curr = rawParts[i];
-      const next = rawParts[i + 1] || "";
-      const third = rawParts[i + 2] || "";
-
-      const currLow = curr.toLowerCase();
-      const nextLow = next.toLowerCase();
-      const thirdLow = third.toLowerCase();
-
-      // 3 so'zli [KFSQ + Ko'makchi] birikmalari ("o'zlashtirib olishlari uchun")
-      if (next && third && allPostpositions.includes(thirdLow)) {
-        const kfsqInfo = detectKFSQ(currLow, nextLow);
-        if (kfsqInfo) {
-          tokens.push({
-            text: curr + " " + next + " " + third,
-            headWord: next,
-            leadingWord: curr,
-            postposition: thirdLow,
-            isKFSQ: true,
-            kfsqInfo,
-            index: tokens.length
-          });
-          i += 2;
-          continue;
-        }
-      }
-
-      // 2 so'zli KFSQ ("tushuntirib berdi", "keltirib o'tdi", "olib borayotgan")
-      if (next) {
-        const kfsqInfo = detectKFSQ(currLow, nextLow);
-        if (kfsqInfo) {
-          tokens.push({
-            text: curr + " " + next,
-            headWord: next,
-            leadingWord: curr,
-            isKFSQ: true,
-            kfsqInfo,
-            index: tokens.length
-          });
-          i++;
-          continue;
-        }
-      }
-
-      // 2 so'zli ko'makchili birikmalar
-      if (next && allPostpositions.includes(nextLow)) {
-        tokens.push({
-          text: curr + " " + next,
-          headWord: curr,
-          postposition: nextLow,
-          index: tokens.length
-        });
-        i++;
-        continue;
-      }
-
-      // Murakkab kesimlar (to'liqsiz fe'l / modal vosita)
-      if (
-        next &&
-        (LEXICON.toligsizFellar.includes(nextLow) ||
-          LEXICON.modalKesimVositalari.includes(nextLow) ||
-          LEXICON.boglamaFellar.includes(nextLow) ||
-          nextLow.startsWith("bo'lma") ||
-          nextLow.startsWith("olma"))
-      ) {
-        tokens.push({
-          text: curr + " " + next,
-          headWord: curr,
-          auxWord: nextLow,
-          index: tokens.length
-        });
-        i++;
-        continue;
-      }
-
-      tokens.push({ text: curr, headWord: curr, index: tokens.length });
-    }
-
-    return { tokens, hasTire, hasHamBetween, original: sentence };
-  }
-
-  function analyzeMorphology(token) {
-    const low = token.headWord.toLowerCase();
-    const post = token.postposition || "";
-    const aux = token.auxWord || "";
-
-    const info = {
-      low,
-      post,
-      aux,
-      isKFSQ: !!token.isKFSQ,
-      kfsqInfo: token.kfsqInfo || null,
-      caseType: "bosh",
-      hasPossessive: false,
-      verbForm: null,
-      posGuess: "unknown"
-    };
-
-    if (/ning$/.test(low)) info.caseType = "qaratqich";
-    else if (/ni$/.test(low) && !/(gani|kani|qani)$/.test(low)) info.caseType = "tushum";
-    else if (/(ga|ka|qa)$/.test(low)) info.caseType = "jonalish";
-    else if (/(da|ta)$/.test(low) && !/(haqida|to'g'risida)$/.test(low)) info.caseType = "orin";
-    else if (/(dan|tan)$/.test(low)) info.caseType = "chiqish";
-
-    if (/(i|si|im|ing|imiz|ingiz|lari|ining|sining|ini|sini|iga|siga|ida|sida|idan|sidan)$/.test(low)) {
-      info.hasPossessive = true;
-    }
-
-    if (/sa(m|ng|ngiz|k|lar)?$/.test(low)) {
-      info.verbForm = "shart_mayli";
-      info.posGuess = "fel";
-    } else if (/(gan|kan|qan|yotgan|ayotgan|iyotgan|adigan|ydigan|ar|r)(i|si|im|ing|imiz|ingiz|lari|ni|ning|ga|da|dan)?$/.test(low) && low.length > 4) {
-      if (!LEXICON.commonAdjectives.includes(low)) {
-        info.verbForm = "sifatdosh";
-        info.posGuess = "fel";
-      }
-    } else if (/(moq|ish|sh|uv|v)(i|si|im|ing|imiz|ingiz|lari|ni|ning|ga|da|dan)?$/.test(low) && low.length > 4) {
-      const nounExceptions = ["qish", "tish", "ish", "kishi", "qush", "bosh", "tosh", "yosh", "osh", "izlanish", "qiziqish"];
-      if (info.isKFSQ || !nounExceptions.includes(low)) {
-        info.verbForm = "harakat_nomi";
-        info.posGuess = "fel";
-      }
-    } else if (/(gani|kani|qani)$/.test(low)) {
-      info.verbForm = "maqsad_ravishdosh";
-      info.posGuess = "fel";
-    } else if (/(ib|b|gach|kach|qach|guncha|kuncha|quncha|gancha|kancha|qancha)$/.test(low) && low.length > 4) {
-      if (!["kitob", "maktab", "javob", "hisob", "sabab", "odob"].includes(low)) {
-        info.verbForm = "ravishdosh";
-        info.posGuess = "fel";
-      }
-    } else if (/(di|ti|dim|ding|dik|dingiz|dilar|shdi|ishdi|man|san|miz|siz|yapman|yapsan|yapti|yapmiz|yapsiz|yaptilar|adi|ydi|aman|asan|amiz|asiz|adilar|ay|gin|sin)$/.test(low) && low.length > 3) {
-      if (!["endi", "edi", "xodim", "qadim", "doim", "hammamiz", "barchamiz", "otam", "onam", "ukam", "akam", "opam", "singlim", "do'stim", "o'g'lim"].includes(low)) {
-        info.verbForm = "sof_fel";
-        info.posGuess = "fel";
-      }
-    }
-
-    if (LEXICON.modalSozlar.includes(low) || LEXICON.modalKesimVositalari.includes(low)) info.posGuess = "modal_predikativ";
-    if (LEXICON.pronounsEga.includes(low) || LEXICON.sifatlovchiOlmoshlar.includes(low)) info.posGuess = "olmosh";
-    if (LEXICON.commonAdjectives.includes(low) || /(li|siz|dor|chan|simon|gi|ki|qi|roq)$/.test(low)) {
-      if (!info.verbForm && !LEXICON.tarzRavishlari.includes(low)) info.posGuess = "sifat";
-    }
-    if (
-      LEXICON.paytRavishlari.includes(low) ||
-      LEXICON.orinRavishlari.includes(low) ||
-      LEXICON.tarzRavishlari.includes(low) ||
-      LEXICON.darajaRavishlari.includes(low) ||
-      LEXICON.sababRavishlari.includes(low) ||
-      LEXICON.maqsadRavishlari.includes(low)
-    ) {
-      info.posGuess = "ravish";
-    }
-
-    return info;
-  }
-
-  function analyzeSentence(sentenceObj) {
-    const { tokens, hasTire, hasHamBetween, original } = sentenceObj;
-    const n = tokens.length;
-    if (n === 0) return null;
-
-    const morphs = tokens.map(t => analyzeMorphology(t));
-    const results = tokens.map((t, idx) => ({
-      index: idx,
-      word: t.text,
-      role: "Aniqlanmadi",
-      subType: "",
-      level: "Aniqlanmadi",
-      question: "—",
-      ruleExplanation: "",
-      kfsqBadge: t.isKFSQ ? `KFSQ (${t.kfsqInfo.semanticGroup})` : "",
-      headIndex: null,
-      dependencyType: "",
-      cssClass: "st-noma’lum",
-      isUncertain: true
-    }));
-
-    const kesimIndices = [];
-    let mainKesimIdx = n - 1;
-
-    for (let i = 0; i < n; i++) {
-      const m = morphs[i];
-      const nextLow = i + 1 < n ? morphs[i + 1].low : "";
-
-      if (m.verbForm === "shart_mayli" && i < n - 1) {
-        kesimIndices.push(i);
-        results[i] = {
-          index: i,
-          word: tokens[i].text,
-          role: "Kesim",
-          subType: `Fe’l kesim (${m.isKFSQ ? "murakkab — KFSQ" : "sodda"}, nomustaqil kesim)`,
-          level: "1-darajali (Bosh bo‘lak)",
-          question: "nima qilsa? / qay holatda?",
-          ruleExplanation: "Shart mayli «-sa» shaklidagi fe’l bilan ifodalangan nomustaqil kesim." + (m.isKFSQ ? " " + m.kfsqInfo.fullExplanation : ""),
-          kfsqBadge: results[i].kfsqBadge,
-          headIndex: null,
-          dependencyType: "Hokim (ergash gap kesimi)",
-          cssClass: "st-kesim",
-          isUncertain: false
-        };
-      }
-
-      if (i < n - 1 && m.verbForm === "sof_fel" && ["va", "hamda", "lekin", "ammo", "biroq", "chunki"].includes(nextLow)) {
-        kesimIndices.push(i);
-        results[i] = {
-          index: i,
-          word: tokens[i].text,
-          role: "Kesim",
-          subType: `Fe’l kesim (${m.isKFSQ ? "murakkab — KFSQ" : "sodda"}, 1-sodda gap kesimi)`,
-          level: "1-darajali (Bosh bo‘lak)",
-          question: "nima qildi? / nima qiladi?",
-          ruleExplanation: (m.isKFSQ ? m.kfsqInfo.fullExplanation + " " : "") + "Qo‘shma gapning birinchi qismidagi fe’l kesim.",
-          kfsqBadge: results[i].kfsqBadge,
-          headIndex: null,
-          dependencyType: "Hokim (1-sodda gap kesimi)",
-          cssClass: "st-kesim",
-          isUncertain: false
-        };
-      }
-    }
-
-    const lastM = morphs[mainKesimIdx];
-    const isMurakkab = lastM.isKFSQ || LEXICON.toligsizFellar.includes(lastM.aux) || lastM.aux.startsWith("bo'lma") || lastM.aux.startsWith("olma");
-
-    if (lastM.verbForm === "sof_fel" || lastM.verbForm === "ravishdosh") {
-      results[mainKesimIdx] = {
-        index: mainKesimIdx,
-        word: tokens[mainKesimIdx].text,
-        role: "Kesim",
-        subType: `Fe’l kesim (${isMurakkab ? "murakkab" : "sodda"}, mustaqil kesim)`,
-        level: "1-darajali (Bosh bo‘lak)",
-        question: "nima qildi? / nima qiladi? / nima qilyapti?",
-        ruleExplanation: (lastM.isKFSQ ? lastM.kfsqInfo.fullExplanation + " " : "") + "Gapning grammatik asosi — kesim.",
-        kfsqBadge: results[mainKesimIdx].kfsqBadge,
-        headIndex: null,
-        dependencyType: "Hokim (hech qaysi bo‘lakka tobelanmaydi)",
-        cssClass: "st-kesim",
-        isUncertain: false
-      };
-    } else {
-      const isMurakkabOt = LEXICON.toligsizFellar.includes(lastM.aux) || LEXICON.modalKesimVositalari.includes(lastM.aux) || LEXICON.boglamaFellar.includes(lastM.aux) || LEXICON.modalKesimVositalari.includes(lastM.low);
-      results[mainKesimIdx] = {
-        index: mainKesimIdx,
-        word: tokens[mainKesimIdx].text,
-        role: "Kesim",
-        subType: `Ot kesim (${isMurakkabOt ? "murakkab" : "sodda"}, mustaqil kesim)`,
-        level: "1-darajali (Bosh bo‘lak)",
-        question: "kim? / nima? / qanday?",
-        ruleExplanation: "Fe’l bo‘lmagan so‘z yoki harakat nomi/sifatdosh bilan ifodalangan ot kesim.",
-        kfsqBadge: results[mainKesimIdx].kfsqBadge,
-        headIndex: null,
-        dependencyType: "Hokim (hech qaysi bo‘lakka tobelanmaydi)",
-        cssClass: "st-kesim",
-        isUncertain: false
-      };
-    }
-    if (!kesimIndices.includes(mainKesimIdx)) kesimIndices.push(mainKesimIdx);
-
-    function getClauseKesim(idx) {
-      for (const kIdx of kesimIndices) {
-        if (kIdx >= idx) return kIdx;
-      }
-      return mainKesimIdx;
-    }
-
-    for (let i = 0; i < n; i++) {
-      if (kesimIndices.includes(i)) continue;
-      const m = morphs[i];
-      const nextM = i + 1 < n ? morphs[i + 1] : null;
-      const clauseKesim = getClauseKesim(i);
-
-      // Qaratqich aniqlovchi
-      if (m.caseType === "qaratqich") {
-        let targetHead = i + 1 < n ? i + 1 : clauseKesim;
-        for (let j = i + 1; j <= clauseKesim; j++) {
-          if (morphs[j].hasPossessive) { targetHead = j; break; }
-        }
-        results[i] = {
-          index: i, word: tokens[i].text, role: "Aniqlovchi", subType: "Qaratqich aniqlovchi",
-          level: "2-darajali bo‘lak", question: "kimning? / nimaning? / qayerning?",
-          ruleExplanation: "Qaratqich kelishigi (-ning) bilan ifodalangan aniqlovchi.",
-          kfsqBadge: "", headIndex: targetHead,
-          dependencyType: `Bilvosita («${tokens[targetHead].text}» bo‘lagiga tobe)`,
-          cssClass: "st-aniqlovchi", isUncertain: false
-        };
-        continue;
-      }
-
-      // Belgisiz qaratqich aniqlovchi
-      if (m.caseType === "bosh" && !m.verbForm && m.posGuess !== "ravish" && m.posGuess !== "sifat" && !LEXICON.sifatlovchiOlmoshlar.includes(m.low)) {
-        if (nextM && nextM.hasPossessive && !nextM.verbForm && !LEXICON.izohlovchiNouns.includes(m.low)) {
-          results[i] = {
-            index: i, word: tokens[i].text, role: "Aniqlovchi", subType: "Qaratqich aniqlovchi (belgisiz)",
-            level: "2-darajali bo‘lak", question: "kimning? / nimaning?",
-            ruleExplanation: "Belgisiz qaratqich kelishigi shaklidagi aniqlovchi (ega hisoblanmaydi).",
-            kfsqBadge: "", headIndex: i + 1,
-            dependencyType: `Bilvosita («${tokens[i + 1].text}» bo‘lagiga tobe)`,
-            cssClass: "st-aniqlovchi", isUncertain: false
-          };
-          continue;
-        }
-      }
-
-      // Sifatlovchi aniqlovchi
-      const isModifierCandidate =
-        m.posGuess === "sifat" ||
-        LEXICON.sifatlovchiOlmoshlar.includes(m.low) ||
-        (m.verbForm === "sifatdosh" && m.caseType === "bosh" && !m.hasPossessive && !m.post) ||
-        /^(bir|ikki|uch|to'rt|besh|olti|yetti|sakkiz|to'qqiz|o'n|yuz|ming|beshala|ikkala|\d+)(ta|nchi|inchi|ala|ov)?$/.test(m.low);
-
-      if (isModifierCandidate && nextM && !nextM.verbForm && nextM.posGuess !== "ravish") {
-        let targetNounIdx = i + 1;
-        for (let j = i + 1; j <= clauseKesim; j++) {
-          if (!morphs[j].verbForm && morphs[j].posGuess !== "sifat" && morphs[j].posGuess !== "ravish" && !LEXICON.sifatlovchiOlmoshlar.includes(morphs[j].low)) {
-            targetNounIdx = j; break;
-          }
-        }
-        results[i] = {
-          index: i, word: tokens[i].text, role: "Aniqlovchi",
-          subType: m.isKFSQ ? "Sifatlovchi aniqlovchi (KFSQ sifatdosh)" : "Sifatlovchi aniqlovchi",
-          level: "2-darajali bo‘lak", question: "qanday? / qanaqa? / qaysi?",
-          ruleExplanation: "Otga bog‘lanib uning belgisini bildirgan sifatlovchi aniqlovchi." + (m.isKFSQ ? " " + m.kfsqInfo.fullExplanation : ""),
-          kfsqBadge: results[i].kfsqBadge, headIndex: targetNounIdx,
-          dependencyType: `Bilvosita («${tokens[targetNounIdx].text}» bo‘lagiga tobe)`,
-          cssClass: "st-aniqlovchi", isUncertain: false
-        };
-        continue;
-      }
-
-      // Hollar
-      let nearestVerbIdx = clauseKesim;
-      for (let j = i + 1; j <= clauseKesim; j++) {
-        if (morphs[j].verbForm || kesimIndices.includes(j)) { nearestVerbIdx = j; break; }
-      }
-      const isDirectToKesim = kesimIndices.includes(nearestVerbIdx);
-      const holDepLabel = isDirectToKesim ? "Mustaqil hol (kesimga bevosita tobe)" : `Nomustaqil hol («${tokens[nearestVerbIdx].text}» bo‘lagiga tobe)`;
-
-      if (m.verbForm === "maqsad_ravishdosh" || LEXICON.maqsadRavishlari.includes(m.low) || (m.post === "uchun" && m.verbForm === "harakat_nomi")) {
-        results[i] = {
-          index: i, word: tokens[i].text, role: "Hol", subType: `Maqsad holi (${isDirectToKesim ? "mustaqil" : "nomustaqil"})`,
-          level: "2-darajali bo‘lak", question: "nima maqsadda? / nima uchun?",
-          ruleExplanation: (m.post === "uchun" ? "«uchun» ko‘makchisi harakat nomidan keyin kelib maqsad holi bo‘ldi. " : "") + (m.isKFSQ ? m.kfsqInfo.fullExplanation : ""),
-          kfsqBadge: results[i].kfsqBadge, headIndex: nearestVerbIdx, dependencyType: holDepLabel,
-          cssClass: "st-hol", isUncertain: false
-        };
-        continue;
-      }
-
-      if (LEXICON.postpositionsSabab.includes(m.post) || LEXICON.sababRavishlari.includes(m.low) || (m.post === "uchun" && m.verbForm === "sifatdosh") || /(ganidan|kanidan|qanidan)$/.test(m.low)) {
-        results[i] = {
-          index: i, word: tokens[i].text, role: "Hol", subType: `Sabab holi (${isDirectToKesim ? "mustaqil" : "nomustaqil"})`,
-          level: "2-darajali bo‘lak", question: "nima sababdan? / nima uchun? / nega?",
-          ruleExplanation: "Ish-harakatning bajarilish sababini bildirgan sabab holi.",
-          kfsqBadge: results[i].kfsqBadge, headIndex: nearestVerbIdx, dependencyType: holDepLabel,
-          cssClass: "st-hol", isUncertain: false
-        };
-        continue;
-      }
-
-      if (LEXICON.paytRavishlari.includes(m.low) || LEXICON.postpositionsPayt.includes(m.post) || /(gach|kach|qach|guncha|kuncha|quncha)$/.test(m.low)) {
-        results[i] = {
-          index: i, word: tokens[i].text, role: "Hol", subType: `Payt holi (${isDirectToKesim ? "mustaqil" : "nomustaqil"})`,
-          level: "2-darajali bo‘lak", question: "qachon? / qachongacha?",
-          ruleExplanation: "Ish-harakatning bajarilish paytini bildirgan payt holi.",
-          kfsqBadge: results[i].kfsqBadge, headIndex: nearestVerbIdx, dependencyType: holDepLabel,
-          cssClass: "st-hol", isUncertain: false
-        };
-        continue;
-      }
-
-      const isPlaceNoun = LEXICON.placeRoots.some(r => m.low.startsWith(r));
-      if (LEXICON.orinRavishlari.includes(m.low) || LEXICON.postpositionsOrin.includes(m.post) || (isPlaceNoun && ["jonalish", "orin", "chiqish"].includes(m.caseType))) {
-        results[i] = {
-          index: i, word: tokens[i].text, role: "Hol", subType: `O‘rin holi (${isDirectToKesim ? "mustaqil" : "nomustaqil"})`,
-          level: "2-darajali bo‘lak", question: "qayerga? / qayerda? / qayerdan?",
-          ruleExplanation: "Ish-harakatning bajarilish o‘rnini bildirgan o‘rin holi.",
-          kfsqBadge: "", headIndex: nearestVerbIdx, dependencyType: holDepLabel,
-          cssClass: "st-hol", isUncertain: false
-        };
-        continue;
-      }
-
-      if (LEXICON.darajaRavishlari.includes(m.low)) {
-        let targetH = nearestVerbIdx;
-        if (nextM && (nextM.posGuess === "sifat" || nextM.posGuess === "ravish" || nextM.low === "ko'p")) targetH = i + 1;
-        const dir = kesimIndices.includes(targetH);
-        results[i] = {
-          index: i, word: tokens[i].text, role: "Hol", subType: `Daraja-miqdor holi (${dir ? "mustaqil" : "nomustaqil"})`,
-          level: "2-darajali bo‘lak", question: "qancha? / qay darajada?",
-          ruleExplanation: "Daraja yoki miqdorni bildirgan hol.",
-          kfsqBadge: "", headIndex: targetH, dependencyType: dir ? "Mustaqil hol" : `Nomustaqil hol («${tokens[targetH].text}» ga tobe)`,
-          cssClass: "st-hol", isUncertain: false
-        };
-        continue;
-      }
-
-      if (LEXICON.tarzRavishlari.includes(m.low) || m.verbForm === "ravishdosh" || (m.post === "bilan" && /(lik|ch|ish|sh|qish)$/.test(m.low))) {
-        results[i] = {
-          index: i, word: tokens[i].text, role: "Hol", subType: `Ravish (tarz) holi (${isDirectToKesim ? "mustaqil" : "nomustaqil"})`,
-          level: "2-darajali bo‘lak", question: "qanday? / qay holda? / qay tarzda?",
-          ruleExplanation: "Harakatning bajarilish tarzini bildirgan ravish holi." + (m.isKFSQ ? " " + m.kfsqInfo.fullExplanation : ""),
-          kfsqBadge: results[i].kfsqBadge, headIndex: nearestVerbIdx, dependencyType: holDepLabel,
-          cssClass: "st-hol", isUncertain: false
-        };
-        continue;
-      }
-
-      // To'ldiruvchilar
-      const toldDepLabel = isDirectToKesim ? "Mustaqil to‘ldiruvchi (kesimga bevosita tobe)" : `Nomustaqil to‘ldiruvchi («${tokens[nearestVerbIdx].text}» ga tobe)`;
-      if (m.caseType === "tushum") {
-        results[i] = {
-          index: i, word: tokens[i].text, role: "To‘ldiruvchi", subType: `Vositasiz to‘ldiruvchi (${isDirectToKesim ? "mustaqil" : "nomustaqil"})`,
-          level: "2-darajali bo‘lak", question: "kimni? / nimani? / qayerni?",
-          ruleExplanation: "Tushum kelishigi (-ni) bilan ifodalangan vositasiz to‘ldiruvchi.",
-          kfsqBadge: "", headIndex: nearestVerbIdx, dependencyType: toldDepLabel,
-          cssClass: "st-toldiruvchi", isUncertain: false
-        };
-        continue;
-      }
-
-      if (["jonalish", "orin", "chiqish"].includes(m.caseType) || LEXICON.postpositionsToLdiruvchi.includes(m.post) || m.post === "uchun") {
-        results[i] = {
-          index: i, word: tokens[i].text, role: "To‘ldiruvchi", subType: `Vositali to‘ldiruvchi (${isDirectToKesim ? "mustaqil" : "nomustaqil"})`,
-          level: "2-darajali bo‘lak", question: "kimga? / nimaga? / kimda? / nimada? / kimdan? / nimadan? / nima bilan? / nima haqida?",
-          ruleExplanation: "Boshqa kelishik yoki ko‘makchi orqali hosil qilingan vositali to‘ldiruvchi.",
-          kfsqBadge: "", headIndex: nearestVerbIdx, dependencyType: toldDepLabel,
-          cssClass: "st-toldiruvchi", isUncertain: false
-        };
-        continue;
-      }
-    }
-
-    // Ega va belgisiz tushum kelishigi
-    const egaFoundByClause = {};
-    for (let i = 0; i < n; i++) {
-      if (results[i].role !== "Aniqlanmadi" || morphs[i].caseType !== "bosh") continue;
-      const m = morphs[i];
-      if (["ham", "va", "hamda", "yoki", "agar", "chunki", "lekin", "ammo", "biroq", "esa", "hatto"].includes(m.low)) continue;
-
-      const clauseKesim = getClauseKesim(i);
-      const isRightBeforeVerb = i + 1 <= clauseKesim && (morphs[i + 1].verbForm || kesimIndices.includes(i + 1));
-      const isBelgisizTushum = !m.verbForm && !LEXICON.pronounsEga.includes(m.low) && isRightBeforeVerb && egaFoundByClause[clauseKesim];
-
-      if (isBelgisizTushum) {
-        results[i] = {
-          index: i, word: tokens[i].text, role: "To‘ldiruvchi", subType: "Vositasiz to‘ldiruvchi (belgisiz tushum kelishigi)",
-          level: "2-darajali bo‘lak", question: "nimani? / kimni?",
-          ruleExplanation: "Belgisiz tushum kelishigi shaklidagi vositasiz to‘ldiruvchi (ega hisoblanmaydi).",
-          kfsqBadge: "", headIndex: clauseKesim, dependencyType: "Mustaqil to‘ldiruvchi",
-          cssClass: "st-toldiruvchi", isUncertain: false
-        };
-        continue;
-      }
-
-      if (!egaFoundByClause[clauseKesim]) {
-        egaFoundByClause[clauseKesim] = true;
-        results[i] = {
-          index: i, word: tokens[i].text, role: "Ega", subType: "1-darajali bosh bo‘lak",
-          level: "1-darajali (Bosh bo‘lak)", question: "kim? / nima? / qayer?",
-          ruleExplanation: "Kesim tarkibidagi shaxs-son ma’nosidan anglashilgan ega.",
-          kfsqBadge: "", headIndex: clauseKesim, dependencyType: `Bevosita «${tokens[clauseKesim].text}» kesimiga bog‘langan`,
-          cssClass: "st-ega", isUncertain: false
-        };
-      }
-    }
-
-    for (let i = 0; i < n; i++) {
-      if (results[i].role === "Aniqlanmadi") {
-        const low = morphs[i].low;
-        if (["ham", "va", "hamda", "yoki", "agar", "chunki", "lekin", "ammo", "biroq", "esa", "hatto"].includes(low)) {
-          results[i].role = "Yordamchi so‘z (bog‘lovchi / yuklama)";
-          results[i].level = "Gap bo‘lagi emas";
-          results[i].ruleExplanation = "Yordamchi so‘z (mustaqil gap bo‘lagi emas).";
-        } else {
-          results[i].role = "Aniqlanmadi (qo‘shimcha kontekst zarur)";
-          results[i].level = "Yetarli qoida/belgi topilmadi";
-          results[i].ruleExplanation = "Aniqlash uchun berilgan qoidalarda yetarli ko‘rsatkich mavjud emas.";
-        }
-      }
-    }
-
-    const birinchiDaraja = results.filter(r => r.level.startsWith("1-darajali"));
-    const ikkinchiDaraja = results.filter(r => r.level.startsWith("2-darajali"));
-    const kfsqList = results.filter(r => r.kfsqBadge);
-    const nomalumlar = results.filter(r => r.isUncertain);
-
-    return {
-      original, results, birinchiDaraja, ikkinchiDaraja, kfsqList, nomalumlar, mainKesimIdx,
-      tuzilishTuri: ikkinchiDaraja.length > 0 ? `Yoyiq gap (${ikkinchiDaraja.length} ta 2-darajali bo‘lak)` : "Yig‘iq gap",
-      egaliTuri: results.some(r => r.role === "Ega") ? "Egali gap" : "Egasiz gap"
-    };
-  }
-
-  function buildTreeHTML(analysis) {
-    const { results, mainKesimIdx } = analysis;
-    const root = results[mainKesimIdx];
-    const directChildren = results.filter((r, idx) => idx !== mainKesimIdx && r.headIndex === mainKesimIdx);
-
-    function renderSubChildren(parentIdx) {
-      const subs = results.filter(r => r.headIndex === parentIdx);
-      if (subs.length === 0) return "";
-      return `<div class="sub-branches">${subs.map(s => `
-        <div class="tree-node ${s.cssClass}">
-          <strong>${s.word}</strong> — <em>${s.role}</em> (${s.subType}) | So‘rog‘i: <strong>${s.question}</strong>
-          ${renderSubChildren(s.index)}
-        </div>`).join("")}</div>`;
-    }
+  let html = questions.map((item, qIdx) => {
+    const topicLabel = item.topicTitle ? `<div style="font-size:0.78rem; color:var(--secondary); margin-bottom:4px;">Mavzu: ${item.topicTitle}</div>` : '';
+    const optionsHtml = item.options.map((opt, oIdx) => `
+      <label class="option-label" id="${quizKey}_lbl_${qIdx}_${oIdx}">
+        <input type="radio" name="${quizKey}_q_${qIdx}" value="${oIdx}" />
+        <span>${opt}</span>
+      </label>
+    `).join('');
 
     return `
-      <div class="tree-container">
-        <div style="font-weight:700; font-size:0.94rem; margin-bottom:10px;">Sintaktik bog‘lanish daraxti</div>
-        <div class="tree-root">[KESIM]: ${root.word} (${root.subType})</div>
-        <div class="tree-branches">
-          ${directChildren.map(ch => `
-            <div class="tree-node ${ch.cssClass}">
-              <strong>${ch.word}</strong> — <em>${ch.role}</em> (${ch.subType}) | So‘rog‘i: <strong>${ch.question}</strong>
-              ${renderSubChildren(ch.index)}
-            </div>`).join("")}
+      <div class="question-card" id="${quizKey}_card_${qIdx}" onclick="toggleExplanation('${quizKey}', ${qIdx})">
+        ${topicLabel}
+        <div class="q-header">${qIdx + 1}-savol. ${item.q}</div>
+        <div class="options-list" onclick="event.stopPropagation()">
+          ${optionsHtml}
         </div>
-      </div>`;
-  }
+        <div id="${quizKey}_hint_${qIdx}"></div>
+        <div class="explanation-drawer" id="${quizKey}_exp_${qIdx}" onclick="event.stopPropagation()">
+          <strong>💡 Xato tahlili va qoida izohi:</strong><br/>
+          ${item.explanation}
+        </div>
+      </div>
+    `;
+  }).join('');
 
-  function runAnalysis() {
-    const input = document.getElementById("sentenceInput").value;
-    const container = document.getElementById("resultsContainer");
-    const sentences = splitIntoSentences(input);
+  html += `
+    <div class="btn-row" style="margin-top: 14px;">
+      <button class="btn btn-success" onclick="gradeQuiz('${quizKey}')">✅ Testni tekshirish</button>
+      <button class="btn btn-secondary" onclick="resetQuiz('${quizKey}')">🔄 Qayta ishlash</button>
+      <button class="btn btn-secondary" onclick="backToTopicsTable()">⬅ Orqaga qaytish</button>
+    </div>
+    <div id="${quizKey}_summary"></div>
+  `;
 
-    if (sentences.length === 0) {
-      container.innerHTML = `<div class="card"><p style="color:#b91c1c; font-weight:600;">Iltimos, gap kiriting.</p></div>`;
-      return;
-    }
+  container.innerHTML = html;
+  container.dataset.questions = JSON.stringify(questions);
+}
 
-    container.innerHTML = sentences.map((sentText, sIdx) => {
-      const analysis = analyzeSentence(tokenizeSentence(sentText));
-      if (!analysis) return "";
+function gradeQuiz(quizKey) {
+  const container = document.getElementById(quizKey === 'all_topics' ? 'allQuizContainer' : 'topicQuizContainer');
+  const questions = JSON.parse(container.dataset.questions || '[]');
+  let correctCount = 0;
+  let wrongCount = 0;
 
-      return `
-        <div class="card">
-          <div class="card-title">
-            <span>${sentences.length > 1 ? `${sIdx + 1}-gap:` : "Tahlil natijasi:"} «${analysis.original}»</span>
-            <span style="font-size:0.82rem; color:var(--primary-dark); background:var(--primary-light); padding:4px 10px; border-radius:6px;">
-              ${analysis.tuzilishTuri} • ${analysis.egaliTuri}
-            </span>
-          </div>
+  questions.forEach((item, qIdx) => {
+    const card = document.getElementById(`${quizKey}_card_${qIdx}`);
+    const hintBox = document.getElementById(`${quizKey}_hint_${qIdx}`);
+    const expBox = document.getElementById(`${quizKey}_exp_${qIdx}`);
+    const selected = document.querySelector(`input[name="${quizKey}_q_${qIdx}"]:checked`);
 
-          <div class="legend">
-            <span class="legend-item st-kesim">Kesim (1-darajali)</span>
-            <span class="legend-item st-ega">Ega (1-darajali)</span>
-            <span class="legend-item st-toldiruvchi">To‘ldiruvchi (2-darajali)</span>
-            <span class="legend-item st-aniqlovchi">Aniqlovchi (2-darajali)</span>
-            <span class="legend-item st-hol">Hol (2-darajali)</span>
-            <span class="legend-item st-noma’lum">Aniqlanmadi / Yordamchi</span>
-          </div>
+    card.classList.remove('answered-correct', 'answered-wrong');
+    expBox.classList.remove('open');
+    hintBox.innerHTML = '';
 
-          <div class="annotated-sentence">
-            ${analysis.results.map(r => `
-              <div class="token-box ${r.cssClass}">
-                <span class="token-word">${r.word}</span>
-                <span class="token-role">${r.role}</span>
-                <span class="token-q">${r.question}</span>
-              </div>`).join("")}
-          </div>
+    item.options.forEach((_, oIdx) => {
+      const lbl = document.getElementById(`${quizKey}_lbl_${qIdx}_${oIdx}`);
+      lbl.classList.remove('opt-correct-mark', 'opt-wrong-mark');
+      if (oIdx === item.correct) {
+        lbl.classList.add('opt-correct-mark');
+      }
+    });
 
-          <div class="levels-grid">
-            <div class="level-box">
-              <h4>1-darajali bo‘laklar</h4>
-              <div class="badge-list">${analysis.birinchiDaraja.map(b => `<div class="member-pill ${b.cssClass}"><strong>${b.word}</strong> — ${b.role}</div>`).join("")}</div>
-            </div>
-            <div class="level-box">
-              <h4>2-darajali bo‘laklar</h4>
-              <div class="badge-list">${analysis.ikkinchiDaraja.length ? analysis.ikkinchiDaraja.map(b => `<div class="member-pill ${b.cssClass}"><strong>${b.word}</strong> — ${b.role} (${b.subType})</div>`).join("") : `<span style="color:var(--muted);">Yo‘q</span>`}</div>
-            </div>
-          </div>
-
-          ${buildTreeHTML(analysis)}
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>So‘z</th>
-                  <th>Gap bo‘lagi</th>
-                  <th>Darajasi</th>
-                  <th>So‘rog‘i</th>
-                  <th>Izohi</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${analysis.results.map(r => `
-                  <tr>
-                    <td><strong>${r.word}</strong>${r.kfsqBadge ? `<div><span class="kfsq-badge">${r.kfsqBadge}</span></div>` : ""}</td>
-                    <td><span class="legend-item ${r.cssClass}" style="padding:2px 8px; font-size:0.82rem;">${r.role}</span><div style="font-size:0.8rem; color:var(--muted); margin-top:3px;">${r.subType}</div></td>
-                    <td><strong>${r.level}</strong></td>
-                    <td><em>${r.question}</em></td>
-                    <td><div>${r.ruleExplanation}</div>${r.dependencyType ? `<div style="font-size:0.8rem; color:var(--primary-dark); margin-top:4px; font-weight:600;">${r.dependencyType}</div>` : ""}</td>
-                  </tr>`).join("")}
-              </tbody>
-            </table>
-          </div>
-
-          <div class="summary-box">
-            <strong>Yakuniy xulosa:</strong>
-            <ul>
-              <li><strong>Tuzilishi:</strong> ${analysis.tuzilishTuri}; <strong>Ega jihatidan:</strong> ${analysis.egaliTuri}.</li>
-              <li><strong>1-darajali bo‘laklar:</strong> ${analysis.birinchiDaraja.map(x => `«${x.word}» (${x.role})`).join(", ")}.</li>
-              ${analysis.ikkinchiDaraja.length ? `<li><strong>2-darajali bo‘laklar:</strong> ${analysis.ikkinchiDaraja.map(x => `«${x.word}» (${x.role})`).join(", ")}.</li>` : ""}
-              ${analysis.kfsqList.length ? `<li><strong>KFSQ:</strong> ${analysis.kfsqList.map(k => `«${k.word}»`).join(", ")}.</li>` : ""}
-            </ul>
-          </div>
-
-          ${analysis.nomalumlar.length ? `<div class="warning-note"><strong>Eslatma:</strong> Quyidagi birliklar (${analysis.nomalumlar.map(u => `«${u.word}»`).join(", ")}) bo‘yicha berilgan qoidalarda yetarli ko‘rsatkich topilmadi.</div>` : ""}
-        </div>`;
-    }).join("");
-  }
-
-  window.addEventListener("DOMContentLoaded", () => {
-    const statusEl = document.getElementById("bazaStatus");
-    if (typeof CORPUS_BAZA !== "undefined") {
-      statusEl.textContent = `baza.js ulandi (${CORPUS_BAZA.jami_noyob_sozlar.toLocaleString()} ta noyob so‘z)`;
+    if (selected && Number(selected.value) === item.correct) {
+      correctCount++;
+      card.classList.add('answered-correct');
+      hintBox.innerHTML = `<div style="margin-top:8px; color:var(--success); font-weight:700; font-size:0.88rem;">✔ To‘g‘ri javob!</div>`;
     } else {
-      statusEl.textContent = "baza.js topilmadi (faqat ichki lug‘at ishlamoqda)";
+      wrongCount++;
+      card.classList.add('answered-wrong');
+      if (selected) {
+        document.getElementById(`${quizKey}_lbl_${qIdx}_${selected.value}`).classList.add('opt-wrong-mark');
+      }
+      hintBox.innerHTML = `
+        <div class="wrong-hint-banner">
+          <span>❌ Xato javob! Nega xato ekanligini ko‘rish uchun shu savol ustiga bosing</span>
+          <span>🔽 Izohni ochish</span>
+        </div>
+      `;
     }
-    setSample("Kecha universitetimizning tajribali oʻqituvchisi yangi mavzuni talabalarga batafsil tushuntirib berdi va ular mavzuni yaxshiroq oʻzlashtirib olishlari uchun qoʻshimcha misollar keltirib oʻtdi.");
   });
+
+  const summaryBox = document.getElementById(`${quizKey}_summary`);
+  summaryBox.innerHTML = `
+    <div class="score-summary">
+      <div>
+        <strong>Natija:</strong> ${questions.length} ta savoldan <span style="color:var(--success); font-weight:800;">${correctCount} tasi to‘g‘ri</span>,
+        <span style="color:var(--danger); font-weight:800;">${wrongCount} tasi xato</span>.
+        ${wrongCount > 0 ? '<br><small style="color:var(--muted);">Qizil rangli xato savol ustiga bossangiz, batafsil tushuntirish ochiladi.</small>' : ''}
+      </div>
+      <button class="btn btn-secondary" onclick="backToTopicsTable()">⬅ Mavzular jadvaliga qaytish</button>
+    </div>
+  `;
+}
+
+function toggleExplanation(quizKey, qIdx) {
+  const card = document.getElementById(`${quizKey}_card_${qIdx}`);
+  if (!card.classList.contains('answered-wrong')) return;
+  const expBox = document.getElementById(`${quizKey}_exp_${qIdx}`);
+  expBox.classList.toggle('open');
+}
+
+function resetQuiz(quizKey) {
+  const container = document.getElementById(quizKey === 'all_topics' ? 'allQuizContainer' : 'topicQuizContainer');
+  const questions = JSON.parse(container.dataset.questions || '[]');
+  renderQuiz(questions, container.id, quizKey);
+}
+
+/* ============================================================================
+   3. SINTAKTIK TAHLIL DVIGATELI (YANGILANGAN QOIDALAR BILAN)
+   ============================================================================ */
+const SAMPLES = [
+  "Jurnalist jamiyat hayotida sodir bo'layotgan voqea-hodisalarni keng jamoatchilikka yetkazuvchi mas'uliyatli kasb egasidir.",
+  "Kecha universitetimizning tajribali o'qituvchisi yangi mavzuni talabalarga batafsil tushuntirib berdi.",
+  "Tabiat ishlariga qo'pollik bilan aralashish tufayli paydo bo'lgan kasalliklarni zavodlarda ishlab chiqarilayotgan dorilar bilan tuzatib bo'lmaydi."
+];
+
+const LEXICON = {
+  compoundParticiples: [
+    "sodir bo'layotgan", "sodir bo'lgan", "sodir bo'ladigan",
+    "paydo bo'layotgan", "paydo bo'lgan", "paydo bo'ladigan",
+    "yuz berayotgan", "yuz bergan", "amalga oshayotgan", "amalga oshgan",
+    "ishlab chiqarilayotgan", "ishlab chiqarilgan"
+  ],
+  kfspAuxVerbs: [
+    "berdi", "beradi", "bergan", "olib", "oldi", "oladi", "olgan",
+    "qo'ydi", "qo'yadi", "tashladi", "yubordi", "ketdi", "qoldi",
+    "boshladi", "turibdi", "yuribdi", "yotibdi", "o'tirdi", "bo'ldi",
+    "bo'lmaydi", "chiqdi", "ko'rdi", "edi", "ekan", "emish", "kerak", "lozim", "zarur", "shart"
+  ],
+  adjectives: [
+    "yangi", "eski", "katta", "kichik", "iqtidorli", "yaxshi", "yomon", "musaffo", "baland",
+    "tajribali", "mas'uliyatli", "keng", "tor", "oq", "qora", "qizil", "ko'k", "sariq", "yashil",
+    "shirin", "achchiq", "og'ir", "yengil", "uzun", "qisqa", "toza", "muhim", "asosiy", "erkin",
+    "mayin", "aniq", "tiniq", "siniq", "iliq", "sovuq", "issiq", "quvnoq", "g'amgin", "jo'shqin",
+    "odobli", "bilimli", "aqlli", "chiroyli", "go'zal", "hashamatli", "qulay", "qiyin", "oson",
+    "kechagi", "bugungi", "so'nggi", "avvalgi", "keyingi", "yetkazuvchi", "bajaruvchi"
+  ],
+  paytRavishlari: [
+    "kecha", "bugun", "ertaga", "hozir", "endi", "hali", "hamon", "hanuz", "doim", "doimo",
+    "mudom", "avval", "oldin", "keyin", "so'ng", "dastlab", "bultur", "ertalab", "kechasi", "kunduzi"
+  ],
+  tarzRavishlari: [
+    "batafsil", "sekin", "tez", "asta", "darhol", "piyoda", "yayov", "butunlay", "tinimsiz",
+    "to'xtovsiz", "birin-ketin", "oldinma-ketin", "qo'qqisdan", "to'satdan", "tasodifan",
+    "mardlarcha", "do'stona", "ochiqchasiga", "qalban", "ruhan", "yaxshiroq"
+  ],
+  orinRavishlari: [
+    "nari", "beri", "olg'a", "tashqari", "ichkari", "yuqori", "quyi", "oldinda", "orqada"
+  ],
+  darajaRavishlari: [
+    "biroz", "sal", "ancha", "ko'p", "kam", "oz", "picha", "behad", "juda", "eng", "g'oyat"
+  ],
+  sababMaqsadRavishlari: [
+    "noiloj", "ilojsizlikdan", "qasddan", "atay", "ataylab", "jo'rttaga"
+  ],
+  pronouns: [
+    "men", "sen", "u", "biz", "siz", "ular", "o'zim", "o'zing", "o'zi", "o'zimiz", "o'zingiz", "o'zlari",
+    "bu", "shu", "o'sha", "bunday", "shunday", "kim", "nima", "qayer", "qachon", "qanday", "qaysi", "nega",
+    "hamma", "barcha", "bari", "har", "hech", "kimdir", "nimadir", "birov"
+  ],
+  postpositions: [
+    "bilan", "uchun", "haqida", "tufayli", "sababli", "kabi", "singari", "sari", "sayin",
+    "tomon", "bo'ylab", "qadar", "uzra", "qarab", "qaramay", "qaramasdan", "qaraganda",
+    "keyin", "oldin", "avval", "so'ng", "boshqa", "o'zga", "bo'lak", "sifatida", "orqali"
+  ],
+  conjunctions: ["va", "hamda", "ammo", "lekin", "biroq", "balki", "chunki", "negaki", "agar", "toki", "ya'ni", "yoki"]
+};
+
+function normalizeApostrophes(str) {
+  return str.replace(/[ʻ’‘`´]/g, "'");
+}
+
+function loadSample(idx) {
+  document.getElementById('sentenceInput').value = SAMPLES[idx] || SAMPLES[0];
+  runAnalysis();
+}
+
+function tokenize(sentence) {
+  const clean = sentence.trim().replace(/[.!?]+$/, "");
+  if (!clean) return [];
+  const rawWords = clean.split(/\s+/);
+  const tokens = [];
+
+  for (let i = 0; i < rawWords.length; i++) {
+    const curr = rawWords[i].replace(/^[,;:()"]+/, "");
+    const punctAfter = (rawWords[i].match(/[,;:()"]+$/) || [""])[0];
+    const nextRaw = rawWords[i + 1] || "";
+    const next = nextRaw.replace(/^[,;:()"]+|[,;:()"]+$/g, "");
+    const nextPunct = (nextRaw.match(/[,;:()"]+$/) || [""])[0];
+
+    const cLow = normalizeApostrophes(curr).toLowerCase();
+    const nLow = normalizeApostrophes(next).toLowerCase();
+    const twoLow = `${cLow} ${nLow}`;
+
+    // 1. Qo'shma sifatdosh birikmalar ("sodir bo'layotgan", "paydo bo'lgan", "ishlab chiqarilayotgan")
+    if (next && LEXICON.compoundParticiples.includes(twoLow)) {
+      tokens.push({ text: `${curr} ${next}`, clean: twoLow, punct: nextPunct, isCompoundParticiple: true });
+      i++;
+      continue;
+    }
+
+    // 2. Ko'makchi fe'lli so'z qo'shilmasi ("tushuntirib berdi", "tuzatib bo'lmaydi")
+    if (next && /(ib|b|a|y)$/.test(cLow) && LEXICON.kfspAuxVerbs.includes(nLow)) {
+      tokens.push({ text: `${curr} ${next}`, clean: twoLow, punct: nextPunct, isKFSQ: true });
+      i++;
+      continue;
+    }
+
+    // 3. Ko'makchili birikma ("qo'pollik bilan", "dorilar bilan", "aralashish tufayli")
+    if (next && LEXICON.postpositions.includes(nLow)) {
+      tokens.push({ text: `${curr} ${next}`, clean: twoLow, post: nLow, headClean: cLow, punct: nextPunct });
+      i++;
+      continue;
+    }
+
+    tokens.push({ text: curr, clean: cLow, punct: punctAfter });
+  }
+  return tokens;
+}
+
+function analyzeTokens(tokens) {
+  const n = tokens.length;
+  const results = new Array(n);
+
+  // Baza.js mavjud bo'lsa, undagi ro'yxatlardan foydalanish
+  const bazaSifatlar = (typeof CORPUS_BAZA !== "undefined" && CORPUS_BAZA.sifatlar) ? CORPUS_BAZA.sifatlar : [];
+  const bazaRavishlar = (typeof CORPUS_BAZA !== "undefined" && CORPUS_BAZA.ravishlar) ? CORPUS_BAZA.ravishlar : [];
+  const bazaOrin = (typeof CORPUS_BAZA !== "undefined" && CORPUS_BAZA.orin_otlari) ? CORPUS_BAZA.orin_otlari : [];
+
+  for (let i = 0; i < n; i++) {
+    const tok = tokens[i];
+    const w = tok.clean;
+    const nextTok = tokens[i + 1];
+    const nextW = nextTok ? nextTok.clean : "";
+    const isLast = (i === n - 1);
+
+    // A) Bog'lovchilar
+    if (LEXICON.conjunctions.includes(w)) {
+      results[i] = {
+        word: tok.text, role: "Yordamchi so‘z", subType: "Bog‘lovchi",
+        level: "Gap bo‘lagi emas", question: "—", cssClass: "st-yordamchi",
+        note: "Uyushiq bo‘laklar yoki gaplarni bog‘lashga xizmat qilgan."
+      };
+      continue;
+    }
+
+    // B) Kesim (gap oxiridagi fe'l yoki bog'lamali ot kesim)
+    if (isLast) {
+      const isVerbPredicate = tok.isKFSQ || /(di|adi|ydi|yapti|moqda|gan|ibdi|sin|aylik|aman|asan|amiz|asiz|maydi|olmaydi)$/.test(w);
+      results[i] = {
+        word: tok.text,
+        role: "Kesim",
+        subType: isVerbPredicate ? "Fe’l kesim (1-darajali)" : "Ot kesim (1-darajali)",
+        level: "1-darajali bo‘lak",
+        question: isVerbPredicate ? "nima qildi? / nima qiladi?" : "kim? / nima? / qanday?",
+        cssClass: "st-kesim",
+        note: isVerbPredicate ? "Harakat-holatni bildirgan fe’l kesim." : "Bog‘lama (-dir / edi / ekan) orqali shakllangan ot kesim."
+      };
+      continue;
+    }
+
+    // C) Qo'shma sifatdosh birikma ("sodir bo'layotgan", "ishlab chiqarilayotgan")
+    if (tok.isCompoundParticiple) {
+      results[i] = {
+        word: tok.text,
+        role: "Aniqlovchi",
+        subType: "Sifatlovchi aniqlovchi (sifatdosh birikma)",
+        level: "2-darajali bo‘lak",
+        question: "qanday? / qanaqa? / qaysi?",
+        cssClass: "st-aniqlovchi",
+        note: "Qo‘shma fe’lning sifatdosh shakli o‘zidan keyingi otga bog‘lanib aniqlovchi bo‘lgan."
+      };
+      continue;
+    }
+
+    // D) Ko'makchili birikmalar ("aralashish tufayli", "qo'pollik bilan", "dorilar bilan")
+    if (tok.post) {
+      if (tok.post === "tufayli" || tok.post === "sababli") {
+        results[i] = {
+          word: tok.text, role: "Hol", subType: "Sabab holi (ko‘makchili)",
+          level: "2-darajali bo‘lak", question: "nima sababdan? / nega?", cssClass: "st-hol",
+          note: `'${tok.post}' ko‘makchisi sabab ma’nosini ifodalagan.`
+        };
+      } else if (tok.post === "uchun") {
+        const isHarNomi = /(sh|ish|moq)$/.test(tok.headClean);
+        results[i] = {
+          word: tok.text, role: "Hol", subType: isHarNomi ? "Maqsad holi" : "Sabab holi",
+          level: "2-darajali bo‘lak", question: isHarNomi ? "nima maqsadda?" : "nima sababdan?", cssClass: "st-hol",
+          note: isHarNomi ? "Harakat nomi + 'uchun' — maqsad holi." : "Sifatdosh/ism + 'uchun' — sabab holi."
+        };
+      } else if (tok.post === "bilan" && /(lik|ch|ish|sh)$/.test(tok.headClean)) {
+        results[i] = {
+          word: tok.text, role: "Hol", subType: "Ravish (tarz) holi",
+          level: "2-darajali bo‘lak", question: "qanday? / qay tarzda?", cssClass: "st-hol",
+          note: "Mavhum ot + 'bilan' ko‘makchisi harakatning bajarilish tarzini bildirgan."
+        };
+      } else {
+        results[i] = {
+          word: tok.text, role: "To‘ldiruvchi", subType: "Vositali to‘ldiruvchi (ko‘makchili)",
+          level: "2-darajali bo‘lak", question: "kim bilan? / nima bilan? / nima haqida?", cssClass: "st-toldiruvchi",
+          note: `'${tok.post}' ko‘makchisi vositali to‘ldiruvchini shakllantirgan.`
+        };
+      }
+      continue;
+    }
+
+    // E) Kelishik qo'shimchali birliklar
+    if (/ning$/.test(w)) {
+      results[i] = {
+        word: tok.text, role: "Aniqlovchi", subType: "Qaratqich aniqlovchi (belgili)",
+        level: "2-darajali bo‘lak", question: "kimning? / nimaning?", cssClass: "st-aniqlovchi",
+        note: "-ning qaratqich kelishigi qo‘shimchasi orqali qaralmishga bog‘langan."
+      };
+      continue;
+    }
+
+    if (/ni$/.test(w) && w.length > 3) {
+      results[i] = {
+        word: tok.text, role: "To‘ldiruvchi", subType: "Vositasiz to‘ldiruvchi (belgili)",
+        level: "2-darajali bo‘lak", question: "kimni? / nimani? / qayerni?", cssClass: "st-toldiruvchi",
+        note: "-ni tushum kelishigi orqali o‘timli fe’lga boshqaruv yo‘li bilan bog‘langan."
+      };
+      continue;
+    }
+
+    if (/(ga|ka|qa|da|dan)$/.test(w) && w.length > 3 && !LEXICON.tarzRavishlari.includes(w)) {
+      const stem = w.replace(/(lari)?(ga|ka|qa|da|dan)$/, "");
+      const isPlace = bazaOrin.includes(stem) || /(zavod|maktab|universitet|shahar|qishloq|uy|xona|bog'|dala|bozor|ko'cha|vatan|yurt)/.test(stem);
+      const isTime = /(tong|tun|kun|yil|oy|hafta|bahor|yoz|kuz|qish|vaqt|payt|dam)/.test(stem);
+
+      if (isPlace) {
+        results[i] = {
+          word: tok.text, role: "Hol", subType: "O‘rin holi",
+          level: "2-darajali bo‘lak", question: "qayerga? / qayerda? / qayerdan?", cssClass: "st-hol",
+          note: "O‘rin-joy ma’nosidagi so‘z kelishik qo‘shimchasi bilan o‘rin holi bo‘lgan."
+        };
+      } else if (isTime) {
+        results[i] = {
+          word: tok.text, role: "Hol", subType: "Payt holi",
+          level: "2-darajali bo‘lak", question: "qachon? / qachondan?", cssClass: "st-hol",
+          note: "Payt ma’nosidagi ot kelishik qo‘shimchasi bilan payt holi bo‘lgan."
+        };
+      } else {
+        results[i] = {
+          word: tok.text, role: "To‘ldiruvchi", subType: "Vositali to‘ldiruvchi",
+          level: "2-darajali bo‘lak", question: "kimga? / nimaga? / kimda? / nimada? / nimadan?", cssClass: "st-toldiruvchi",
+          note: "Jo‘nalish/o‘rin-payt/chiqish kelishigi orqali vositali to‘ldiruvchi bo‘lgan."
+        };
+      }
+      continue;
+    }
+
+    // F) Ravishlar (Payt, Tarz, O'rin, Daraja, Sabab/Maqsad)
+    if (LEXICON.paytRavishlari.includes(w) || bazaRavishlar.includes(w)) {
+      results[i] = {
+        word: tok.text, role: "Hol", subType: "Payt holi",
+        level: "2-darajali bo‘lak", question: "qachon?", cssClass: "st-hol",
+        note: "Payt ma’nosini bildiruvchi ravish."
+      };
+      continue;
+    }
+    if (LEXICON.tarzRavishlari.includes(w)) {
+      results[i] = {
+        word: tok.text, role: "Hol", subType: "Ravish (tarz) holi",
+        level: "2-darajali bo‘lak", question: "qanday? / qay tarzda?", cssClass: "st-hol",
+        note: "Harakatning bajarilish tarzini bildiruvchi hol."
+      };
+      continue;
+    }
+    if (LEXICON.darajaRavishlari.includes(w)) {
+      results[i] = {
+        word: tok.text, role: "Hol", subType: "Daraja-miqdor holi",
+        level: "2-darajali bo‘lak", question: "qancha? / qay darajada?", cssClass: "st-hol",
+        note: "Harakat yoki belgining darajasini bildirgan."
+      };
+      continue;
+    }
+
+    // G) Sifatlar va sifatdoshlar ("keng", "yangi", "tajribali", "yetkazuvchi", "mas'uliyatli")
+    const isAdj = LEXICON.adjectives.includes(w) || bazaSifatlar.includes(w) ||
+                  /(li|siz|iy|viy|dor|kor|parvar|chak|choq|vchi|uvchi|gan|yotgan|ydigan|adigan)$/.test(w);
+    if (isAdj) {
+      const nextIsVerb = nextTok && (nextTok.isKFSQ || /(di|adi|ydi|yapti|moqda|gan|ish)$/.test(nextW));
+      if (nextIsVerb) {
+        results[i] = {
+          word: tok.text, role: "Hol", subType: "Ravish (tarz) holi (sifatdan)",
+          level: "2-darajali bo‘lak", question: "qanday? / qay tarzda?", cssClass: "st-hol",
+          note: "Fe’lga bog‘lanib tarz holi vazifasini bajargan sifat (turkumi sifat)."
+        };
+      } else {
+        results[i] = {
+          word: tok.text, role: "Aniqlovchi", subType: "Sifatlovchi aniqlovchi",
+          level: "2-darajali bo‘lak", question: "qanday? / qanaqa? / qaysi?", cssClass: "st-aniqlovchi",
+          note: "O‘zidan keyingi otning belgi-xususiyatini aniqlab kelgan."
+        };
+      }
+      continue;
+    }
+
+    // H) Belgisiz qaratqich aniqlovchi ("jamiyat hayotida", "kasb egasidir")
+    if (nextTok && /(i|si|ida|iga|idan|ini|idir|imiz|ingiz|lari)$/.test(nextW) && !/(di|adi|ydi|yapti)$/.test(nextW)) {
+      results[i] = {
+        word: tok.text, role: "Aniqlovchi", subType: "Qaratqich aniqlovchi (belgisiz)",
+        level: "2-darajali bo‘lak", question: "kimning? / nimaning?", cssClass: "st-aniqlovchi",
+        note: "Keyingi so‘zdagi egalik qo‘shimchasi bilan moslashgan belgisiz qaratqich aniqlovchi."
+      };
+      continue;
+    }
+
+    // I) Bosh kelishikdagi ot/olmosh — Ega (yoki belgisiz vositasiz to'ldiruvchi)
+    const hasSubjectAlready = results.some(r => r && r.role === "Ega");
+    if (!hasSubjectAlready) {
+      results[i] = {
+        word: tok.text, role: "Ega", subType: "Ega (bosh kelishikda)",
+        level: "1-darajali bo‘lak", question: "kim? / nima? / qayer?", cssClass: "st-ega",
+        note: "Kesim bilan shaxs-sonda moslashgan bosh bo‘lak."
+      };
+    } else {
+      results[i] = {
+        word: tok.text, role: "To‘ldiruvchi", subType: "Vositasiz to‘ldiruvchi (belgisiz)",
+        level: "2-darajali bo‘lak", question: "kimni? / nimani?", cssClass: "st-toldiruvchi",
+        note: "Belgisiz tushum kelishigi shaklidagi to‘ldiruvchi."
+      };
+    }
+  }
+
+  return results;
+}
+
+function runAnalysis() {
+  const input = document.getElementById('sentenceInput').value.trim();
+  const out = document.getElementById('analysisOutput');
+  if (!input) {
+    out.innerHTML = `<p style="color:var(--danger); margin-top:12px;">Iltimos, tahlil qilish uchun gap kiriting.</p>`;
+    return;
+  }
+
+  const tokens = tokenize(input);
+  const analyzed = analyzeTokens(tokens);
+
+  const primary = analyzed.filter(a => a.level === "1-darajali bo‘lak");
+  const secondary = analyzed.filter(a => a.level === "2-darajali bo‘lak");
+
+  out.innerHTML = `
+    <div class="tokens-grid">
+      ${analyzed.map(item => `
+        <div class="token-box ${item.cssClass}">
+          <div class="token-word">${item.word}</div>
+          <div class="token-role">${item.role}</div>
+          <div class="token-q">${item.question}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="levels-grid">
+      <div class="level-box">
+        <h4>1-darajali bo‘laklar (Grammatik asos)</h4>
+        <div class="chip-list">
+          ${primary.length ? primary.map(p => `<span class="chip"><strong>${p.word}</strong> — ${p.role}</span>`).join('') : '<span class="chip">Egasiz gap</span>'}
+        </div>
+      </div>
+      <div class="level-box">
+        <h4>2-darajali bo‘laklar</h4>
+        <div class="chip-list">
+          ${secondary.length ? secondary.map(s => `<span class="chip"><strong>${s.word}</strong> — ${s.role} (${s.subType})</span>`).join('') : '<span class="chip">Yig‘iq gap (2-darajali bo‘lak yo‘q)</span>'}
+        </div>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto; margin-top:18px;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>So‘z / Birikma</th>
+            <th>Gap bo‘lagi</th>
+            <th>Darajasi</th>
+            <th>So‘rog‘i</th>
+            <th>Grammatik izoh</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${analyzed.map(row => `
+            <tr>
+              <td><strong>${row.word}</strong></td>
+              <td>${row.role} <br><small style="color:var(--muted);">(${row.subType})</small></td>
+              <td>${row.level}</td>
+              <td><em>${row.question}</em></td>
+              <td>${row.note}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* ============================================================================
+   4. SAHIFA YUKLANGANDA ISHGA TUSHIRISH
+   ============================================================================ */
+window.addEventListener("DOMContentLoaded", () => {
+  const statusEl = document.getElementById("bazaStatus");
+  if (typeof CORPUS_BAZA !== "undefined") {
+    const count = CORPUS_BAZA.jami_noyob_sozlar ? CORPUS_BAZA.jami_noyob_sozlar.toLocaleString() : "ulanish faol";
+    statusEl.textContent = `✅ baza.js ulandi (${count} ta so‘z)`;
+  } else {
+    statusEl.textContent = "ℹ️ Ichki qoidalar bazasi faol (baza.js ixtiyoriy)";
+  }
+
+  renderTopicsTable();
+  loadSample(0);
+});
 </script>
 
 </body>
