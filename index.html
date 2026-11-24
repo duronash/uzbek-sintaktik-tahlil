@@ -178,11 +178,12 @@
       padding: 12px 16px;
       border-radius: 10px;
       border: 1.5px solid;
-      min-width: 135px;
+      min-width: 145px;
       text-align: center;
       box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     }
-    .token-word { font-size: 1.06rem; font-weight: 800; margin-bottom: 4px; }
+    .token-word { font-size: 1.06rem; font-weight: 800; margin-bottom: 2px; }
+    .token-morph { font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }
     .token-role { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
     .token-q { font-size: 0.76rem; color: var(--muted); font-style: italic; margin-top: 3px; }
 
@@ -332,16 +333,16 @@
   <section id="view-analyzer" class="section-view active">
     <div class="card">
       <div class="card-title">
-        <span>Qo‘shma fe’l kesimlarni yaxlit olib, teskari so‘roq beruvchi tahlilchi</span>
+        <span>Tuzilish turlari (sodda, qo‘shma, juft, takroriy) va teskari so‘roq asosidagi sintaktik tahlil</span>
         <div class="btn-row">
-          <button class="btn btn-secondary" onclick="loadSample(0)">Namuna 1 (nazorat qilinadi...)</button>
-          <button class="btn btn-secondary" onclick="loadSample(1)">Namuna 2 (unuvchanligini tekshiradi...)</button>
-          <button class="btn btn-secondary" onclick="loadSample(2)">Namuna 3 (samaradorligini oshiradi...)</button>
+          <button class="btn btn-secondary" onclick="loadSample(0)">Namuna 1 (olib borilayotgan...)</button>
+          <button class="btn btn-secondary" onclick="loadSample(1)">Namuna 2 (nazorat qilinadi...)</button>
+          <button class="btn btn-secondary" onclick="loadSample(2)">Namuna 3 (Juft va takroriy so‘zlar)</button>
         </div>
       </div>
 
       <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 12px;">
-        <strong>nazorat qilinadi / nazorat qiladi</strong> kabi qo‘shma fe’llar yaxlit <strong>Kesim</strong> sifatida aniqlanadi, so‘ng kesimdan boshlab orqaga qarab so‘roq berish orqali qolgan bo‘laklar tahlil qilinadi.
+        <strong>Qo‘shma fe’llar</strong> (<em>nazorat qilinadi, olib borilayotgan, borib kelmoq</em>), <strong>qo‘shma otlar</strong> (<em>Janubiy Koreya</em>), <strong>juft</strong> (<em>qozon-tovoq</em>) va <strong>takroriy so‘zlar</strong> (<em>ochiqdan ochiq, katta-katta</em>) tokenga ajratilganda bo‘linib ketmaydi; so‘ng kesimdan boshlab teskari so‘roq beriladi.
       </p>
 
       <div class="legend">
@@ -484,7 +485,7 @@
         <div class="level-box">
           <h4>🛠 Tahlilchi uchun sintaktik istisno qo‘shish</h4>
           <p style="font-size:0.86rem; color:var(--muted); margin-bottom:12px;">
-            Ega, to‘ldiruvchi, aniqlovchi yoki hol aniqlashda aniq vazifa berish kerak bo‘lgan so‘z yoki birikmani kiriting.
+            Bo‘linmasligi kerak bo‘lgan qo‘shma so‘z, juft/takroriy so‘z yoki gap bo‘lagi vazifasini kiriting.
           </p>
           <div class="form-group">
             <label>So‘z yoki birikma</label>
@@ -595,21 +596,41 @@ const DEFAULT_TOPICS_DATA = [
   {
     id: "soz-yasalishi",
     branch: "So‘z yasalishi",
-    title: "4. So‘z yasalishi: Affiksatsiya, Kompozitsiya, KFSQ va Qo‘shma fe’llar",
-    summary: "Yasashga asos va yasovchi vosita, qo‘shma fe’l va KFSQ farqi.",
+    title: "4. So‘zlarning tuzilish jihatdan turlari va So‘z yasalishi",
+    summary: "Sodda (tub/yasama), Qo‘shma so‘zlar, Juft so‘zlar va Takroriy so‘zlar (chiziqchali va chiziqchasiz).",
     theoryHtml: `
-      <h3>Asosiy nazariy qoidalar:</h3>
+      <h3>So‘zlarning tuzilish jihatdan 4 turi:</h3>
       <ul>
-        <li><strong>Qo‘shma fe’llar:</strong> <em>nazorat qilmoq, nazorat qilinmoq, hal qilmoq, tashkil etmoq</em> — kompozitsiya usulida hosil bo‘lgan yaxlit qo‘shma fe’llardir.</li>
+        <li><strong>1) Sodda so‘zlar:</strong> bitta asosdan tashkil topadi (<em>kitob, yig‘layotgan, suvni, libos, qiynoqlar, sariq, balandroq, aravakash</em>). Tarkibida so‘z yasovchi qo‘shimcha bo‘lmasa — <strong>sodda tub</strong>, bo‘lsa — <strong>sodda yasama</strong> deyiladi.</li>
+        <li><strong>2) Qo‘shma so‘zlar:</strong> ikki va undan ortiq asosdan tashkil topadi (<em>qirqquloq, qiymataxta, balandparvoz, achchiqtosh, ertapishar, Janubiy Koreya, Quyi Chirchiq, jahl qilmoq, hadya etmoq, imkon bermoq, borib kelmoq, chiqib tushmoq, olib kelmoq</em>).</li>
+        <li><strong>3) Juft so‘zlar:</strong> ma’nodosh (sinonim) yoki zid ma’noli (antonim) so‘zlar juftligidan tuziladi (<em>qozon-tovoq, yem-xashak, yaxshi-yomon, savol-javob, ko‘rpa-to‘shak, savdo-sotiq, katta-kichik, do‘st-dushman, keldi-ketdi</em>).</li>
+        <li><strong>4) Takroriy so‘zlar:</strong> so‘zlarni takrorlash orqali hosil bo‘ladi (<em>idish-pidish, bug‘doy-mug‘doy, choy-poy, qator-qator, chelak-chelak, es-es, baland-baland, kulib-kulib, eshikma-eshik, qadam-baqadam, ochiqdan ochiq, to‘g‘ridan to‘g‘ri, uzundan uzun, yildan yilga</em>). Birinchi qismi chiqish kelishigida (<code>-dan</code>) bo‘lgan takroriy so‘zlar orasiga chiziqcha qo‘yilmaydi.</li>
       </ul>
     `,
     questions: [
       {
         id: "sy1",
-        q: "«nazorat qilinadi» qanday fe’l shakli hisoblanadi?",
-        options: ["A) Tub fe’l", "B) Qo‘shma fe’l (majhul nisbatda)", "C) KFSQ", "D) Sodda ot"],
+        q: "Qaysi qatordagi takroriy so‘zlar imlo qoidasiga ko‘ra chiziqchasiz (ajratib) yoziladi?",
+        options: [
+          "A) baland-baland, kulib-kulib, uyma-uy",
+          "B) ochiqdan ochiq, to‘g‘ridan to‘g‘ri, uzundan uzun, yildan yilga",
+          "C) qadam-baqadam, dam-badam, eshikma-eshik",
+          "D) idish-pidish, choy-poy, katta-katta"
+        ],
         correct: 1,
-        explanation: "To‘g‘ri javob B: 'nazorat qilmoq' — qo‘shma fe’l, 'qilinadi' shaklida majhul nisbat va xabar mayli 3-shaxsda kelgan yaxlit kesimdir."
+        explanation: "To‘g‘ri javob B: birinchi qismi chiqish kelishigi (-dan) shaklida bo‘lgan takroriy so‘zlar orasiga chiziqcha qo‘yilmaydi."
+      },
+      {
+        id: "sy2",
+        q: "Quyidagi birliklardan qaysilari qo‘shma so‘zlar (qo‘shma fe’l va qo‘shma ot) hisoblanadi?",
+        options: [
+          "A) qozon-tovoq, yaxshi-yomon, keldi-ketdi",
+          "B) Janubiy Koreya, Quyi Chirchiq, jahl qilmoq, hadya etmoq, borib kelmoq",
+          "C) kitob, aravakash, balandroq, qiynoqlar",
+          "D) bug‘doy-mug‘doy, qator-qator, es-es"
+        ],
+        correct: 1,
+        explanation: "To‘g‘ri javob B: ikki va undan ortiq asosdan tuzilgan qo‘shma ot va qo‘shma fe’llar."
       }
     ]
   },
@@ -627,10 +648,10 @@ const DEFAULT_TOPICS_DATA = [
     questions: [
       {
         id: "oss1",
-        q: "«ekinlarning rivojlanishi muntazam nazorat qilinadi» gapida «muntazam» so‘zining vazifasi nima?",
-        options: ["A) Ega", "B) Sifatlovchi aniqlovchi", "C) Ravish (tarz) holi", "D) Vositasiz to‘ldiruvchi"],
-        correct: 2,
-        explanation: "To‘g‘ri javob C: 'nazorat qilinadi' kesimiga bog‘lanib harakatning bajarilish tarzini ('qanday / muntazam') bildirgan tarz holi."
+        q: "«Bug‘doy dalasida olib borilayotgan ishlar fermerga yoqmadi» gapida «olib borilayotgan» birikmasining sintaktik vazifasi nima?",
+        options: ["A) Ega", "B) Sifatlovchi aniqlovchi", "C) Kesim", "D) Vositasiz to‘ldiruvchi"],
+        correct: 1,
+        explanation: "To‘g‘ri javob B: 'qanday ishlar?' so‘rog‘iga javob bo‘lib 'ishlar' egasiga bog‘langan sifatlovchi aniqlovchi."
       }
     ]
   },
@@ -726,21 +747,21 @@ const DEFAULT_TOPICS_DATA = [
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
-        <li><strong>Qo‘shma fe’l kesim:</strong> <em>nazorat qilinadi</em> kabi qo‘shma fe’llar yaxlit bitta <strong>Kesim</strong> olinadi; unga «nima nazorat qilinadi?» deb so‘roq berilganda <strong>«rivojlanishi»</strong> (Ega) aniqlanadi.</li>
+        <li><strong>Qo‘shma fe’l kesim:</strong> <em>nazorat qilinadi, hadya etdi, borib keldi</em> kabi qo‘shma fe’llar yaxlit bitta <strong>Kesim</strong> olinadi.</li>
       </ul>
     `,
     questions: [
       {
         id: "bb1",
-        q: "«Bug‘doy dalasida fermer urug‘likning unuvchanligini tekshiradi, shuning uchun ekinlarning rivojlanishi muntazam nazorat qilinadi.» gapining ikkinchi qismida kesim va ega qaysi birliklar?",
+        q: "«Bug‘doy dalasida olib borilayotgan ishlar fermerga yoqmadi» gapida ega va kesim qaysilar?",
         options: [
-          "A) Kesim — qilinadi, Ega — nazorat",
-          "B) Kesim — nazorat qilinadi, Ega — rivojlanishi",
-          "C) Kesim — rivojlanishi, Ega — nazorat qilinadi",
-          "D) Kesim — muntazam, Ega — ekinlarning"
+          "A) Ega — fermerga, Kesim — yoqmadi",
+          "B) Ega — ishlar, Kesim — yoqmadi",
+          "C) Ega — Bug‘doy, Kesim — olib borilayotgan",
+          "D) Ega — dalasida, Kesim — yoqmadi"
         ],
         correct: 1,
-        explanation: "To‘g‘ri javob B: 'nazorat qilinadi' — qo‘shma fe’l kesim; nima nazorat qilinadi? — 'rivojlanishi' (ega)."
+        explanation: "To‘g‘ri javob B: 'yoqmadi' — fe’l kesim; nima yoqmadi? — 'ishlar' (ega)."
       }
     ]
   },
@@ -768,11 +789,13 @@ const DEFAULT_TOPICS_DATA = [
 ];
 
 const DEFAULT_EXCEPTIONS = {
-  forceSubject: ["fermer", "rivojlanishi", "nihollar", "joylashtirish"],
+  forceSubject: ["ishlar", "fermer", "rivojlanishi", "nihollar", "joylashtirish"],
   forceObject: [],
   forceAdj: ["bug'doy", "sanitariya", "ta'lim", "tibbiyot"],
   forceHol: ["muntazam", "to'g'ri", "batafsil", "aniq", "yaxshi"],
   phraseMap: [
+    { phrase: "olib borilayotgan", role: "Aniqlovchi", subType: "Sifatlovchi aniqlovchi (qo‘shma sifatdosh)", level: "2-darajali bo‘lak", question: "qanday? / qanaqa?", cssClass: "st-aniqlovchi", note: "Yaxlit qo‘shma sifatdosh birikma — keyingi otga bog‘langan aniqlovchi." },
+    { phrase: "olib borilgan", role: "Aniqlovchi", subType: "Sifatlovchi aniqlovchi (qo‘shma sifatdosh)", level: "2-darajali bo‘lak", question: "qanday? / qanaqa?", cssClass: "st-aniqlovchi", note: "Yaxlit qo‘shma sifatdosh birikma." },
     { phrase: "shuning uchun", role: "Yordamchi so‘z", subType: "Sabab bog‘lovchi vosita", level: "Gap bo‘lagi emas", question: "—", cssClass: "st-yordamchi", note: "Qismlar o‘rtasidagi sabab bog‘lovchi birligi." },
     { phrase: "bir tekis", role: "Hol", subType: "Ravish (tarz) holi", level: "2-darajali bo‘lak", question: "qanday? / qay tarzda?", cssClass: "st-hol", note: "Kesimga bog‘lanib harakat tarzini bildirgan hol." },
     { phrase: "nazorat qilinadi", role: "Kesim", subType: "Qo‘shma fe’l kesim (majhul nisbat)", level: "1-darajali bo‘lak", question: "nima qilinadi?", cssClass: "st-kesim", note: "'nazorat qilmoq' qo‘shma fe’lining majhul nisbatdagi kesim shakli." },
@@ -783,8 +806,8 @@ const DEFAULT_EXCEPTIONS = {
   ]
 };
 
-const STORAGE_TOPICS_KEY = "uzb_syntax_topics_v1";
-const STORAGE_EXC_KEY = "uzb_syntax_exceptions_v1";
+const STORAGE_TOPICS_KEY = "uzb_syntax_topics_v2";
+const STORAGE_EXC_KEY = "uzb_syntax_exceptions_v2";
 
 function getTopicsData() {
   try {
@@ -805,7 +828,6 @@ function getExceptionsData() {
     if (!raw) return JSON.parse(JSON.stringify(DEFAULT_EXCEPTIONS));
     const parsed = JSON.parse(raw);
     return {
-      forcePredicate: parsed.forcePredicate || [],
       forceSubject: parsed.forceSubject || [],
       forceObject: parsed.forceObject || [],
       forceAdj: parsed.forceAdj || [],
@@ -1013,20 +1035,22 @@ function resetQuiz(quizKey) {
 }
 
 /* ============================================================================
-   3. QO'SHMA FE'L KESIMLARNI YAXLIT OLUVCHI SINTAKTIK TAHLIL DVIGATELI
+   3. TUZILISH TURLARI (SODDA, QO'SHMA, JUFT, TAKRORIY) VA SINTAKTIK TAHLILCHI
    ============================================================================ */
 const SAMPLES = [
+  "Bug'doy dalasida olib borilayotgan ishlar fermerga yoqmadi.",
   "Bug'doy dalasida fermer urug'likning unuvchanligini tekshiradi, shuning uchun ekinlarning rivojlanishi muntazam nazorat qilinadi.",
-  "Suv quvurlarini to'g'ri joylashtirish binoning sanitariya tizimi samaradorligini oshiradi.",
-  "Taqillaydi eshik nogahon."
+  "Janubiy Koreya mehmonlari ochiqdan ochiq savol-javob qilib, qozon-tovoq va katta-katta yutuqlarni hadya etdi."
 ];
 
 const LEXICON = {
   compoundParticiples: [
+    "olib borilayotgan", "olib borilgan", "olib boriladigan", "olib borilyotgan",
     "sodir bo'layotgan", "sodir bo'lgan", "sodir bo'ladigan",
     "paydo bo'layotgan", "paydo bo'lgan", "paydo bo'ladigan",
     "yuz berayotgan", "yuz bergan", "amalga oshayotgan", "amalga oshgan",
-    "ishlab chiqarilayotgan", "ishlab chiqarilgan"
+    "ishlab chiqarilayotgan", "ishlab chiqarilgan", "hal qilinayotgan", "hal qilingan",
+    "tashkil etilayotgan", "tashkil etilgan"
   ],
   kfspAuxVerbs: [
     "berdi", "beradi", "bergan", "olib", "oldi", "oladi", "olgan",
@@ -1071,11 +1095,80 @@ function rightHasPossessive(nextW) {
   return Boolean(nextW && /(i|si|ida|iga|idan|ini|idir|imiz|ingiz|lari)$/.test(nextW) && !/(di|adi|ydi|yapti)$/.test(nextW));
 }
 
+// 1. Qo'shma fe'llar ("jahl qilmoq", "hadya etmoq", "imkon bermoq", "nazorat qilinadi" va h.k.)
 function isCompoundVerbPair(cLow, nLow) {
-  // "nazorat qilinadi", "nazorat qiladi", "tashkil etildi", "hal qilmoq" kabi qo'shma fe'llar
-  const auxPattern = /^(qil|qilin|qild|qilind|qila|qiladi|qilinadi|qilmoq|qilinmoq|et|etil|etd|etild|eta|etadi|etiladi|bo'l|bo'lin|bo'ld|bo'lind|bo'la|bo'ladi|bo'linadi|ber|beril|berd|berild|bera|beradi|beriladi)(aman|asan|amiz|asiz|adi|di|gan|moq|ish|sa|sin|maydi|olmaydi)?$/;
-  const nominalPartPattern = /^(nazorat|tahlil|tasdiq|tashkil|muhokama|ta'min|himoya|yakun|joriy|boshqar|reja|harakat|yordam|javob|qaror|foydalan|xulosa|ishlab)$/;
-  return auxPattern.test(nLow) && (nominalPartPattern.test(cLow) || /(at|ot|uv|ish|sh|lik|ma)$/.test(cLow));
+  const auxVerbRegex = /^(qil|qilin|qild|qilind|qila|qiladi|qilinadi|qilmoq|qilinmoq|qilgan|qilingan|qilayotgan|qilinayotgan|et|etil|etd|etild|eta|etadi|etiladi|etmoq|etilmoq|etgan|etilgan|bo'l|bo'lin|bo'ld|bo'lind|bo'la|bo'ladi|bo'linadi|bo'lmoq|bo'lgan|ber|beril|berd|berild|bera|beradi|beriladi|bermoq|bergan|berilgan|ol|olin|old|olind|ola|oladi|olinadi|olmoq|olgan|olingan|top|topil|topd|topdi|topadi|topmoq|tort|tortdi|tortadi|tortmoq|ur|urdi|uradi|urmoq)(aman|asan|amiz|asiz|adi|di|gan|moq|ish|sa|sin|maydi|olmaydi|yapti|moqda)?$/;
+
+  const nominalCompounds = new Set([
+    "nazorat", "tahlil", "tasdiq", "tashkil", "muhokama", "ta'min", "himoya",
+    "yakun", "joriy", "boshqar", "reja", "harakat", "yordam", "javob", "qaror",
+    "foydalan", "xulosa", "jahl", "hadya", "imkon", "hal", "taklif", "talab",
+    "e'lon", "e'tibor", "hurmat", "xizmat", "mehnat", "sabr", "shukur", "umid",
+    "orzu", "niyat", "bayon", "izoh", "tarjima", "tahrir", "tadqiq", "kashf",
+    "ixtiro", "barpo", "bunyod", "obod", "ozod", "isloh", "rivoj", "taraqqiy",
+    "ijro", "amal", "qabul", "rad", "inkor", "isbot", "oshkor", "fosh", "mag'lub",
+    "g'olib", "taqdim", "ta'sir", "zarar", "foyda", "ziyon", "davo", "shifo", "savol-javob"
+  ]);
+
+  if (auxVerbRegex.test(nLow)) {
+    if (nominalCompounds.has(cLow)) return true;
+    if (/(at|ot|uv|ish|sh|lik)$/.test(cLow) && !/(da|ga|dan|ni|ning)$/.test(cLow)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// 2. Takroriy so'zlar ("ochiqdan ochiq", "to'g'ridan to'g'ri", "uzundan uzun", "yildan yilga", "qator qator")
+function isTakroriyPair(cLow, nLow) {
+  if (cLow === nLow && cLow.length >= 2) return true;
+  const stemMatch = cLow.match(/^(.+)(dan|tan)$/);
+  if (stemMatch) {
+    const base = stemMatch[1];
+    if (base.length >= 3 && (nLow === base || nLow.startsWith(base))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// 3. Ajratib yoziladigan qo'shma ot, sifat, olmosh, ravish va atoqli nomlar
+function isAjratibYoziladiganQoshma(currRaw, nextRaw, cLow, nLow, excData) {
+  const twoLow = `${cLow} ${nLow}`;
+
+  const inExc = (excData.phraseMap || []).find(
+    p => normalizeApostrophes(p.phrase).toLowerCase() === twoLow
+  );
+  if (inExc) return { matched: true, forcedPhrase: inExc, type: "Qo‘shma / turg‘un birlik" };
+
+  const bothCapitalized = /^[A-ZO'G'SHCH]/.test(currRaw) && /^[A-ZO'G'SHCH]/.test(nextRaw);
+  if (bothCapitalized) {
+    return { matched: true, type: "Qo‘shma atoqli ot" };
+  }
+
+  const fixedCompounds = new Set([
+    "bir zum", "bir oz", "bir necha", "bir qancha", "bir tekis", "bir yo'la",
+    "har bir", "har kim", "har nima", "har qanday", "har qaysi", "har doim", "har kuni",
+    "hech kim", "hech nima", "hech narsa", "hech qachon", "hech qayerda", "hech qanday",
+    "shu yerda", "u yerda", "bu yerda", "o'sha yerda", "shu zahoti", "o'z vaqtida",
+    "shuning uchun", "bundan tashqari", "shu bilan"
+  ]);
+  if (fixedCompounds.has(twoLow)) {
+    return { matched: true, type: "Qo‘shma / turg‘un birlik" };
+  }
+
+  return { matched: false };
+}
+
+function classifyHyphenatedMorph(cLow) {
+  const parts = cLow.split("-");
+  if (parts.length === 2) {
+    if (parts[0] === parts[1] || parts[1].startsWith("p") || parts[1].startsWith("m")) {
+      return "Takroriy so‘z";
+    }
+    return "Juft / takroriy so‘z";
+  }
+  return "Juft / takroriy so‘z";
 }
 
 function tokenize(sentence, excData) {
@@ -1099,61 +1192,89 @@ function tokenize(sentence, excData) {
     const nLow = normalizeApostrophes(next).toLowerCase();
     const twoLow = `${cLow} ${nLow}`;
 
+    const isHyphenated = curr.includes("-") && curr.length > 3;
+
     if (!hasCommaAfter && next) {
-      const matchedPhrase = (excData.phraseMap || []).find(
-        p => normalizeApostrophes(p.phrase).toLowerCase() === twoLow
-      );
-      if (matchedPhrase) {
+      // A) Istisno yoki ajratib yoziladigan qo'shma so'zlar ("Janubiy Koreya", "Quyi Chirchiq", "olib borilayotgan")
+      const qoshmaCheck = isAjratibYoziladiganQoshma(curr, next, cLow, nLow, excData);
+      if (qoshmaCheck.matched) {
         tokens.push({
           text: `${curr} ${next}`,
           clean: twoLow,
           punct: nextPunct,
           hasComma: hasCommaNext,
-          forcedPhrase: matchedPhrase,
-          isCompoundVerb: matchedPhrase.role === "Kesim"
+          forcedPhrase: qoshmaCheck.forcedPhrase || null,
+          isCompoundVerb: qoshmaCheck.forcedPhrase ? qoshmaCheck.forcedPhrase.role === "Kesim" : false,
+          isCompoundParticiple: qoshmaCheck.forcedPhrase ? qoshmaCheck.forcedPhrase.role === "Aniqlovchi" : false,
+          morphType: qoshmaCheck.type || "Qo‘shma so‘z"
         });
         i++;
         continue;
       }
 
-      // Qo'shma fe'llarni ("nazorat qilinadi", "nazorat qiladi") yaxlit birlikka birlashtirish
+      // B) Takroriy so'zlar ("ochiqdan ochiq", "to'g'ridan to'g'ri", "uzundan uzun", "yildan yilga")
+      if (isTakroriyPair(cLow, nLow)) {
+        tokens.push({
+          text: `${curr} ${next}`,
+          clean: twoLow,
+          punct: nextPunct,
+          hasComma: hasCommaNext,
+          isTakroriy: true,
+          morphType: "Takroriy so‘z"
+        });
+        i++;
+        continue;
+      }
+
+      // C) Qo'shma fe'llar ("jahl qilmoq", "hadya etmoq", "imkon bermoq", "nazorat qilinadi")
       if (isCompoundVerbPair(cLow, nLow)) {
         tokens.push({
           text: `${curr} ${next}`,
           clean: twoLow,
           punct: nextPunct,
           hasComma: hasCommaNext,
-          isCompoundVerb: true
+          isCompoundVerb: true,
+          morphType: "Qo‘shma fe’l"
         });
         i++;
         continue;
       }
 
+      // D) Qo'shma sifatdosh birikmalar ("olib borilayotgan", "sodir bo'lgan")
       if (LEXICON.compoundParticiples.includes(twoLow)) {
         tokens.push({
           text: `${curr} ${next}`,
           clean: twoLow,
           punct: nextPunct,
           hasComma: hasCommaNext,
-          isCompoundParticiple: true
+          isCompoundParticiple: true,
+          morphType: "Qo‘shma sifatdosh"
         });
         i++;
         continue;
       }
 
-      if (/(ib|b|a|y)$/.test(cLow) && LEXICON.kfspAuxVerbs.includes(nLow)) {
+      // E) Fe'l + fe'l (Qo'shma fe'l yoki KFSQ: "borib kelmoq", "chiqib tushmoq", "olib kelmoq", "unib chiqadi")
+      const isRavishdosh = /(ib|b|a|y)$/.test(cLow) && !/(da|ga|dan|ni|ning)$/.test(cLow) && cLow.length >= 3;
+      const isSecondVerb =
+        LEXICON.kfspAuxVerbs.includes(nLow) ||
+        /^(kel|ket|tush|chiq|bor|kir|o't|yubor|tashla|qol|ol|ber|qo'y|boshla)(moq|di|adi|gan|yapti|moqda|ib|b)?$/.test(nLow);
+
+      if (isRavishdosh && isSecondVerb) {
         tokens.push({
           text: `${curr} ${next}`,
           clean: twoLow,
           punct: nextPunct,
           hasComma: hasCommaNext,
           isKFSQ: true,
-          isCompoundVerb: true
+          isCompoundVerb: true,
+          morphType: "Qo‘shma fe’l / KFSQ"
         });
         i++;
         continue;
       }
 
+      // F) Ko'makchili birikmalar ("tufayli", "uchun", "bilan", "haqida"...)
       if (LEXICON.postpositions.includes(nLow)) {
         tokens.push({
           text: `${curr} ${next}`,
@@ -1161,7 +1282,8 @@ function tokenize(sentence, excData) {
           post: nLow,
           headClean: cLow,
           punct: nextPunct,
-          hasComma: hasCommaNext
+          hasComma: hasCommaNext,
+          morphType: "Ko‘makchili birikma"
         });
         i++;
         continue;
@@ -1172,7 +1294,9 @@ function tokenize(sentence, excData) {
       text: curr,
       clean: cLow,
       punct: punctAfter,
-      hasComma: hasCommaAfter
+      hasComma: hasCommaAfter,
+      isHyphenated,
+      morphType: isHyphenated ? classifyHyphenatedMorph(cLow) : "Sodda so‘z"
     });
   }
   return tokens;
@@ -1195,7 +1319,7 @@ function analyzeTokens(tokens) {
     if (tok.forcedPhrase) {
       const fp = tok.forcedPhrase;
       results[i] = {
-        word: tok.text, role: fp.role, subType: fp.subType,
+        word: tok.text, morphType: tok.morphType, role: fp.role, subType: fp.subType,
         level: fp.level, question: fp.question, cssClass: fp.cssClass, note: fp.note
       };
       continue;
@@ -1203,7 +1327,7 @@ function analyzeTokens(tokens) {
 
     if (LEXICON.conjunctions.includes(w)) {
       results[i] = {
-        word: tok.text, role: "Yordamchi so‘z", subType: "Bog‘lovchi",
+        word: tok.text, morphType: tok.morphType, role: "Yordamchi so‘z", subType: "Bog‘lovchi",
         level: "Gap bo‘lagi emas", question: "—", cssClass: "st-yordamchi",
         note: "Bog‘lovchi vazifasidagi yordamchi so‘z."
       };
@@ -1261,10 +1385,11 @@ function analyzeTokens(tokens) {
 
       results[predIdx] = {
         word: pTok.text,
+        morphType: pTok.morphType,
         role: "Kesim",
         subType: `${typeLabel} (${posLabel})`,
         level: "1-darajali bo‘lak",
-        question: pIsVerb ? "nima qiladi? / nima qilinadi?" : "kim? / nima? / qanday?",
+        question: pIsVerb ? "nima qildi? / nima qiladi?" : "kim? / nima? / qanday?",
         cssClass: "st-kesim",
         note: "Birinchi o‘rinda Kesim aniqlandi; endi boshqa bo‘laklar unga bog‘lab tahlil qilinadi."
       };
@@ -1283,36 +1408,86 @@ function analyzeTokens(tokens) {
 
       if (tok.isCompoundParticiple) {
         results[i] = {
-          word: tok.text, role: "Aniqlovchi", subType: "Sifatlovchi aniqlovchi (sifatdosh birikma)",
+          word: tok.text, morphType: tok.morphType, role: "Aniqlovchi", subType: "Sifatlovchi aniqlovchi (qo‘shma sifatdosh)",
           level: "2-darajali bo‘lak", question: "qanday? / qanaqa? / qaysi?", cssClass: "st-aniqlovchi",
-          note: "Keyingi otga tobelangan sifatdosh birikma."
+          note: "Bo‘linmas qo‘shma sifatdosh birikma — keyingi otga tobelangan aniqlovchi."
         };
+        continue;
+      }
+
+      if (tok.isTakroriy) {
+        const nextIsNoun = rightTok && rightRole !== "Kesim";
+        results[i] = {
+          word: tok.text,
+          morphType: tok.morphType,
+          role: nextIsNoun ? "Aniqlovchi" : "Hol",
+          subType: nextIsNoun ? "Sifatlovchi aniqlovchi (takroriy)" : "Ravish (tarz / payt) holi (takroriy)",
+          level: "2-darajali bo‘lak",
+          question: nextIsNoun ? "qanday? / qanaqa?" : "qanday? / qay tarzda? / qachon?",
+          cssClass: nextIsNoun ? "st-aniqlovchi" : "st-hol",
+          note: "Chiziqchasiz takroriy so‘z yaxlit birlik sifatida tahlil qilindi."
+        };
+        continue;
+      }
+
+      if (tok.isHyphenated) {
+        if (/ni$/.test(w)) {
+          results[i] = {
+            word: tok.text, morphType: tok.morphType, role: "To‘ldiruvchi", subType: "Vositasiz to‘ldiruvchi (juft/takroriy)",
+            level: "2-darajali bo‘lak", question: "nimani? / kimni?", cssClass: "st-toldiruvchi",
+            note: "Tushum kelishigidagi juft/takroriy so‘z."
+          };
+        } else if (/(ga|ka|qa|da|dan)$/.test(w)) {
+          results[i] = {
+            word: tok.text, morphType: tok.morphType, role: "Hol", subType: "O‘rin / tarz holi (juft/takroriy)",
+            level: "2-darajali bo‘lak", question: "qayerda? / qay tarzda?", cssClass: "st-hol",
+            note: "Kelishik shaklidagi juft/takroriy so‘z."
+          };
+        } else if (/(ib|b|a|y)$/.test(w)) {
+          results[i] = {
+            word: tok.text, morphType: tok.morphType, role: "Hol", subType: "Ravish (tarz) holi (takroriy)",
+            level: "2-darajali bo‘lak", question: "qanday? / qay tarzda?", cssClass: "st-hol",
+            note: "Ravishdosh shaklidagi takroriy so‘z ('kulib-kulib', 'qiynala-qiynala')."
+          };
+        } else if (rightTok && rightRole !== "Kesim") {
+          results[i] = {
+            word: tok.text, morphType: tok.morphType, role: "Aniqlovchi", subType: "Sifatlovchi aniqlovchi (juft/takroriy)",
+            level: "2-darajali bo‘lak", question: "qanday? / qanaqa?", cssClass: "st-aniqlovchi",
+            note: "Ot oldidan kelgan juft yoki takroriy sifat ('katta-katta', 'yaxshi-yomon')."
+          };
+        } else {
+          results[i] = {
+            word: tok.text, morphType: tok.morphType, role: "To‘ldiruvchi", subType: "Vositasiz to‘ldiruvchi (belgisiz juft ot)",
+            level: "2-darajali bo‘lak", question: "nimani? / kimni?", cssClass: "st-toldiruvchi",
+            note: "Belgisiz tushum kelishigidagi juft ot ('qozon-tovoq')."
+          };
+        }
         continue;
       }
 
       if (tok.post) {
         if (tok.post === "tufayli" || tok.post === "sababli") {
           results[i] = {
-            word: tok.text, role: "Hol", subType: "Sabab holi (ko‘makchili)",
+            word: tok.text, morphType: tok.morphType, role: "Hol", subType: "Sabab holi (ko‘makchili)",
             level: "2-darajali bo‘lak", question: "nima sababdan? / nega?", cssClass: "st-hol",
             note: `'${tok.post}' ko‘makchisi sabab ma’nosini ifodalagan.`
           };
         } else if (tok.post === "uchun") {
           const isHarNomi = /(sh|ish|moq)$/.test(tok.headClean);
           results[i] = {
-            word: tok.text, role: "Hol", subType: isHarNomi ? "Maqsad holi" : "Sabab holi",
+            word: tok.text, morphType: tok.morphType, role: "Hol", subType: isHarNomi ? "Maqsad holi" : "Sabab holi",
             level: "2-darajali bo‘lak", question: isHarNomi ? "nima maqsadda?" : "nima sababdan?", cssClass: "st-hol",
             note: isHarNomi ? "Harakat nomi + 'uchun' — maqsad holi." : "Sifatdosh/ism + 'uchun' — sabab holi."
           };
         } else if (tok.post === "bilan" && /(lik|ch|ish|sh)$/.test(tok.headClean)) {
           results[i] = {
-            word: tok.text, role: "Hol", subType: "Ravish (tarz) holi",
+            word: tok.text, morphType: tok.morphType, role: "Hol", subType: "Ravish (tarz) holi",
             level: "2-darajali bo‘lak", question: "qanday? / qay tarzda?", cssClass: "st-hol",
             note: "Mavhum ot + 'bilan' ko‘makchisi harakat tarzini bildirgan."
           };
         } else {
           results[i] = {
-            word: tok.text, role: "To‘ldiruvchi", subType: "Vositali to‘ldiruvchi (ko‘makchili)",
+            word: tok.text, morphType: tok.morphType, role: "To‘ldiruvchi", subType: "Vositali to‘ldiruvchi (ko‘makchili)",
             level: "2-darajali bo‘lak", question: "kim bilan? / nima bilan? / nima haqida?", cssClass: "st-toldiruvchi",
             note: `'${tok.post}' ko‘makchisi vositali to‘ldiruvchini shakllantirgan.`
           };
@@ -1322,7 +1497,7 @@ function analyzeTokens(tokens) {
 
       if (/ning$/.test(w)) {
         results[i] = {
-          word: tok.text, role: "Aniqlovchi", subType: "Qaratqich aniqlovchi (belgili)",
+          word: tok.text, morphType: tok.morphType, role: "Aniqlovchi", subType: "Qaratqich aniqlovchi (belgili)",
           level: "2-darajali bo‘lak", question: "kimning? / nimaning?", cssClass: "st-aniqlovchi",
           note: "Qaralmishga tobelangan qaratqich aniqlovchi."
         };
@@ -1331,7 +1506,7 @@ function analyzeTokens(tokens) {
 
       if (/ni$/.test(w) && w.length > 3) {
         results[i] = {
-          word: tok.text, role: "To‘ldiruvchi", subType: "Vositasiz to‘ldiruvchi (belgili)",
+          word: tok.text, morphType: tok.morphType, role: "To‘ldiruvchi", subType: "Vositasiz to‘ldiruvchi (belgili)",
           level: "2-darajali bo‘lak", question: "kimni? / nimani? / qayerni?", cssClass: "st-toldiruvchi",
           note: "Kesimdan 'nimani?' so‘rog‘iga javob bo‘lgan vositasiz to‘ldiruvchi."
         };
@@ -1345,19 +1520,19 @@ function analyzeTokens(tokens) {
 
         if (isPlace) {
           results[i] = {
-            word: tok.text, role: "Hol", subType: "O‘rin / holat holi",
+            word: tok.text, morphType: tok.morphType, role: "Hol", subType: "O‘rin holi",
             level: "2-darajali bo‘lak", question: "qayerda? / qayerga? / qayerdan?", cssClass: "st-hol",
-            note: "Kesimdan 'qayerda / qayerga / qayerdan?' so‘rog‘iga javob bo‘lgan hol."
+            note: "O‘rin-joy bildiruvchi so‘z kelishik qo‘shimchasi bilan o‘rin holi bo‘lgan."
           };
         } else if (isTime) {
           results[i] = {
-            word: tok.text, role: "Hol", subType: "Payt holi",
+            word: tok.text, morphType: tok.morphType, role: "Hol", subType: "Payt holi",
             level: "2-darajali bo‘lak", question: "qachon?", cssClass: "st-hol",
-            note: "Kesimdan 'qachon?' so‘rog‘iga javob bo‘lgan payt holi."
+            note: "Payt bildiruvchi ot kelishik qo‘shimchasi bilan payt holi bo‘lgan."
           };
         } else {
           results[i] = {
-            word: tok.text, role: "To‘ldiruvchi", subType: "Vositali to‘ldiruvchi",
+            word: tok.text, morphType: tok.morphType, role: "To‘ldiruvchi", subType: "Vositali to‘ldiruvchi",
             level: "2-darajali bo‘lak", question: "kimga? / nimaga? / kimda? / nimada? / nimadan?", cssClass: "st-toldiruvchi",
             note: "Kelishik qo‘shimchasi orqali vositali to‘ldiruvchi bo‘lgan."
           };
@@ -1367,7 +1542,7 @@ function analyzeTokens(tokens) {
 
       if (LEXICON.paytRavishlari.includes(w) || bazaRavishlar.includes(w)) {
         results[i] = {
-          word: tok.text, role: "Hol", subType: "Payt holi",
+          word: tok.text, morphType: tok.morphType, role: "Hol", subType: "Payt holi",
           level: "2-darajali bo‘lak", question: "qachon?", cssClass: "st-hol",
           note: "Payt ma’nosini bildiruvchi ravish."
         };
@@ -1376,7 +1551,7 @@ function analyzeTokens(tokens) {
 
       if (LEXICON.darajaRavishlari.includes(w)) {
         results[i] = {
-          word: tok.text, role: "Hol", subType: "Daraja-miqdor holi",
+          word: tok.text, morphType: tok.morphType, role: "Hol", subType: "Daraja-miqdor holi",
           level: "2-darajali bo‘lak", question: "qancha? / qay darajada?", cssClass: "st-hol",
           note: "Daraja-miqdor ma’nosini bildirgan."
         };
@@ -1393,13 +1568,13 @@ function analyzeTokens(tokens) {
         );
         if (rightIsVerbOrActionNoun && LEXICON.tarzRavishlari.includes(w)) {
           results[i] = {
-            word: tok.text, role: "Hol", subType: "Ravish (tarz) holi",
+            word: tok.text, morphType: tok.morphType, role: "Hol", subType: "Ravish (tarz) holi",
             level: "2-darajali bo‘lak", question: "qanday? / qay tarzda?", cssClass: "st-hol",
             note: "Kesim yoki harakat nomiga bog‘lanib tarz holi bo‘lgan."
           };
         } else {
           results[i] = {
-            word: tok.text, role: "Aniqlovchi", subType: "Sifatlovchi aniqlovchi",
+            word: tok.text, morphType: tok.morphType, role: "Aniqlovchi", subType: "Sifatlovchi aniqlovchi",
             level: "2-darajali bo‘lak", question: "qanday? / qanaqa? / qaysi?", cssClass: "st-aniqlovchi",
             note: `O‘ngdagi '${rightTok ? rightTok.text : ""}' bo‘lagiga bog‘lanib belgi bildirgan aniqlovchi.`
           };
@@ -1407,23 +1582,26 @@ function analyzeTokens(tokens) {
         continue;
       }
 
-      const isActionNounUnmarked = /(ish|sh|moq)$/.test(w) && !/(ning|ni|ga|ka|qa|da|dan)$/.test(w);
-      if (!foundSubjectInSeg && (isActionNounUnmarked || (!/(ni|larini|sini|ini)$/.test(w) && !rightHasPossessive(rightW)))) {
+      if (rightRole === "Hol" || rightRole === "Aniqlovchi" || rightHasPossessive(rightW)) {
         results[i] = {
-          word: tok.text, role: "Ega", subType: isActionNounUnmarked ? "Ega (harakat nomi)" : "Ega (bosh kelishik)",
+          word: tok.text, morphType: tok.morphType, role: "Aniqlovchi", subType: "Sifatlovchi / Izohlovchi aniqlovchi",
+          level: "2-darajali bo‘lak", question: "qanday? / qaysi? / nimaning?", cssClass: "st-aniqlovchi",
+          note: `Keyingi '${rightTok ? rightTok.text : ""}' bo‘lagiga bog‘lanib aniqlovchi vazifasini bajargan.`
+        };
+        continue;
+      }
+
+      const isActionNounUnmarked = /(ish|sh|moq)$/.test(w) && !/(ning|ni|ga|ka|qa|da|dan)$/.test(w);
+      if (!foundSubjectInSeg && (isActionNounUnmarked || !/(ni|larini|sini|ini)$/.test(w))) {
+        results[i] = {
+          word: tok.text, morphType: tok.morphType, role: "Ega", subType: isActionNounUnmarked ? "Ega (harakat nomi)" : "Ega (bosh kelishik)",
           level: "1-darajali bo‘lak", question: "kim? / nima?", cssClass: "st-ega",
           note: "Kesimdan 'kim? / nima?' so‘rog‘iga javob bo‘lgan bosh bo‘lak."
         };
         foundSubjectInSeg = true;
-      } else if (rightHasPossessive(rightW)) {
-        results[i] = {
-          word: tok.text, role: "Aniqlovchi", subType: "Qaratqich / Sifatlovchi aniqlovchi (belgisiz)",
-          level: "2-darajali bo‘lak", question: "kimning? / nimaning? / qanday?", cssClass: "st-aniqlovchi",
-          note: "Keyingi egalik qo‘shimchali so‘z bilan bog‘langan aniqlovchi."
-        };
       } else {
         results[i] = {
-          word: tok.text, role: "To‘ldiruvchi", subType: "Vositasiz to‘ldiruvchi (belgisiz)",
+          word: tok.text, morphType: tok.morphType, role: "To‘ldiruvchi", subType: "Vositasiz to‘ldiruvchi (belgisiz)",
           level: "2-darajali bo‘lak", question: "kimni? / nimani?", cssClass: "st-toldiruvchi",
           note: "Belgisiz tushum kelishigi shaklidagi to‘ldiruvchi."
         };
@@ -1456,6 +1634,7 @@ function runAnalysis() {
       ${analyzed.map(item => `
         <div class="token-box ${item.cssClass}">
           <div class="token-word">${item.word}</div>
+          <div class="token-morph">${item.morphType || "Sodda so‘z"}</div>
           <div class="token-role">${item.role}</div>
           <div class="token-q">${item.question}</div>
         </div>
@@ -1481,7 +1660,8 @@ function runAnalysis() {
       <table class="data-table">
         <thead>
           <tr>
-            <th>So‘z / Birikma</th>
+            <th>Token (Bo‘linmas birlik)</th>
+            <th>Tuzilish turi</th>
             <th>Gap bo‘lagi</th>
             <th>Darajasi</th>
             <th>So‘rog‘i</th>
@@ -1492,6 +1672,7 @@ function runAnalysis() {
           ${analyzed.map(row => `
             <tr>
               <td><strong>${row.word}</strong></td>
+              <td><span class="topic-badge">${row.morphType || "Sodda so‘z"}</span></td>
               <td>${row.role} <br><small style="color:var(--muted);">(${row.subType})</small></td>
               <td>${row.level}</td>
               <td><em>${row.question}</em></td>
