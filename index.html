@@ -332,16 +332,16 @@
   <section id="view-analyzer" class="section-view active">
     <div class="card">
       <div class="card-title">
-        <span>Kesimdan boshlab teskari so‘roq berish orqali sintaktik tahlil</span>
+        <span>Qo‘shma fe’l kesimlarni yaxlit olib, teskari so‘roq beruvchi tahlilchi</span>
         <div class="btn-row">
-          <button class="btn btn-secondary" onclick="loadSample(0)">Namuna 1 (Bug‘doy dalasida...)</button>
-          <button class="btn btn-secondary" onclick="loadSample(1)">Namuna 2 (Suv quvurlarini...)</button>
-          <button class="btn btn-secondary" onclick="loadSample(2)">Namuna 3 (Inversiyali gap)</button>
+          <button class="btn btn-secondary" onclick="loadSample(0)">Namuna 1 (nazorat qilinadi...)</button>
+          <button class="btn btn-secondary" onclick="loadSample(1)">Namuna 2 (unuvchanligini tekshiradi...)</button>
+          <button class="btn btn-secondary" onclick="loadSample(2)">Namuna 3 (samaradorligini oshiradi...)</button>
         </div>
       </div>
 
       <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 12px;">
-        Algoritm avval gap yoki vergul bilan ajralgan qismdagi <strong>Kesimni</strong> (oxirida, o‘rtasida yoki boshida kelishidan qat’i nazar) birinchi o‘rinda topadi, so‘ng kesimdan boshlab so‘roq berish orqali qolgan bo‘laklarni aniqlaydi.
+        <strong>nazorat qilinadi / nazorat qiladi</strong> kabi qo‘shma fe’llar yaxlit <strong>Kesim</strong> sifatida aniqlanadi, so‘ng kesimdan boshlab orqaga qarab so‘roq berish orqali qolgan bo‘laklar tahlil qilinadi.
       </p>
 
       <div class="legend">
@@ -488,11 +488,12 @@
           </p>
           <div class="form-group">
             <label>So‘z yoki birikma</label>
-            <input type="text" id="admExcWord" placeholder="Masalan: joylashtirish" />
+            <input type="text" id="admExcWord" placeholder="Masalan: nazorat qilinadi" />
           </div>
           <div class="form-group">
             <label>Majburiy gap bo‘lagi vazifasi</label>
             <select id="admExcRole">
+              <option value="Kesim">Kesim (1-darajali)</option>
               <option value="Ega">Ega (1-darajali)</option>
               <option value="To‘ldiruvchi">To‘ldiruvchi (2-darajali)</option>
               <option value="Aniqlovchi">Aniqlovchi (2-darajali)</option>
@@ -501,7 +502,7 @@
           </div>
           <div class="form-group">
             <label>Izoh (ixtiyoriy)</label>
-            <input type="text" id="admExcNote" placeholder="Masalan: Harakat nomi — gap egasi" />
+            <input type="text" id="admExcNote" placeholder="Masalan: Qo‘shma fe’l — kesim" />
           </div>
           <button class="btn btn-primary" onclick="addSyntaxException()">➕ Istisnoni qo‘shish</button>
           <div id="admExcMsg" style="margin-top:8px; font-size:0.88rem; font-weight:700;"></div>
@@ -536,7 +537,6 @@ const DEFAULT_TOPICS_DATA = [
       <ul>
         <li>O‘zbek tilida <strong>29 ta harf</strong> va <strong>30 ta tovush</strong> mavjud. Farq bitta <strong>«J»</strong> harfining ikki xil tovushni ifodalashi hisobiga yuzaga keladi: <em>jurnal, jirafa</em> so‘zlarida <strong>sirg‘aluvchi J</strong>; <em>jo‘ja, jumhuriyat</em> so‘zlarida <strong>portlovchi J</strong>.</li>
         <li><strong>6 ta unli</strong> (A, E, I, O, O‘, U) talaffuzida shovqin ishtirok etmaydi, bo‘g‘in va urg‘u oladi. <strong>24 ta undosh</strong> tovushning barchasida (hatto <em>M, N, L, R, NG</em> sonorlarda ham) shovqin ishtirok etadi.</li>
-        <li><strong>Hosil bo‘lish o‘rniga ko‘ra undoshlar:</strong> Lab undoshlari (5 ta: B, P, M — lab-lab; V, F — lab-tish), Til undoshlari (18 ta: til oldi, til o‘rta Y, til orqa G, K, NG, chuqur til orqa Q, G‘, X), Bo‘g‘iz undoshi (1 ta: H).</li>
       </ul>
     `,
     questions: [
@@ -546,13 +546,6 @@ const DEFAULT_TOPICS_DATA = [
         options: ["A) Ikkita hukm to‘g‘ri", "B) Uchta hukm to‘g‘ri", "C) Bitta hukm to‘g‘ri", "D) To‘rtta hukm to‘g‘ri"],
         correct: 2,
         explanation: "To‘g‘ri javob C (faqat 4-hukm to‘g‘ri). 1-hukm xato: Q va H turli o‘rinda hosil bo‘ladi. 2-hukm xato: barcha 24 ta undoshda shovqin bor. 3-hukm xato: 'Y' shovqinli undoshdir. 4-hukm to‘g‘ri."
-      },
-      {
-        id: "f2",
-        q: "Berilgan so‘zlardan nechtasining tarkibidagi barcha undoshlar hosil bo‘lish usuli va hosil bo‘lish o‘rniga ko‘ra bir umumiy guruhga mansub undoshlar sanaladi?\n1) mangu  2) jurnal  3) sahifa  4) guliston  5) zarba  6) vafo  7) ulug‘",
-        options: ["A) Uchtasi", "B) Ikkitasi", "C) Beshtasi", "D) To‘rttasi"],
-        correct: 1,
-        explanation: "To‘g‘ri javob B (ikkitasi: 'vafo' va 'ulug‘'). 'Vafo'da V va F — sirg‘aluvchi va lab undoshlari; 'ulug‘'da L va G‘ — sirg‘aluvchi va til undoshlari."
       }
     ]
   },
@@ -560,21 +553,20 @@ const DEFAULT_TOPICS_DATA = [
     id: "fonetik-hodisalar",
     branch: "Fonetika",
     title: "2. Qo‘sh undosh, Bo‘g‘in va Fonetik hodisalar",
-    summary: "NG tovushi va bo‘g‘in ko‘chirish, tovush tushishi, ortishi va almashishi (yetakchi va ko‘makchi morfemada).",
+    summary: "NG tovushi va bo‘g‘in ko‘chirish, tovush tushishi, ortishi va almashishi.",
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
-        <li><strong>NG undoshi:</strong> O‘zbekcha so‘zlarda (<em>ko‘ngil, singil, kenglik</em>) yaxlit til orqa sonor; o‘zlashgan so‘zlarda (<em>ingliz, kongress</em>) va o‘zak+qo‘shimcha chegarasida (<em>tun+gi, sin+gan</em>) ikkita alohida N va G tovushidir.</li>
-        <li><strong>Fonetik hodisalar 3 xil:</strong> Tovush tushishi (<code>men+ni=meni</code>, <code>burun+ingiz=burningiz</code>, <code>ikki+ala=ikkala</code>), Tovush ortishi (<code>shu+i+si=shunisi</code>, <code>bu+ga=bunga</code>, <code>parvo+im=parvoyim</code>), Tovush almashishi (<code>bilak+im=bilagim</code>, <code>qishloq+ga=qishloqqa</code>, <code>o‘qi+v=o‘quv</code>).</li>
+        <li><strong>Fonetik hodisalar 3 xil:</strong> Tovush tushishi (<code>men+ni=meni</code>, <code>ikki+ala=ikkala</code>), Tovush ortishi (<code>shu+i+si=shunisi</code>, <code>bu+ga=bunga</code>), Tovush almashishi (<code>bilak+im=bilagim</code>, <code>qishloq+ga=qishloqqa</code>).</li>
       </ul>
     `,
     questions: [
       {
         id: "fh1",
-        q: "Quyida berilgan hukmlarning nechtasi noto‘g‘ri?\n1) Ayrim so‘zlarga egalik qo‘shimchalari qo‘shilganida so‘zda til o‘rta jarangli undoshning ortishi kuzatiladi.\n2) Asosi unli bilan tugagan sonlarga qo‘shilgan jamlovchi son qo‘shimchasi tarkibidagi unli tovush tushib qolishi mumkin.\n3) '-q' sifat yasovchi qo‘shimchasi qo‘shilganida so‘zdagi bir tor unli boshqa tor unliga almashishi mumkin.\n4) Ayrim fe’llarga fe’l nisbati qo‘shimchalari qo‘shilganida tovush tushishi hodisasi kuzatilishi mumkin.\n5) Ayrim olmoshlarga egalik qo‘shimchalari qo‘shilganida asos va qo‘shimcha o‘rtasida til oldi jarangli undosh ortishi mumkin.",
-        options: ["A) 2 tasi", "B) 3 tasi", "C) 1 tasi", "D) 4 tasi"],
-        correct: 2,
-        explanation: "To‘g‘ri javob C (faqat 2-hukm noto‘g‘ri). 'Ikkala', 'oltovlon' so‘zlarida qo‘shimcha tarkibidagi emas, balki yetakchi morfema (asos) oxiridagi unli tushadi."
+        q: "Quyida berilgan hukmlarning nechtasi noto‘g‘ri?\n1) Ayrim so‘zlarga egalik qo‘shimchalari qo‘shilganida so‘zda til o‘rta jarangli undoshning ortishi kuzatiladi.\n2) Asosi unli bilan tugagan sonlarga qo‘shilgan jamlovchi son qo‘shimchasi tarkibidagi unli tovush tushib qolishi mumkin.",
+        options: ["A) 2 tasi", "B) 1 tasi", "C) Ikkalasi ham to‘g‘ri", "D) Ikkalasi ham noto‘g‘ri"],
+        correct: 1,
+        explanation: "To‘g‘ri javob B (2-hukm noto‘g‘ri: 'ikkala', 'oltovlon' so‘zlarida qo‘shimcha emas, asos oxiridagi unli tushadi)."
       }
     ]
   },
@@ -582,13 +574,12 @@ const DEFAULT_TOPICS_DATA = [
     id: "morfemika",
     branch: "Morfemika",
     title: "3. Morfemika, Omonim qo‘shimchalar va Tarkib buzilishi",
-    summary: "Asos va qo‘shimcha, sintaktik/lug‘aviy shakl yasovchilar, omonim qo‘shimchalar, odatdagi tartib buzilishi.",
+    summary: "Asos va qo‘shimcha, shakl yasovchilar, omonim qo‘shimchalar, odatdagi tartib buzilishi.",
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
         <li><strong>Morfema:</strong> Asos (yetakchi morfema) va Qo‘shimcha (ko‘makchi morfema).</li>
-        <li><strong>Omonim qo‘shimchalar:</strong> So‘z yasovchi qo‘shimchalar faqat <em>turli so‘z turkumlarini</em> yasagandagina omonim bo‘ladi.</li>
-        <li><strong>Tarkib buzilishi:</strong> Asosdan oldin prefiks kelsa (<em>beandisha</em>) yoki so‘z yasovchidan oldin shakl yasovchi kelsa (<em>ko‘r+sat+kich, o‘ch+ir+g‘ich</em>) tartib buzilgan hisoblanadi.</li>
+        <li><strong>Omonim qo‘shimchalar:</strong> So‘z yasovchi qo‘shimchalar faqat turli so‘z turkumlarini yasagandagina omonim bo‘ladi.</li>
       </ul>
     `,
     questions: [
@@ -598,13 +589,6 @@ const DEFAULT_TOPICS_DATA = [
         options: ["A) 1, 2, 3, 4", "B) 2, 3, 4", "C) 1, 2, 5", "D) 2, 4, 5"],
         correct: 3,
         explanation: "To‘g‘ri javob D (2, 4, 5). 'Yoza boshlamoq' — KFSQ, so‘z birikmasi emas."
-      },
-      {
-        id: "m2",
-        q: "«To‘kilmoqda tomchilab umr / Malaklarning gul kosasidan.» — Berilgan she’riy parchadagi to‘rtta morfemadan iborat so‘zning sintaktik vazifasini aniqlang.",
-        options: ["A) Hol", "B) Kesim, hol", "C) Kesim", "D) Aniqlovchi, kesim"],
-        correct: 0,
-        explanation: "To‘g‘ri javob A (Hol). 'Tomchilab' = tom + chi + la + b (4 ta morfema, hol)."
       }
     ]
   },
@@ -612,25 +596,20 @@ const DEFAULT_TOPICS_DATA = [
     id: "soz-yasalishi",
     branch: "So‘z yasalishi",
     title: "4. So‘z yasalishi: Affiksatsiya, Kompozitsiya, KFSQ va Qo‘shma fe’llar",
-    summary: "Yasashga asos va yasovchi vosita, qo‘shma fe’l va KFSQ farqi, juft va takroriy so‘zlarning yasalishi.",
+    summary: "Yasashga asos va yasovchi vosita, qo‘shma fe’l va KFSQ farqi.",
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
-        <li><strong>Qo‘shma fe’l va KFSQ farqi:</strong> <code>fe’l + fe’l</code> birikmasida har ikki qism ma’no saqlasa — <em>qo‘shma fe’l</em> (yasama); ikkinchi qism ma’nosini yo‘qotib, birinchi fe’l bilan almashtirilsa — <em>KFSQ</em>.</li>
+        <li><strong>Qo‘shma fe’llar:</strong> <em>nazorat qilmoq, nazorat qilinmoq, hal qilmoq, tashkil etmoq</em> — kompozitsiya usulida hosil bo‘lgan yaxlit qo‘shma fe’llardir.</li>
       </ul>
     `,
     questions: [
       {
         id: "sy1",
-        q: "Qaysi gapda uchta yasama so‘z qatnashgan?",
-        options: [
-          "A) Inshodagi xatoliklar nisbati o‘zgarishi umumiy ko‘rsatkichga ta’sir qilmaydi.",
-          "B) Bu muammoni boshqachasiga hal qilishni o‘ylab ko‘rish kerak.",
-          "C) Hoshimjon tashlandiq bir uydan sehrli qalpoqcha topib oldi.",
-          "D) Osmonning tiniq, zangori gumbazida to‘lin oy o‘z o‘tovini tikkan."
-        ],
+        q: "«nazorat qilinadi» qanday fe’l shakli hisoblanadi?",
+        options: ["A) Tub fe’l", "B) Qo‘shma fe’l (majhul nisbatda)", "C) KFSQ", "D) Sodda ot"],
         correct: 1,
-        explanation: "To‘g‘ri javob B: 'boshqachasiga' (yasama ravish), 'hal qilmoq' (qo‘shma fe’l), 'o‘ylab ko‘rish' (yetakchi fe’li yasama bo‘lgan KFSQ)."
+        explanation: "To‘g‘ri javob B: 'nazorat qilmoq' — qo‘shma fe’l, 'qilinadi' shaklida majhul nisbat va xabar mayli 3-shaxsda kelgan yaxlit kesimdir."
       }
     ]
   },
@@ -638,20 +617,20 @@ const DEFAULT_TOPICS_DATA = [
     id: "ot-sifat-son",
     branch: "Morfologiya",
     title: "5. Mustaqil so‘z turkumlari: Ot, Sifat va Son",
-    summary: "Atoqli va turdosh otlar, belgisiz kelishiklar, sifat darajalari va otlashishi, son turlari va hisob so‘zlar.",
+    summary: "Ot, sifat va son ma’no turlari hamda gapdagi sintaktik vazifalari.",
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
-        <li><strong>Sifatning sintaktik vazifasi:</strong> Otga bog‘lansa — sifatlovchi aniqlovchi; fe’lga bog‘lansa — tarz holi (turkumi sifat).</li>
+        <li><strong>Sifat:</strong> Otga bog‘lansa sifatlovchi aniqlovchi, fe’lga bog‘lansa tarz holi bo‘ladi.</li>
       </ul>
     `,
     questions: [
       {
         id: "oss1",
-        q: "«Bizning xalqimiz erkin yashashni istaydi» gapidagi «erkin» so‘zining so‘z turkumi va sintaktik vazifasi qaysi javobda to‘g‘ri ko‘rsatilgan?",
-        options: ["A) Ravish — ravish (tarz) holi", "B) Sifat — sifatlovchi aniqlovchi", "C) Sifat — ravish (tarz) holi", "D) Ravish — sifatlovchi aniqlovchi"],
+        q: "«ekinlarning rivojlanishi muntazam nazorat qilinadi» gapida «muntazam» so‘zining vazifasi nima?",
+        options: ["A) Ega", "B) Sifatlovchi aniqlovchi", "C) Ravish (tarz) holi", "D) Vositasiz to‘ldiruvchi"],
         correct: 2,
-        explanation: "To‘g‘ri javob C: 'erkin' — sifat, harakat nomiga ('yashashni') bog‘lanib tarz holi vazifasida kelgan."
+        explanation: "To‘g‘ri javob C: 'nazorat qilinadi' kesimiga bog‘lanib harakatning bajarilish tarzini ('qanday / muntazam') bildirgan tarz holi."
       }
     ]
   },
@@ -659,20 +638,20 @@ const DEFAULT_TOPICS_DATA = [
     id: "olmosh-ravish",
     branch: "Morfologiya",
     title: "6. Olmosh va Ravish so‘z turkumlari",
-    summary: "Olmoshning 7 ma’no turi, 'o‘zga' va 'hech' so‘zlari, ravishning 6 ma’no turi, ko‘makchi va ravish farqi.",
+    summary: "Olmoshning 7 ma’no turi, ravishning 6 ma’no turi, ko‘makchi va ravish farqi.",
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
-        <li><strong>Ravish va Ko‘makchi:</strong> <em>keyin, oldin, so‘ng, avval</em> so‘zlari <code>-dan</code> kelishigidan keyin kelsa <strong>ko‘makchi</strong>, boshqa holatlarda <strong>payt ravishi</strong> bo‘ladi.</li>
+        <li><strong>Ravish turlari:</strong> Holat, payt, o‘rin, daraja-miqdor, sabab va maqsad ravishlari.</li>
       </ul>
     `,
     questions: [
       {
         id: "or1",
-        q: "Quyidagi gaplarning qaysi birida ajratib ko‘rsatilgan so‘z ravish emas, balki ko‘makchi vazifasida kelgan?",
-        options: ["A) Avval o‘yla, keyin so‘yla.", "B) Keyin dadam har birimizga sovg‘a berdi.", "C) Xonaga kattalardan keyin kiraman.", "D) Hoshimjon bir mahal do‘sti bilan kirib keldi."],
-        correct: 2,
-        explanation: "To‘g‘ri javob C: 'kattalardan keyin' birikmasida '-dan' dan keyin kelgan 'keyin' — vazifadosh ko‘makchi."
+        q: "«keyin, oldin, so‘ng, avval» so‘zlari «-dan» kelishigidan keyin kelsa qanday so‘z turkumiga o‘tadi?",
+        options: ["A) Sof sifat", "B) Ko‘makchi (vazifadosh ko‘makchi)", "C) Bog‘lovchi", "D) Modal so‘z"],
+        correct: 1,
+        explanation: "To‘g‘ri javob B: '-dan' kelishigidan keyin kelsa vazifadosh ko‘makchi hisoblanadi."
       }
     ]
   },
@@ -684,16 +663,16 @@ const DEFAULT_TOPICS_DATA = [
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
-        <li><strong>Ismlar guruhi:</strong> Ot, sifat, son, olmosh, taqlid so‘zlar hamda fe’lning <strong>harakat nomi</strong> va <strong>sifatdosh</strong> shakllari.</li>
+        <li><strong>Fe’l nisbatlari (5 ta):</strong> Aniq, o‘zlik, majhul, birgalik, orttirma.</li>
       </ul>
     `,
     questions: [
       {
         id: "fi1",
-        q: "Quyidagi gaplarning qaysilarida majhul nisbatdagi fe’l qatnashgan?\n1. Hozirda o‘qituvchilar tomonidan 'klaster' usuli ko‘p foydalanilmoqda.\n2. Jinoyatning sabablari tergovchi tomonidan aniqlandi.\n3. Atrof chinnidek tozalangan edi.\n4. Archalar juda erta bezaldi.",
-        options: ["A) Faqat 3, 4", "B) 1, 2, 3, 4", "C) Faqat 1, 2", "D) Faqat 2, 3"],
+        q: "«nazorat qilinadi» kesimi qaysi nisbatda?",
+        options: ["A) Aniq nisbat", "B) Majhul nisbat", "C) Orttirma nisbat", "D) Birgalik nisbat"],
         correct: 1,
-        explanation: "To‘g‘ri javob B: 'kim tomonidan?' qo‘llansa ham fe’l majhul nisbatda ekanligini saqlaydi."
+        explanation: "To‘g‘ri javob B: '-il-' qo‘shimchasi orqali majhul nisbat shakllangan."
       }
     ]
   },
@@ -701,20 +680,20 @@ const DEFAULT_TOPICS_DATA = [
     id: "yordamchi-alohida",
     branch: "Morfologiya",
     title: "8. Yordamchi va Alohida olingan so‘z turkumlari",
-    summary: "Bog‘lovchi, ko‘makchi, yuklama, vazifadosh yordamchilar, undov, modal va taqlid so‘zlar.",
+    summary: "Bog‘lovchi, ko‘makchi, yuklama, undov, modal va taqlid so‘zlar.",
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
-        <li><strong>Vazifadosh yordamchilar:</strong> <em>bilan</em> (<code>va, hamda</code> bilan almashsa bog‘lovchi), <em>balki</em>, <em>na...na</em>.</li>
+        <li><strong>Yordamchilar:</strong> Bog‘lovchilar, ko‘makchilar va yuklamalar.</li>
       </ul>
     `,
     questions: [
       {
         id: "ya1",
-        q: "«Uzun yog‘och topdi-da, olmani o‘ziga tomon hayday boshladi, ammo olma quvlik qilib yigitni aldar, yog‘och uchi tegishi bilanoq suvga bir shong‘ib qochib qolar edi.» gapidagi yordamchi so‘zlar haqida to‘g‘ri fikrlarni toping:\n1) Bitta sof, bitta vazifadosh bog‘lovchi qatnashgan.\n2) Ikkita kuchaytiruv-ta’kid yuklamasi qatnashgan.\n3) Bitta sof, bitta vazifadosh ko‘makchi qatnashgan.\n4) Barcha yordamchi so‘z turkumiga oid birliklar qatnashgan.",
-        options: ["A) 1, 3, 4", "B) 1, 2, 4", "C) 1, 2, 3", "D) 1, 2, 3, 4"],
-        correct: 0,
-        explanation: "To‘g‘ri javob A (1, 3, 4)."
+        q: "«ammo, lekin, biroq» qanday bog‘lovchilar sirasiga kiradi?",
+        options: ["A) Biriktiruv bog‘lovchilari", "B) Zidlov bog‘lovchilari", "C) Ayiruv bog‘lovchilari", "D) Sabab bog‘lovchilari"],
+        correct: 1,
+        explanation: "To‘g‘ri javob B: zidlov bog‘lovchilaridir."
       }
     ]
   },
@@ -722,20 +701,20 @@ const DEFAULT_TOPICS_DATA = [
     id: "soz-birikmasi",
     branch: "Sintaksis",
     title: "9. Grammatik aloqa va So‘z birikmasi turlari",
-    summary: "Teng va tobe aloqa, bitishuv, boshqaruv, moslashuv, otli va fe’lli so‘z birikmalari.",
+    summary: "Teng va tobe aloqa, bitishuv, boshqaruv, moslashuv.",
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
-        <li><strong>Bitishuv, Boshqaruv, Moslashuv:</strong> Kesimdan boshlab so‘roq berish orqali har bir tobe bog‘lanishning hokimi va tobesi aniqlanadi.</li>
+        <li><strong>Moslashuv:</strong> <em>ekinlarning rivojlanishi</em> — qaratqich kelishigi va egalik qo‘shimchasi orqali bog‘langan moslashuvli so‘z birikmasi.</li>
       </ul>
     `,
     questions: [
       {
         id: "sb1",
-        q: "«Biz Furqat va Mashrabning g‘azallarini yodladik» gapida nechta moslashuvli tobe aloqa va nechta moslashuvli so‘z birikmasi bor?",
-        options: ["A) 2 ta aloqa, 2 ta birikma", "B) 3 ta aloqa, 2 ta birikma", "C) 3 ta aloqa, 3 ta birikma", "D) 1 ta aloqa, 2 ta birikma"],
-        correct: 1,
-        explanation: "To‘g‘ri javob B: 3 ta moslashuvli tobe aloqa, 2 ta moslashuvli so‘z birikmasi."
+        q: "«ekinlarning rivojlanishi» qanday aloqa usulidagi birikma?",
+        options: ["A) Bitishuv", "B) Boshqaruv", "C) Moslashuv", "D) Teng bog‘lanish"],
+        correct: 2,
+        explanation: "To‘g‘ri javob C: qaratqich (-ning) va egalik (-i) bilan bog‘langan moslashuvli birikma."
       }
     ]
   },
@@ -743,20 +722,25 @@ const DEFAULT_TOPICS_DATA = [
     id: "bosh-bolaklar",
     branch: "Sintaksis",
     title: "10. Bosh bo‘laklar (Kesim, Ega), Egali/Egasiz gaplar va Tire",
-    summary: "Ot kesim va fe’l kesim, sodda/murakkab kesim, ega ifodalanishi, egasiz gap turlari, tire qoidalari.",
+    summary: "Qo‘shma fe’l kesimlar, ega, egali/egasiz gaplar, tire qoidalari.",
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
-        <li><strong>Kesimdan boshlash qoidasi:</strong> Har bir sodda gap yoki vergul bilan ajralgan qismda avval kesim (oxirida, o‘rtasida yoki boshida kelishidan qat’i nazar) topiladi; ega va boshqa bo‘laklar kesimga berilgan so‘roq orqali aniqlanadi.</li>
+        <li><strong>Qo‘shma fe’l kesim:</strong> <em>nazorat qilinadi</em> kabi qo‘shma fe’llar yaxlit bitta <strong>Kesim</strong> olinadi; unga «nima nazorat qilinadi?» deb so‘roq berilganda <strong>«rivojlanishi»</strong> (Ega) aniqlanadi.</li>
       </ul>
     `,
     questions: [
       {
         id: "bb1",
-        q: "Quyidagi gaplarning qaysi birida murakkab ot kesim qatnashgan?",
-        options: ["A) Men bu topshiriqni kecha yozgan edim.", "B) Ruhiy illatning davosi — o‘qish.", "C) Siz ham uzoq vaqt davolanishingiz kerak.", "D) Kosadagi ovqatni shosha-pisha ichib qo‘ydi."],
-        correct: 2,
-        explanation: "To‘g‘ri javob C ('davolanishingiz kerak')."
+        q: "«Bug‘doy dalasida fermer urug‘likning unuvchanligini tekshiradi, shuning uchun ekinlarning rivojlanishi muntazam nazorat qilinadi.» gapining ikkinchi qismida kesim va ega qaysi birliklar?",
+        options: [
+          "A) Kesim — qilinadi, Ega — nazorat",
+          "B) Kesim — nazorat qilinadi, Ega — rivojlanishi",
+          "C) Kesim — rivojlanishi, Ega — nazorat qilinadi",
+          "D) Kesim — muntazam, Ega — ekinlarning"
+        ],
+        correct: 1,
+        explanation: "To‘g‘ri javob B: 'nazorat qilinadi' — qo‘shma fe’l kesim; nima nazorat qilinadi? — 'rivojlanishi' (ega)."
       }
     ]
   },
@@ -764,40 +748,35 @@ const DEFAULT_TOPICS_DATA = [
     id: "ikkinchi-darajali",
     branch: "Sintaksis",
     title: "11. Ikkinchi darajali bo‘laklar (Qo‘shma gaplargacha yakuniy mavzu)",
-    summary: "Vositali/vositasiz to‘ldiruvchi, qaratqich/sifatlovchi/izohlovchi aniqlovchi, holning 6 turi, mustaqil va nomustaqil bo‘laklar.",
+    summary: "To‘ldiruvchi, aniqlovchi, hol — mustaqil va nomustaqil turlari.",
     theoryHtml: `
       <h3>Asosiy nazariy qoidalar:</h3>
       <ul>
-        <li><strong>Kesimdan teskari so‘roq:</strong> Kesim topilgach, undan «kim?/nima?» (ega), «kimni?/nimani?» (vositasiz to‘ldiruvchi), «qayerda?/qayerga?/qayerdan?» (o‘rin holi), «qanday?/qay tarzda?» (hol) kabi so‘roqlar beriladi.</li>
+        <li><strong>Kesimdan teskari so‘roq:</strong> Kesim yaxlit ajratilgach, undan «nima?», «nimani?», «qayerda?», «qanday?» kabi so‘roqlar beriladi.</li>
       </ul>
     `,
     questions: [
       {
         id: "id1",
-        q: "«Bug‘doy dalasida fermer urug‘likning unuvchanligini tekshiradi» gapida «tekshiradi» kesimidan «kim?» so‘rog‘iga javob bo‘lgan bo‘lak qaysi?",
+        q: "«Bug‘doy dalasida fermer urug‘likning unuvchanligini tekshiradi» qismida «tekshiradi» kesimidan «nimani?» so‘rog‘iga javob bo‘lgan bo‘lak qaysi?",
         options: ["A) Bug‘doy", "B) dalasida", "C) fermer", "D) unuvchanligini"],
-        correct: 2,
-        explanation: "To‘g‘ri javob C ('fermer'). Kesim ('tekshiradi')dan boshlab 'kim tekshiradi?' deb so‘roq berilganda 'fermer' (ega) chiqadi."
-      },
-      {
-        id: "id2",
-        q: "«Suv quvurlarini to‘g‘ri joylashtirish binoning sanitariya tizimi samaradorligini oshiradi» gapida gapning grammatik asosidagi (1-darajali) ega qaysi birlik bilan ifodalangan?",
-        options: ["A) to‘g‘ri", "B) joylashtirish", "C) quvurlarini", "D) tizimi"],
-        correct: 1,
-        explanation: "To‘g‘ri javob B ('joylashtirish'). Nima oshiradi? — 'joylashtirish' (harakat nomi — ega)."
+        correct: 3,
+        explanation: "To‘g‘ri javob D ('unuvchanligini' — vositasiz to‘ldiruvchi)."
       }
     ]
   }
 ];
 
 const DEFAULT_EXCEPTIONS = {
-  forceSubject: ["joylashtirish", "fermer", "nihollar"],
+  forceSubject: ["fermer", "rivojlanishi", "nihollar", "joylashtirish"],
   forceObject: [],
   forceAdj: ["bug'doy", "sanitariya", "ta'lim", "tibbiyot"],
-  forceHol: ["to'g'ri", "batafsil", "aniq", "yaxshi"],
+  forceHol: ["muntazam", "to'g'ri", "batafsil", "aniq", "yaxshi"],
   phraseMap: [
     { phrase: "shuning uchun", role: "Yordamchi so‘z", subType: "Sabab bog‘lovchi vosita", level: "Gap bo‘lagi emas", question: "—", cssClass: "st-yordamchi", note: "Qismlar o‘rtasidagi sabab bog‘lovchi birligi." },
     { phrase: "bir tekis", role: "Hol", subType: "Ravish (tarz) holi", level: "2-darajali bo‘lak", question: "qanday? / qay tarzda?", cssClass: "st-hol", note: "Kesimga bog‘lanib harakat tarzini bildirgan hol." },
+    { phrase: "nazorat qilinadi", role: "Kesim", subType: "Qo‘shma fe’l kesim (majhul nisbat)", level: "1-darajali bo‘lak", question: "nima qilinadi?", cssClass: "st-kesim", note: "'nazorat qilmoq' qo‘shma fe’lining majhul nisbatdagi kesim shakli." },
+    { phrase: "nazorat qiladi", role: "Kesim", subType: "Qo‘shma fe’l kesim", level: "1-darajali bo‘lak", question: "nima qiladi?", cssClass: "st-kesim", note: "'nazorat qilmoq' qo‘shma fe’lining kesim shakli." },
     { phrase: "unib chiqadi", role: "Kesim", subType: "Murakkab fe’l kesim (KFSQ)", level: "1-darajali bo‘lak", question: "nima qiladi?", cssClass: "st-kesim", note: "Ikkinchi qism oxiridagi fe’l kesim." },
     { phrase: "suv quvurlarini", role: "To‘ldiruvchi", subType: "Vositasiz to‘ldiruvchi", level: "2-darajali bo‘lak", question: "nimani? / nimalarni?", cssClass: "st-toldiruvchi", note: "Tushum kelishigidagi ot birikma." },
     { phrase: "sanitariya tizimi", role: "Aniqlovchi", subType: "Sifatlovchi / Izohlovchi aniqlovchi", level: "2-darajali bo‘lak", question: "qanday tizim? / nimaning tizimi?", cssClass: "st-aniqlovchi", note: "Turg‘un atama birikma." }
@@ -826,6 +805,7 @@ function getExceptionsData() {
     if (!raw) return JSON.parse(JSON.stringify(DEFAULT_EXCEPTIONS));
     const parsed = JSON.parse(raw);
     return {
+      forcePredicate: parsed.forcePredicate || [],
       forceSubject: parsed.forceSubject || [],
       forceObject: parsed.forceObject || [],
       forceAdj: parsed.forceAdj || [],
@@ -1033,10 +1013,10 @@ function resetQuiz(quizKey) {
 }
 
 /* ============================================================================
-   3. KESIMNI BIRINCHI TOPISH VA TESKARI SO'ROQ BERISH SINTAKTIK TAHLILCHISI
+   3. QO'SHMA FE'L KESIMLARNI YAXLIT OLUVCHI SINTAKTIK TAHLIL DVIGATELI
    ============================================================================ */
 const SAMPLES = [
-  "Bug'doy dalasida fermer urug'likning unuvchanligini tekshiradi, shuning uchun natijada nihollar bir tekis unib chiqadi.",
+  "Bug'doy dalasida fermer urug'likning unuvchanligini tekshiradi, shuning uchun ekinlarning rivojlanishi muntazam nazorat qilinadi.",
   "Suv quvurlarini to'g'ri joylashtirish binoning sanitariya tizimi samaradorligini oshiradi.",
   "Taqillaydi eshik nogahon."
 ];
@@ -1069,7 +1049,7 @@ const LEXICON = {
   tarzRavishlari: [
     "batafsil", "sekin", "tez", "asta", "darhol", "piyoda", "yayov", "butunlay", "tinimsiz",
     "to'xtovsiz", "birin-ketin", "oldinma-ketin", "qo'qqisdan", "to'satdan", "tasodifan",
-    "mardlarcha", "do'stona", "ochiqchasiga", "qalban", "ruhan", "yaxshiroq", "to'g'ri"
+    "mardlarcha", "do'stona", "ochiqchasiga", "qalban", "ruhan", "yaxshiroq", "to'g'ri", "muntazam"
   ],
   darajaRavishlari: [
     "biroz", "sal", "ancha", "ko'p", "kam", "oz", "picha", "behad", "juda", "eng", "g'oyat"
@@ -1089,6 +1069,13 @@ function loadSample(idx) {
 
 function rightHasPossessive(nextW) {
   return Boolean(nextW && /(i|si|ida|iga|idan|ini|idir|imiz|ingiz|lari)$/.test(nextW) && !/(di|adi|ydi|yapti)$/.test(nextW));
+}
+
+function isCompoundVerbPair(cLow, nLow) {
+  // "nazorat qilinadi", "nazorat qiladi", "tashkil etildi", "hal qilmoq" kabi qo'shma fe'llar
+  const auxPattern = /^(qil|qilin|qild|qilind|qila|qiladi|qilinadi|qilmoq|qilinmoq|et|etil|etd|etild|eta|etadi|etiladi|bo'l|bo'lin|bo'ld|bo'lind|bo'la|bo'ladi|bo'linadi|ber|beril|berd|berild|bera|beradi|beriladi)(aman|asan|amiz|asiz|adi|di|gan|moq|ish|sa|sin|maydi|olmaydi)?$/;
+  const nominalPartPattern = /^(nazorat|tahlil|tasdiq|tashkil|muhokama|ta'min|himoya|yakun|joriy|boshqar|reja|harakat|yordam|javob|qaror|foydalan|xulosa|ishlab)$/;
+  return auxPattern.test(nLow) && (nominalPartPattern.test(cLow) || /(at|ot|uv|ish|sh|lik|ma)$/.test(cLow));
 }
 
 function tokenize(sentence, excData) {
@@ -1122,7 +1109,21 @@ function tokenize(sentence, excData) {
           clean: twoLow,
           punct: nextPunct,
           hasComma: hasCommaNext,
-          forcedPhrase: matchedPhrase
+          forcedPhrase: matchedPhrase,
+          isCompoundVerb: matchedPhrase.role === "Kesim"
+        });
+        i++;
+        continue;
+      }
+
+      // Qo'shma fe'llarni ("nazorat qilinadi", "nazorat qiladi") yaxlit birlikka birlashtirish
+      if (isCompoundVerbPair(cLow, nLow)) {
+        tokens.push({
+          text: `${curr} ${next}`,
+          clean: twoLow,
+          punct: nextPunct,
+          hasComma: hasCommaNext,
+          isCompoundVerb: true
         });
         i++;
         continue;
@@ -1146,7 +1147,8 @@ function tokenize(sentence, excData) {
           clean: twoLow,
           punct: nextPunct,
           hasComma: hasCommaNext,
-          isKFSQ: true
+          isKFSQ: true,
+          isCompoundVerb: true
         });
         i++;
         continue;
@@ -1185,7 +1187,7 @@ function analyzeTokens(tokens) {
   const bazaRavishlar = (typeof CORPUS_BAZA !== "undefined" && CORPUS_BAZA.ravishlar) ? CORPUS_BAZA.ravishlar : [];
   const bazaOrin = (typeof CORPUS_BAZA !== "undefined" && CORPUS_BAZA.orin_otlari) ? CORPUS_BAZA.orin_otlari : [];
 
-  // 0-QADAM: Majburiy birikma (phraseMap) va bog'lovchilarni belgilash
+  // 0-QADAM: Majburiy birikmalar va bog'lovchilar
   for (let i = 0; i < n; i++) {
     const tok = tokens[i];
     const w = tok.clean;
@@ -1218,25 +1220,25 @@ function analyzeTokens(tokens) {
 
   let segStart = 0;
   for (const segEnd of segmentEnds) {
-    // 1-QADAM: Segmentda KESIMNI topish (oxirida, o'rtasida yoki boshida kelishidan qat'i nazar)
+    // 1-QADAM: Segmentda KESIMNI topish (qo'shma fe'l, KFSQ yoki tuslangan fe'l kesim)
     let predIdx = -1;
 
     const lastTok = tokens[segEnd];
     const lastIsVerb =
+      lastTok.isCompoundVerb ||
       lastTok.isKFSQ ||
       /(di|adi|ydi|yapti|moqda|gan|ibdi|sin|aylik|aman|asan|amiz|asiz|maydi|olmaydi|chiqadi|qoladi|ketadi|bo'ladi|dir|edi|ekan|emish)$/.test(lastTok.clean);
 
     if (lastIsVerb && !results[segEnd]) {
       predIdx = segEnd;
     } else {
-      // Kesim gap o'rtasida yoki boshida kelgan bo'lsa ham oxirdan boshiga qarab topamiz
       for (let i = segEnd; i >= segStart; i--) {
         if (results[i]) continue;
         const t = tokens[i];
-        const tw = t.clean;
         const looksLikePredicate =
+          t.isCompoundVerb ||
           t.isKFSQ ||
-          /(di|adi|ydi|yapti|moqda|gan|ibdi|sin|aylik|aman|asan|amiz|asiz|maydi|olmaydi|chiqadi|qoladi|ketadi|bo'ladi|dir|edi|ekan|emish)$/.test(tw);
+          /(di|adi|ydi|yapti|moqda|gan|ibdi|sin|aylik|aman|asan|amiz|asiz|maydi|olmaydi|chiqadi|qoladi|ketadi|bo'ladi|dir|edi|ekan|emish)$/.test(t.clean);
         if (looksLikePredicate) {
           predIdx = i;
           break;
@@ -1250,25 +1252,25 @@ function analyzeTokens(tokens) {
     if (predIdx !== -1 && !results[predIdx]) {
       const pTok = tokens[predIdx];
       const pIsVerb =
+        pTok.isCompoundVerb ||
         pTok.isKFSQ ||
         /(di|adi|ydi|yapti|moqda|gan|ibdi|sin|aylik|aman|asan|amiz|asiz|maydi|olmaydi|chiqadi|qoladi|ketadi|bo'ladi)$/.test(pTok.clean);
 
-      const posLabel =
-        predIdx === segEnd ? "qism oxirida" :
-        predIdx === segStart ? "gap/qism boshida" : "gap/qism o‘rtasida";
+      const typeLabel = pTok.isCompoundVerb ? "Qo‘shma / murakkab fe’l kesim" : (pIsVerb ? "Fe’l kesim" : "Ot kesim");
+      const posLabel = predIdx === segEnd ? "qism oxirida" : (predIdx === segStart ? "boshida" : "o‘rtasida");
 
       results[predIdx] = {
         word: pTok.text,
         role: "Kesim",
-        subType: pIsVerb ? `Fe’l kesim (${posLabel})` : `Ot kesim (${posLabel})`,
+        subType: `${typeLabel} (${posLabel})`,
         level: "1-darajali bo‘lak",
-        question: pIsVerb ? "nima qildi? / nima qiladi?" : "kim? / nima? / qanday?",
+        question: pIsVerb ? "nima qiladi? / nima qilinadi?" : "kim? / nima? / qanday?",
         cssClass: "st-kesim",
-        note: `Birinchi o‘rinda Kesim (${posLabel}) aniqlandi; endi boshqa bo‘laklar unga bog‘lab tahlil qilinadi.`
+        note: "Birinchi o‘rinda Kesim aniqlandi; endi boshqa bo‘laklar unga bog‘lab tahlil qilinadi."
       };
     }
 
-    // 2-QADAM: Kesim topilgach, qolgan bo'laklarni oxiridan boshiga qarab tahlil qilish
+    // 2-QADAM: Kesimdan boshlab teskari (segEnd -> segStart) so'roq berish
     let foundSubjectInSeg = false;
 
     for (let i = segEnd; i >= segStart; i--) {
@@ -1588,6 +1590,7 @@ function addSyntaxException() {
 
   if (wordsCount >= 2) {
     const roleMap = {
+      "Kesim": { subType: "Qo‘shma fe’l kesim (birikma)", level: "1-darajali bo‘lak", q: "nima qiladi? / nima qilinadi?", css: "st-kesim" },
       "Ega": { subType: "Ega (birikma)", level: "1-darajali bo‘lak", q: "kim? / nima?", css: "st-ega" },
       "To‘ldiruvchi": { subType: "To‘ldiruvchi (birikma)", level: "2-darajali bo‘lak", q: "kimni? / nimani? / kimga?", css: "st-toldiruvchi" },
       "Aniqlovchi": { subType: "Aniqlovchi (birikma)", level: "2-darajali bo‘lak", q: "qanday? / qaysi? / kimning?", css: "st-aniqlovchi" },
