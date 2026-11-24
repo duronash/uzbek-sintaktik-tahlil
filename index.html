@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sintaktik Tahlilchi</title>
+  <title>Sintaktik tahlil dasturi</title>
   <style>
     :root {
       --bg: #f4f7fb;
@@ -314,7 +314,7 @@
 <header>
   <div class="header-inner">
     <div class="brand">
-      <h1>O‘zbek Tili Sintaktik Tahlilchi va Nazariy Qo‘llanma</h1>
+      <h1>Sintaktik tahlil dasturi</h1>
       <p>Fonetika • Morfemika • Morfologiya • Sintaksis (Qo‘shma gaplargacha)</p>
     </div>
     <div class="nav-tabs">
@@ -1095,7 +1095,6 @@ function rightHasPossessive(nextW) {
   return Boolean(nextW && /(i|si|ida|iga|idan|ini|idir|imiz|ingiz|lari)$/.test(nextW) && !/(di|adi|ydi|yapti)$/.test(nextW));
 }
 
-// 1. Qo'shma fe'llar ("jahl qilmoq", "hadya etmoq", "imkon bermoq", "nazorat qilinadi" va h.k.)
 function isCompoundVerbPair(cLow, nLow) {
   const auxVerbRegex = /^(qil|qilin|qild|qilind|qila|qiladi|qilinadi|qilmoq|qilinmoq|qilgan|qilingan|qilayotgan|qilinayotgan|et|etil|etd|etild|eta|etadi|etiladi|etmoq|etilmoq|etgan|etilgan|bo'l|bo'lin|bo'ld|bo'lind|bo'la|bo'ladi|bo'linadi|bo'lmoq|bo'lgan|ber|beril|berd|berild|bera|beradi|beriladi|bermoq|bergan|berilgan|ol|olin|old|olind|ola|oladi|olinadi|olmoq|olgan|olingan|top|topil|topd|topdi|topadi|topmoq|tort|tortdi|tortadi|tortmoq|ur|urdi|uradi|urmoq)(aman|asan|amiz|asiz|adi|di|gan|moq|ish|sa|sin|maydi|olmaydi|yapti|moqda)?$/;
 
@@ -1119,7 +1118,6 @@ function isCompoundVerbPair(cLow, nLow) {
   return false;
 }
 
-// 2. Takroriy so'zlar ("ochiqdan ochiq", "to'g'ridan to'g'ri", "uzundan uzun", "yildan yilga", "qator qator")
 function isTakroriyPair(cLow, nLow) {
   if (cLow === nLow && cLow.length >= 2) return true;
   const stemMatch = cLow.match(/^(.+)(dan|tan)$/);
@@ -1132,7 +1130,6 @@ function isTakroriyPair(cLow, nLow) {
   return false;
 }
 
-// 3. Ajratib yoziladigan qo'shma ot, sifat, olmosh, ravish va atoqli nomlar
 function isAjratibYoziladiganQoshma(currRaw, nextRaw, cLow, nLow, excData) {
   const twoLow = `${cLow} ${nLow}`;
 
@@ -1195,7 +1192,6 @@ function tokenize(sentence, excData) {
     const isHyphenated = curr.includes("-") && curr.length > 3;
 
     if (!hasCommaAfter && next) {
-      // A) Istisno yoki ajratib yoziladigan qo'shma so'zlar ("Janubiy Koreya", "Quyi Chirchiq", "olib borilayotgan")
       const qoshmaCheck = isAjratibYoziladiganQoshma(curr, next, cLow, nLow, excData);
       if (qoshmaCheck.matched) {
         tokens.push({
@@ -1212,7 +1208,6 @@ function tokenize(sentence, excData) {
         continue;
       }
 
-      // B) Takroriy so'zlar ("ochiqdan ochiq", "to'g'ridan to'g'ri", "uzundan uzun", "yildan yilga")
       if (isTakroriyPair(cLow, nLow)) {
         tokens.push({
           text: `${curr} ${next}`,
@@ -1226,7 +1221,6 @@ function tokenize(sentence, excData) {
         continue;
       }
 
-      // C) Qo'shma fe'llar ("jahl qilmoq", "hadya etmoq", "imkon bermoq", "nazorat qilinadi")
       if (isCompoundVerbPair(cLow, nLow)) {
         tokens.push({
           text: `${curr} ${next}`,
@@ -1240,7 +1234,6 @@ function tokenize(sentence, excData) {
         continue;
       }
 
-      // D) Qo'shma sifatdosh birikmalar ("olib borilayotgan", "sodir bo'lgan")
       if (LEXICON.compoundParticiples.includes(twoLow)) {
         tokens.push({
           text: `${curr} ${next}`,
@@ -1254,7 +1247,6 @@ function tokenize(sentence, excData) {
         continue;
       }
 
-      // E) Fe'l + fe'l (Qo'shma fe'l yoki KFSQ: "borib kelmoq", "chiqib tushmoq", "olib kelmoq", "unib chiqadi")
       const isRavishdosh = /(ib|b|a|y)$/.test(cLow) && !/(da|ga|dan|ni|ning)$/.test(cLow) && cLow.length >= 3;
       const isSecondVerb =
         LEXICON.kfspAuxVerbs.includes(nLow) ||
@@ -1274,7 +1266,6 @@ function tokenize(sentence, excData) {
         continue;
       }
 
-      // F) Ko'makchili birikmalar ("tufayli", "uchun", "bilan", "haqida"...)
       if (LEXICON.postpositions.includes(nLow)) {
         tokens.push({
           text: `${curr} ${next}`,
@@ -1311,7 +1302,6 @@ function analyzeTokens(tokens) {
   const bazaRavishlar = (typeof CORPUS_BAZA !== "undefined" && CORPUS_BAZA.ravishlar) ? CORPUS_BAZA.ravishlar : [];
   const bazaOrin = (typeof CORPUS_BAZA !== "undefined" && CORPUS_BAZA.orin_otlari) ? CORPUS_BAZA.orin_otlari : [];
 
-  // 0-QADAM: Majburiy birikmalar va bog'lovchilar
   for (let i = 0; i < n; i++) {
     const tok = tokens[i];
     const w = tok.clean;
@@ -1334,7 +1324,6 @@ function analyzeTokens(tokens) {
     }
   }
 
-  // Vergul yoki gap oxiri bo'yicha segmentlarni ajratish
   const segmentEnds = [];
   for (let i = 0; i < n; i++) {
     if (tokens[i].hasComma || i === n - 1) {
@@ -1344,7 +1333,6 @@ function analyzeTokens(tokens) {
 
   let segStart = 0;
   for (const segEnd of segmentEnds) {
-    // 1-QADAM: Segmentda KESIMNI topish (qo'shma fe'l, KFSQ yoki tuslangan fe'l kesim)
     let predIdx = -1;
 
     const lastTok = tokens[segEnd];
@@ -1395,7 +1383,6 @@ function analyzeTokens(tokens) {
       };
     }
 
-    // 2-QADAM: Kesimdan boshlab teskari (segEnd -> segStart) so'roq berish
     let foundSubjectInSeg = false;
 
     for (let i = segEnd; i >= segStart; i--) {
